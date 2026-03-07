@@ -1,0 +1,78 @@
+.butterfly-neon-layer {
+	position: fixed;
+	inset: 0;
+	pointer-events: none;
+	z-index: 1;
+	overflow: hidden;
+}
+
+.butterfly-neon {
+	position: absolute;
+	transform: translate(-50%, -50%) rotate(var(--butterfly-rotate));
+	opacity: 0;
+	will-change: opacity, transform, filter;
+	animation: butterfly-flicker-drift 3800ms ease-out forwards;
+}
+
+.butterfly-neon-shape {
+	display: block;
+	width: 100%;
+	height: 100%;
+	filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.34));
+}
+
+.butterfly-neon-shape .butterfly-wings ellipse {
+	fill: rgba(255, 0, 0, 0.04);
+	stroke: rgba(248, 113, 113, var(--butterfly-alpha));
+	stroke-width: 2.2;
+}
+
+.butterfly-neon-shape line,
+.butterfly-neon-shape path {
+	fill: none;
+	stroke: rgba(248, 113, 113, calc(var(--butterfly-alpha) + 0.1));
+	stroke-width: 1.8;
+	stroke-linecap: round;
+}
+
+.butterfly-neon-red .butterfly-neon-shape {
+	filter:
+		drop-shadow(0 0 5px rgba(239, 68, 68, 0.48))
+		drop-shadow(0 0 14px rgba(239, 68, 68, 0.28));
+}
+
+@keyframes butterfly-flicker-drift {
+	0% {
+		opacity: 0;
+		transform: translate(-50%, -50%) rotate(var(--butterfly-rotate)) scale(0.88);
+	}
+
+	10% {
+		opacity: 0.52;
+		transform: translate(calc(-50% + 1px), calc(-50% - 1px)) rotate(calc(var(--butterfly-rotate) - 2deg)) scale(0.98);
+	}
+
+	54% {
+		opacity: 0.48;
+	}
+
+	74% {
+		opacity: 0.18;
+	}
+
+	82% {
+		opacity: 0.36;
+	}
+
+	100% {
+		opacity: 0;
+		transform: translate(calc(-50% + var(--butterfly-drift-x)), calc(-50% + var(--butterfly-drift-y))) rotate(calc(var(--butterfly-rotate) + 3deg)) scale(1.04);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.butterfly-neon {
+		animation: none;
+		opacity: 0.5;
+	}
+}
