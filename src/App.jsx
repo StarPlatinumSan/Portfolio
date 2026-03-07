@@ -50,7 +50,7 @@ const content = {
 			button: "Site du Studio",
 		},
 		webSection: { section: "Projets", title: "Projets Notables", groupTitle: "Projets Web" },
-		experienceSection: { section: "Expérience", title: "Ce Que J'apporte" },
+		experienceSection: { section: "Expérience", title: "Mon Apport" },
 		about: {
 			section: "À propos",
 			title: "Mon Stack",
@@ -58,6 +58,21 @@ const content = {
 			gameButton: "Outils Game Dev",
 			webStackTitle: "Stack Développement Web",
 			gameStackTitle: "Stack Développement Jeu",
+			educationTitle: "Formation",
+			educationItems: [
+				{
+					degree: "Informatique et recherche opérationnelle",
+					period: "Août 2023 - Avril 2027",
+					institution: "Université de Montréal",
+					highlights: ["Parcours universitaire international", "Échange universitaire à l'Université Grenoble Alpes - niveau Master 2 validé"],
+				},
+				{
+					degree: "DEC - Sciences informatiques et mathématiques",
+					period: "Août 2021 - Mai 2023",
+					institution: "CÉGEP Maisonneuve",
+					highlights: [],
+				},
+			],
 		},
 		contactSection: { section: "Contact", title: "Rejoignez-moi!", github: "GitHub", linkedin: "LinkedIn" },
 		viewLabel: "Voir",
@@ -171,7 +186,7 @@ const content = {
 			{ role: "Développeur Frontend", place: "Bénévolat", period: "2024 - 2025", summary: "Contribution à des apps web comme le Hackathon UDEM 2025 et le journal du département de physique UDEM." },
 		],
 		webDevTools: ["HTML5", "CSS3", "JavaScript", "TypeScript", "React", "Node.js", "Express", "Java", "Spring Boot", "MongoDB", "PostgreSQL", "Git/GitHub", "Figma"],
-		gameDevTools: ["Unity", "C#", "Narrative Design", "Cinemachine", "Scriptable Objects", "2D Prototyping", "Level/Technical Design", "FMV Editing Workflow", "Version Control"],
+		gameDevTools: ["Unity", "C#", "Narrative Design", "Game Design", "Cinemachine", "Scriptable Objects", "2D Prototyping", "Level/Technical Design", "FMV Editing Workflow", "Version Control"],
 	},
 	en: {
 		brandName: "Andrei Bituleanu",
@@ -221,6 +236,21 @@ const content = {
 			gameButton: "Game Dev Tools",
 			webStackTitle: "Web Development Stack",
 			gameStackTitle: "Game Development Stack",
+			educationTitle: "Education",
+			educationItems: [
+				{
+					degree: "Computer Science and Operations Research",
+					period: "August 2023 - April 2027",
+					institution: "University of Montreal",
+					highlights: ["5-year international university track", "Exchange semester at Université Grenoble Alpes - validated at Master 2 level"],
+				},
+				{
+					degree: "DEC - Computer Science and Mathematics",
+					period: "August 2021 - May 2023",
+					institution: "CÉGEP Maisonneuve",
+					highlights: [],
+				},
+			],
 		},
 		contactSection: { section: "Contact", title: "Let's build together.", github: "GitHub", linkedin: "LinkedIn" },
 		viewLabel: "View",
@@ -339,7 +369,7 @@ const content = {
 			{ role: "Frontend Developer", place: "Volunteer", period: "2024 - 2025", summary: "Volunteer work on web apps such as UDEM's 2025 Hackathon and UDEM's physics department journal." },
 		],
 		webDevTools: ["HTML5", "CSS3", "JavaScript", "TypeScript", "React", "Node.js", "Express", "Java", "Spring Boot", "MongoDB", "PostgreSQL", "Git/GitHub", "Figma"],
-		gameDevTools: ["Unity", "C#", "Narrative Design", "Cinemachine", "Scriptable Objects", "2D Prototyping", "Level/Technical Design", "FMV Editing Workflow", "Version Control"],
+		gameDevTools: ["Unity", "C#", "Narrative Design", "Game Design", "Cinemachine", "Scriptable Objects", "2D Prototyping", "Level/Technical Design", "FMV Editing Workflow", "Version Control"],
 	},
 };
 
@@ -791,6 +821,28 @@ export default function App() {
 										</span>
 									))}
 								</div>
+							</div>
+						</motion.div>
+
+						<motion.div {...getInViewCardProps(0.16)} className="about-card about-education-card">
+							<p className="about-tools-title">{t.about.educationTitle}</p>
+							<div className="about-education-list">
+								{t.about.educationItems.map((item) => (
+									<article key={item.degree} className="about-education-item">
+										<div className="about-education-head">
+											<h3>{item.degree}</h3>
+											<p>{item.period}</p>
+										</div>
+										<p className="about-education-school">{item.institution}</p>
+										{item.highlights.length > 0 ? (
+											<ul className="about-education-highlights">
+												{item.highlights.map((highlight) => (
+													<li key={highlight}>{highlight}</li>
+												))}
+											</ul>
+										) : null}
+									</article>
+								))}
 							</div>
 						</motion.div>
 					</div>
