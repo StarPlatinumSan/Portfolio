@@ -72,7 +72,7 @@ const content = {
 				stack: ["React", "TypeScript", "Express", "Proxy", "OpenAI API", "Local AI Integration"],
 				image: "./demo.gif",
 				imageAlt: "Aperçu Visual Story-Writing",
-				link: "#",
+				link: "https://github.com/StarPlatinumSan/VisualStoryWriting-Andrei",
 			},
 			{
 				title: "MaVille",
@@ -82,7 +82,7 @@ const content = {
 				stack: ["React", "Spring Boot", "Java", "JSON API", "Docker", "Leaflet", "Authentication"],
 				image: "./maville.png",
 				imageAlt: "Aperçu MaVille",
-				link: "#",
+				link: "https://github.com/StarPlatinumSan/MaVille",
 			},
 			{
 				title: "FootballDB",
@@ -92,7 +92,7 @@ const content = {
 				stack: ["React", "TypeScript", "Ktor", "PostgreSQL", "Exposed ORM", "Docker", "REST API"],
 				image: "./footballdb.png",
 				imageAlt: "Aperçu FootballDB",
-				link: "#",
+				link: "https://github.com/StarPlatinumSan/Projet-Groupe32",
 			},
 			{
 				title: "Heartbeat QTE Reflex Game",
@@ -102,7 +102,7 @@ const content = {
 				stack: ["React", "JavaScript", "CSS Animations", "Game Logic"],
 				image: "./heartbeat.png",
 				imageAlt: "Aperçu Heartbeat QTE",
-				link: "#",
+				link: "https://heartbeat-qte-stay-calm.vercel.app/",
 			},
 			{
 				title: "QTE Reflex Trainer",
@@ -112,7 +112,7 @@ const content = {
 				stack: ["React", "JavaScript", "Animation Timing", "UI Interaction"],
 				image: "./qte.png",
 				imageAlt: "Aperçu QTE Reflex Trainer",
-				link: "#",
+				link: "https://qte-roan.vercel.app/",
 			},
 			{
 				title: "Responsive Course Website",
@@ -122,7 +122,7 @@ const content = {
 				stack: ["HTML", "CSS", "JavaScript", "Responsive Design"],
 				image: "./designresp.png",
 				imageAlt: "Aperçu site de cours responsive",
-				link: "#",
+				link: "https://starplatinumsan.github.io/Design-Responsive/",
 			},
 			{
 				title: "D3.js Boxplot Graph",
@@ -132,7 +132,7 @@ const content = {
 				stack: ["D3.js", "JavaScript", "SVG", "Data Visualization"],
 				image: "./d3.png",
 				imageAlt: "Aperçu graphe D3",
-				link: "#",
+				link: "https://github.com/StarPlatinumSan/AndreiBituleanu-FIDE",
 			},
 			{
 				title: "D&D Character Creator",
@@ -142,7 +142,7 @@ const content = {
 				stack: ["React", "Authentication", "Serverless Functions", "Database"],
 				image: "./dnd.png",
 				imageAlt: "Aperçu créateur D&D",
-				link: "#",
+				link: "https://github.com/StarPlatinumSan/DND_Builder_App",
 			},
 		],
 		studioProjects: [
@@ -235,7 +235,7 @@ const content = {
 				stack: ["React", "TypeScript", "Express", "Proxy", "OpenAI API", "Local AI Integration"],
 				image: "./demo.gif",
 				imageAlt: "Visual Story-Writing preview",
-				link: "#",
+				link: "https://github.com/StarPlatinumSan/VisualStoryWriting-Andrei",
 			},
 			{
 				title: "MaVille",
@@ -245,7 +245,7 @@ const content = {
 				stack: ["React", "Spring Boot", "Java", "JSON API", "Docker", "Leaflet", "Authentication"],
 				image: "./maville.png",
 				imageAlt: "MaVille app preview",
-				link: "#",
+				link: "https://github.com/StarPlatinumSan/MaVille",
 			},
 			{
 				title: "FootballDB",
@@ -255,7 +255,7 @@ const content = {
 				stack: ["React", "TypeScript", "Ktor", "PostgreSQL", "Exposed ORM", "Docker", "REST API"],
 				image: "./footballdb.png",
 				imageAlt: "FootballDB application preview",
-				link: "#",
+				link: "https://github.com/StarPlatinumSan/Projet-Groupe32",
 			},
 			{
 				title: "Heartbeat QTE Reflex Game",
@@ -265,7 +265,7 @@ const content = {
 				stack: ["React", "JavaScript", "CSS Animations", "Game Logic"],
 				image: "./heartbeat.png",
 				imageAlt: "Heartbeat QTE reflex game preview",
-				link: "#",
+				link: "https://heartbeat-qte-stay-calm.vercel.app/",
 			},
 			{
 				title: "QTE Reflex Trainer",
@@ -275,7 +275,7 @@ const content = {
 				stack: ["React", "JavaScript", "Animation Timing", "UI Interaction"],
 				image: "./qte.png",
 				imageAlt: "QTE reflex trainer preview",
-				link: "#",
+				link: "https://qte-roan.vercel.app/",
 			},
 			{
 				title: "Responsive Course Website",
@@ -285,7 +285,7 @@ const content = {
 				stack: ["HTML", "CSS", "JavaScript", "Responsive Design"],
 				image: "./designresp.png",
 				imageAlt: "Responsive course website preview",
-				link: "#",
+				link: "https://starplatinumsan.github.io/Design-Responsive/",
 			},
 			{
 				title: "D3.js Boxplot Graph",
@@ -295,7 +295,7 @@ const content = {
 				stack: ["D3.js", "JavaScript", "SVG", "Data Visualization"],
 				image: "./d3.png",
 				imageAlt: "D3 ranking graph preview",
-				link: "#",
+				link: "https://github.com/StarPlatinumSan/AndreiBituleanu-FIDE",
 			},
 			{
 				title: "D&D Character Creator",
@@ -305,7 +305,7 @@ const content = {
 				stack: ["React", "Authentication", "Serverless Functions", "Database"],
 				image: "./dnd.png",
 				imageAlt: "D&D character creator preview",
-				link: "#",
+				link: "https://github.com/StarPlatinumSan/DND_Builder_App",
 			},
 		],
 		studioProjects: [
