@@ -207,7 +207,7 @@ const content = {
 			contact: "Contact",
 			currentFocus: "Current Focus",
 			focusTitle: "Game Dev, Design and Narrative Systems.",
-			focusDescription: "I'm a junior Game/Narrative Designer and Developer that loves creating compelling branching narratives and game systems alongside Unity and web projects.",
+			focusDescription: "I'm a Junior Game/Narrative Designer and Developer that loves creating compelling branching narratives and game systems alongside Unity and web projects.",
 			metrics: [
 				["10", "Projects"],
 				["02", "Games"],
