@@ -182,7 +182,7 @@ const content = {
 		],
 		experience: [
 			{ role: "Stage Projet Uni - Visual StoryWriting App", place: "Stage", period: "2026", summary: "Développement d'une interface React pour manipuler des récits visuellement, avec IA pour assister génération et amélioration narrative." },
-			{ role: "Auxiliaire d'Enseignement", place: "Contrat", period: "Semestres 3 & 4", summary: "Enseignement et rédaction de ressources pour le cours de développement web aux étudiants de l'Université de Montréal." },
+			{ role: "Auxiliaire d'Enseignement", place: "Contrat", period: "Semestres 3 & 4", summary: "Enseignement du cours de développement web IFT1005 aux étudiants de l'Université de Montréal." },
 			{ role: "Développeur Frontend", place: "Bénévolat", period: "2024 - 2025", summary: "Contribution à des apps web comme le Hackathon UDEM 2025 et le journal du département de physique UDEM." },
 		],
 		webDevTools: ["HTML5", "CSS3", "JavaScript", "TypeScript", "React", "Node.js", "Express", "Java", "Spring Boot", "MongoDB", "PostgreSQL", "Git/GitHub", "Figma"],
