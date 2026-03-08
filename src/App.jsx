@@ -182,7 +182,7 @@ const content = {
 		],
 		experience: [
 			{ role: "Stage Projet Uni - Visual StoryWriting App", place: "Stage", period: "2026", summary: "Développement d'une interface React pour manipuler des récits visuellement, avec IA pour assister génération et amélioration narrative." },
-			{ role: "Assistant d'Enseignement", place: "Contrat", period: "Semestre 3 & Semestre 4", summary: "Mentorat et enseignement du développement web aux étudiants de l'Université de Montréal." },
+			{ role: "Auxiliaire d'Enseignement", place: "Contrat", period: "Semestre 3 & Semestre 4", summary: "Enseignement du cours de développement web aux étudiants de l'Université de Montréal." },
 			{ role: "Développeur Frontend", place: "Bénévolat", period: "2024 - 2025", summary: "Contribution à des apps web comme le Hackathon UDEM 2025 et le journal du département de physique UDEM." },
 		],
 		webDevTools: ["HTML5", "CSS3", "JavaScript", "TypeScript", "React", "Node.js", "Express", "Java", "Spring Boot", "MongoDB", "PostgreSQL", "Git/GitHub", "Figma"],
@@ -365,7 +365,7 @@ const content = {
 				period: "2026",
 				summary: "Building a React-based writing interface where stories can be manipulated visually through entities, actions, and locations. It includes AI support for generation and editing.",
 			},
-			{ role: "Teaching Assistant", place: "Contract", period: "Semester 3 & Semester 4", summary: "Teaching and mentoring university students in web development at University of Montreal." },
+			{ role: "Teaching Assistant", place: "Contract", period: "Semester 3 & Semester 4", summary: "Teaching university students the course of web development at University of Montreal." },
 			{ role: "Frontend Developer", place: "Volunteer", period: "2024 - 2025", summary: "Volunteer work on web apps such as UDEM's 2025 Hackathon and UDEM's physics department journal." },
 		],
 		webDevTools: ["HTML5", "CSS3", "JavaScript", "TypeScript", "React", "Node.js", "Express", "Java", "Spring Boot", "MongoDB", "PostgreSQL", "Git/GitHub", "Figma"],
