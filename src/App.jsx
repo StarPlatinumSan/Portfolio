@@ -11,7 +11,7 @@ const TRAIL_MAX_POINTS = 40;
 const content = {
 	fr: {
 		brandName: "Andrei Bituleanu",
-		brandSub: "Jeux • Web • Creative Tech",
+		brandSub: "Game Design • Web • Creative Tech",
 		nav: { intro: "Introduction", projects: "Projets", experience: "Expérience", about: "À propos", contact: "Contact" },
 		langToggleLabel: "Langue",
 		openMenuLabel: "Ouvrir le menu",
@@ -190,7 +190,7 @@ const content = {
 	},
 	en: {
 		brandName: "Andrei Bituleanu",
-		brandSub: "Game Dev • Web • Creative Tech",
+		brandSub: "Game Design • Web • Creative Tech",
 		nav: { intro: "Introduction", projects: "Projects", experience: "Experience", about: "About", contact: "Contact" },
 		langToggleLabel: "Language",
 		openMenuLabel: "Open menu",
