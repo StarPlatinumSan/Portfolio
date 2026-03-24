@@ -22,9 +22,9 @@ function createButterfly(id) {
 export default function HexNeonOverlay() {
 	const [butterflies, setButterflies] = useState([]);
 	const idRef = useRef(0);
-	const timeoutIdsRef = useRef([]);
 
 	useEffect(() => {
+		const timeoutIds = [];
 		const intervalId = window.setInterval(() => {
 			const burstCount = Math.random() > 0.65 ? 2 : 1;
 			const newButterflies = Array.from({ length: burstCount }, () => {
@@ -42,13 +42,13 @@ export default function HexNeonOverlay() {
 				const timeoutId = window.setTimeout(() => {
 					setButterflies((previous) => previous.filter((item) => item.id !== butterfly.id));
 				}, BUTTERFLY_LIFETIME_MS);
-				timeoutIdsRef.current.push(timeoutId);
+				timeoutIds.push(timeoutId);
 			});
 		}, BUTTERFLY_SPAWN_INTERVAL_MS);
 
 		return () => {
 			window.clearInterval(intervalId);
-			timeoutIdsRef.current.forEach((timeoutId) => window.clearTimeout(timeoutId));
+			timeoutIds.forEach((timeoutId) => window.clearTimeout(timeoutId));
 		};
 	}, []);
 

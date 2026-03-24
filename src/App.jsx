@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+﻿import { useEffect, useRef, useState } from "react";
+// eslint-disable-next-line no-unused-vars
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { Menu, ArrowRight, Globe, Briefcase, Github, ExternalLink } from "lucide-react";
-import HexNeonOverlay from "./components/HexNeonOverlay";
 import "./App.css";
 
 const TRAIL_LIFETIME_MS = 700;
@@ -28,7 +28,7 @@ const content = {
 			contact: "Contact",
 			currentFocus: "Focus actuel",
 			focusTitle: "Game Dev, Design et Systèmes Narratifs.",
-			focusDescription: "Je suis un designer/développeur junior en jeu et narration. J'aime créer des récits à embranchements et des systèmes de jeu sur Unity et sur le web.",
+			focusDescription: "Je suis un designer/développeur junior en jeux et narrations. J'aime créer des récits à embranchements et des expériences sur Unity et des interfaces interactives sur le web.",
 			metrics: [
 				["10", "Projets"],
 				["02", "Jeux"],
@@ -48,6 +48,7 @@ const content = {
 			copy:
 				"Fracture Interactive est mon studio indé pour le développement de jeux narratifs. Le focus est sur les choix du joueur, l'atmosphère et les systèmes narratifs à embranchements. Principalement sous Unity, avec l'objectif d'explorer aussi Unreal.",
 			button: "Site du Studio",
+			link: null,
 		},
 		webSection: { section: "Projets", title: "Projets Notables", groupTitle: "Projets Web" },
 		experienceSection: { section: "Expérience", title: "Mon Apport" },
@@ -226,6 +227,7 @@ const content = {
 			title: "Fracture Interactive",
 			copy: "Fracture Interactive is my indie studio for narrative-first game development. The focus is on meaningful player choice, atmosphere, and branching story systems. Mainly built with Unity, with the goal of exploring Unreal as well.",
 			button: "Studio Website",
+			link: null,
 		},
 		webSection: { section: "Projects", title: "Selected Work", groupTitle: "Web Projects" },
 		experienceSection: { section: "Experience", title: "What I Bring" },
@@ -397,6 +399,7 @@ const getInViewTitleProps = (delay = 0) => ({
 	transition: { duration: 1.15, delay, ease: [0.22, 1, 0.36, 1] },
 });
 
+// eslint-disable-next-line no-unused-vars
 function ProjectCard({ item, icon: Icon, viewLabel, imagePlaceholder }) {
 	return (
 		<motion.a {...getInViewCardProps(0.05)} whileHover={{ y: -4 }} href={item.link} className="project-card">
@@ -491,9 +494,9 @@ function MouseTrailLayer() {
 	const [trailPoints, setTrailPoints] = useState([]);
 	const trailPointIdRef = useRef(0);
 	const trailEmitTsRef = useRef(0);
-	const trailTimeoutsRef = useRef([]);
 
 	useEffect(() => {
+		const trailTimeouts = [];
 		const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 		const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
 		if (prefersReducedMotion || !hasFinePointer) {
@@ -524,14 +527,14 @@ function MouseTrailLayer() {
 			const timeoutId = window.setTimeout(() => {
 				setTrailPoints((previous) => previous.filter((item) => item.id !== point.id));
 			}, TRAIL_LIFETIME_MS);
-			trailTimeoutsRef.current.push(timeoutId);
+			trailTimeouts.push(timeoutId);
 		}
 
 		window.addEventListener("pointermove", handlePointerMove, { passive: true });
 
 		return () => {
 			window.removeEventListener("pointermove", handlePointerMove);
-			trailTimeoutsRef.current.forEach((timeoutId) => window.clearTimeout(timeoutId));
+			trailTimeouts.forEach((timeoutId) => window.clearTimeout(timeoutId));
 		};
 	}, []);
 
@@ -554,12 +557,125 @@ export default function App() {
 	const experience = t.experience;
 	const webDevTools = t.webDevTools;
 	const gameDevTools = t.gameDevTools;
+	const navLinks = [
+		{ href: "#intro", label: t.nav.intro },
+		{ href: "#studio", label: t.nav.projects },
+		{ href: "#experience", label: t.nav.experience },
+		{ href: "#about", label: t.nav.about },
+		{ href: "#contact", label: t.nav.contact },
+	];
+
+	function handleSmoothAnchorClick(event, href, options = {}) {
+		if (!href || !href.startsWith("#")) {
+			return;
+		}
+
+		const targetElement = document.querySelector(href);
+		if (!targetElement) {
+			return;
+		}
+
+		event.preventDefault();
+		targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+
+		if (options.closeMenu) {
+			setIsMobileMenuOpen(false);
+		}
+	}
 
 	useEffect(() => {
 		if ("scrollRestoration" in window.history) {
 			window.history.scrollRestoration = "manual";
 		}
 		window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+	}, []);
+
+	useEffect(() => {
+		const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
+		if (prefersReducedMotion || !hasFinePointer) {
+			return undefined;
+		}
+
+		let currentY = window.scrollY;
+		let targetY = currentY;
+		let rafId = null;
+
+		const isElementScrollable = (element) => {
+			if (!element || !(element instanceof HTMLElement)) {
+				return false;
+			}
+			const style = window.getComputedStyle(element);
+			const canScrollY = style.overflowY === "auto" || style.overflowY === "scroll";
+			return canScrollY && element.scrollHeight > element.clientHeight;
+		};
+
+		const hasScrollableParent = (element) => {
+			let node = element instanceof HTMLElement ? element : null;
+			while (node && node !== document.body) {
+				if (isElementScrollable(node)) {
+					return true;
+				}
+				node = node.parentElement;
+			}
+			return false;
+		};
+
+		const animate = () => {
+			currentY += (targetY - currentY) * 0.12;
+			if (Math.abs(targetY - currentY) < 0.5) {
+				currentY = targetY;
+			}
+
+			window.scrollTo({ top: currentY, left: 0, behavior: "auto" });
+
+			if (currentY !== targetY) {
+				rafId = window.requestAnimationFrame(animate);
+			} else {
+				rafId = null;
+			}
+		};
+
+		const handleWheel = (event) => {
+			if (event.ctrlKey || hasScrollableParent(event.target)) {
+				return;
+			}
+
+			event.preventDefault();
+
+			const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+			targetY = Math.min(maxScroll, Math.max(0, targetY + event.deltaY));
+
+			if (!rafId) {
+				rafId = window.requestAnimationFrame(animate);
+			}
+		};
+
+		const handleResize = () => {
+			const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+			currentY = Math.min(maxScroll, currentY);
+			targetY = Math.min(maxScroll, targetY);
+		};
+
+		const handleNativeScroll = () => {
+			if (!rafId) {
+				currentY = window.scrollY;
+				targetY = currentY;
+			}
+		};
+
+		window.addEventListener("wheel", handleWheel, { passive: false });
+		window.addEventListener("resize", handleResize);
+		window.addEventListener("scroll", handleNativeScroll, { passive: true });
+
+		return () => {
+			window.removeEventListener("wheel", handleWheel);
+			window.removeEventListener("resize", handleResize);
+			window.removeEventListener("scroll", handleNativeScroll);
+			if (rafId) {
+				window.cancelAnimationFrame(rafId);
+			}
+		};
 	}, []);
 
 	useEffect(() => {
@@ -577,8 +693,6 @@ export default function App() {
 		<div className="portfolio-root">
 			<MouseTrailLayer />
 
-			<HexNeonOverlay />
-
 			<div className="hero-shell">
 				<div className="hero-grid-overlay" />
 				<div className="hero-radial-overlay" />
@@ -593,40 +707,32 @@ export default function App() {
 					</div>
 
 					<nav className="main-nav">
-						<a href="#intro">{t.nav.intro}</a>
-						<a href="#studio">{t.nav.projects}</a>
-						<a href="#experience">{t.nav.experience}</a>
-						<a href="#about">{t.nav.about}</a>
-						<a href="#contact">{t.nav.contact}</a>
+						{navLinks.map((link) => (
+							<a key={link.href} href={link.href} onClick={(event) => handleSmoothAnchorClick(event, link.href)}>
+								{link.label}
+							</a>
+						))}
 					</nav>
 
-					<button className="lang-toggle-btn" type="button" aria-label={t.langToggleLabel} onClick={() => setLanguage((prev) => (prev === "fr" ? "en" : "fr"))}>
-						{language === "fr" ? "EN" : "FR"}
-					</button>
+					<div className="header-actions">
+						<button className="lang-toggle-btn" type="button" aria-label={t.langToggleLabel} onClick={() => setLanguage((prev) => (prev === "fr" ? "en" : "fr"))}>
+							{language === "fr" ? "EN" : "FR"}
+						</button>
 
-					<button className="mobile-menu-btn" type="button" aria-label={t.openMenuLabel} aria-expanded={isMobileMenuOpen} aria-controls="mobile-sidebar-nav" onClick={() => setIsMobileMenuOpen((prev) => !prev)}>
-						<Menu className="icon-md" />
-					</button>
+						<button className="mobile-menu-btn" type="button" aria-label={t.openMenuLabel} aria-expanded={isMobileMenuOpen} aria-controls="mobile-sidebar-nav" onClick={() => setIsMobileMenuOpen((prev) => !prev)}>
+							<Menu className="icon-md" />
+						</button>
+					</div>
 				</header>
 
 				{isMobileMenuOpen ? <button className="mobile-nav-overlay" type="button" aria-label="Close mobile menu" onClick={() => setIsMobileMenuOpen(false)} /> : null}
 				<aside id="mobile-sidebar-nav" className={`mobile-sidebar ${isMobileMenuOpen ? "is-open" : ""}`} aria-hidden={!isMobileMenuOpen}>
 					<nav className="mobile-nav-links">
-						<a href="#intro" onClick={() => setIsMobileMenuOpen(false)}>
-							{t.nav.intro}
-						</a>
-						<a href="#studio" onClick={() => setIsMobileMenuOpen(false)}>
-							{t.nav.projects}
-						</a>
-						<a href="#experience" onClick={() => setIsMobileMenuOpen(false)}>
-							{t.nav.experience}
-						</a>
-						<a href="#about" onClick={() => setIsMobileMenuOpen(false)}>
-							{t.nav.about}
-						</a>
-						<a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>
-							{t.nav.contact}
-						</a>
+						{navLinks.map((link) => (
+							<a key={link.href} href={link.href} onClick={(event) => handleSmoothAnchorClick(event, link.href, { closeMenu: true })}>
+								{link.label}
+							</a>
+						))}
 					</nav>
 				</aside>
 				<section className="hero-section">
@@ -645,10 +751,10 @@ export default function App() {
 						</motion.p>
 
 						<div className="hero-actions">
-							<motion.a {...getInViewTextProps(0.12)} href="#intro" className="btn btn-primary">
+							<motion.a {...getInViewTextProps(0.12)} href="#intro" onClick={(event) => handleSmoothAnchorClick(event, "#intro")} className="btn btn-primary">
 								{t.hero.discover} <ArrowRight className="icon-sm" />
 							</motion.a>
-							<motion.a {...getInViewTextProps(0.16)} href="#contact" className="btn btn-secondary">
+							<motion.a {...getInViewTextProps(0.16)} href="#contact" onClick={(event) => handleSmoothAnchorClick(event, "#contact")} className="btn btn-secondary">
 								{t.hero.contact}
 							</motion.a>
 						</div>
@@ -717,26 +823,40 @@ export default function App() {
 						<motion.p {...getInViewTextProps(0.16)} className="studio-copy">
 							{t.studio.copy}
 						</motion.p>
-						<motion.a {...getInViewTextProps(0.2)} href="#" className="studio-link-btn">
-							{t.studio.button} <ExternalLink className="icon-sm" />
-						</motion.a>
+						{t.studio.link ? (
+							<motion.a {...getInViewTextProps(0.2)} href={t.studio.link} target="_blank" rel="noreferrer" className="studio-link-btn">
+								{t.studio.button} <ExternalLink className="icon-sm" />
+							</motion.a>
+						) : null}
 					</motion.div>
 
 					<div className="studio-grid">
-						{studioProjects.map((project) => (
-							<motion.a {...getInViewCardProps(0.06)} key={project.title} whileHover={{ y: -3 }} href={project.link} target="_blank" rel="noreferrer" className="studio-card">
-								<div className="studio-card-image" aria-label={project.imageAlt || `${project.title} preview`}>
-									{project.image ? <img src={project.image} alt={project.imageAlt || `${project.title} preview`} className="project-card-image" loading="lazy" /> : <span>{t.studioImagePlaceholder}</span>}
-								</div>
-								<div className="studio-card-body">
-									<p className="studio-card-meta">
-										{project.format} • {project.status}
-									</p>
-									<h3>{project.title}</h3>
-									<p>{project.summary}</p>
-								</div>
-							</motion.a>
-						))}
+						{studioProjects.map((project) => {
+							const hasProjectLink = project.link && project.link !== "#";
+							return (
+								<motion.a
+									{...getInViewCardProps(0.06)}
+									key={project.title}
+									whileHover={hasProjectLink ? { y: -3 } : {}}
+									href={hasProjectLink ? project.link : undefined}
+									target={hasProjectLink ? "_blank" : undefined}
+									rel={hasProjectLink ? "noreferrer" : undefined}
+									aria-disabled={!hasProjectLink}
+									className={`studio-card ${hasProjectLink ? "" : "is-disabled"}`}
+								>
+									<div className="studio-card-image" aria-label={project.imageAlt || `${project.title} preview`}>
+										{project.image ? <img src={project.image} alt={project.imageAlt || `${project.title} preview`} className="project-card-image" loading="lazy" /> : <span>{t.studioImagePlaceholder}</span>}
+									</div>
+									<div className="studio-card-body">
+										<p className="studio-card-meta">
+											{project.format} - {project.status}
+										</p>
+										<h3>{project.title}</h3>
+										<p>{project.summary}</p>
+									</div>
+								</motion.a>
+							);
+						})}
 					</div>
 				</section>
 
