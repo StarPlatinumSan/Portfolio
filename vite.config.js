@@ -5,6 +5,6 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
 	plugins: [react()],
 	preview: {
-		allowedHosts: ["portfolio-production-a8b4.up.railway.app"],
+		allowedHosts: ["portfolio-star.up.railway.app"],
 	},
 });
