@@ -58,6 +58,7 @@ export default function Hero({ copy }) {
           className="hero-portrait"
           accent="#e82bb7"
           eager
+          fit="contain"
         />
         <div className="hero-status-card" data-hero-status>
           <span className="status-light" aria-hidden="true" />
