@@ -267,6 +267,46 @@ export const projectGroups = [
 	},
 ];
 
+export const echoesStudioFeature = {
+	id: "echoes",
+	logo: {
+		src: "/FractureInteractive.png",
+		alt: "Fracture Interactive studio logo",
+	},
+	primaryImage: {
+		src: "/EchoesLowRez.png",
+		alt: "Interactive map of the Echoes fictional universe",
+		position: "center",
+		label: "Echoes / Interactive universe",
+	},
+	primaryHref: "https://echoes-neon.vercel.app",
+	imageFit: "cover",
+	title: "Echoes",
+	format: {
+		en: "Interactive fictional universe",
+		fr: "Univers fictif interactif",
+	},
+	status: {
+		en: "Constantly evolving",
+		fr: "En constante évolution",
+	},
+	summary: {
+		en: "Discover all my stories within my constantly evolving, interactive fictional universe of Echoes here.",
+		fr: "Retrouve toutes mes histoires au sein de mon Univers Fictif et interactif de Echoes en constant évolution ici.",
+	},
+	linksTitle: {
+		en: "Explore the universe",
+		fr: "Explorer l'univers",
+	},
+	links: [
+		{
+			id: "website",
+			label: { en: "Open Echoes", fr: "Ouvrir Echoes" },
+			href: "https://echoes-neon.vercel.app",
+		},
+	],
+};
+
 export const studioFeature = {
 	id: "the-lucid",
 	logo: {
@@ -279,6 +319,7 @@ export const studioFeature = {
 		position: "center",
 		label: "The Lucid / Key art",
 	},
+	imageFit: "contain",
 	title: "The Lucid",
 	format: { en: "FMV narrative game", fr: "Jeu narratif FMV" },
 	status: { en: "In development", fr: "En développement" },
@@ -381,7 +422,7 @@ export const siteCopy = {
 				"Je suis Andrei Bituleanu, un designer narratif, développeur web et d'expériences vidéoludiques interactives et narratives. J'implémente la direction de projets vidéoludiques, l'ingénierie fullstack et le design narratif et frontend afin de pouvoir partager ma passion pour la création d'histoires et les expériences numériques interactives.",
 			primaryAction: "Explorer les projets",
 			secondaryAction: "Contacte-moi",
-			status: "C'est effectivement la chaîne de Belledonne",
+			status: "Photo peu professionnelle",
 			focus: "Focus actuel",
 			focusValue: "Systèmes narratifs, projets FMV Unity, mondes UE5 3D et expériences web interactives.",
 			profileAlt: "Portrait de Andrei Bituleanu",
@@ -521,16 +562,18 @@ export const getProjectGroups = (language) =>
 		})),
 	}));
 
-export const getStudioFeature = (language) => ({
-	...studioFeature,
-	format: localize(studioFeature.format, language),
-	status: localize(studioFeature.status, language),
-	summary: localize(studioFeature.summary, language),
-	links: studioFeature.links.map((link) => ({
-		...link,
-		label: localize(link.label, language),
-	})),
-});
+export const getStudioFeatures = (language) =>
+	[echoesStudioFeature, studioFeature].map((feature) => ({
+		...feature,
+		format: localize(feature.format, language),
+		status: localize(feature.status, language),
+		summary: localize(feature.summary, language),
+		linksTitle: feature.linksTitle ? localize(feature.linksTitle, language) : null,
+		links: feature.links.map((link) => ({
+			...link,
+			label: localize(link.label, language),
+		})),
+	}));
 
 export const getExperience = (language) =>
 	experienceItems.map((item) => ({
