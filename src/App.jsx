@@ -7,6 +7,7 @@ import ProjectShowcase, {
 import {
   AboutSection,
   ContactSection,
+  EchoesSection,
   ExperienceSection,
   Footer,
   StudioSection,
@@ -14,10 +15,11 @@ import {
 import {
   gameTools,
   getEducation,
+  getEchoesFeature,
   getExperience,
   getProjectGroups,
   getProjects,
-  getStudioFeatures,
+  getStudioFeature,
   siteCopy,
   webTools,
 } from './data/portfolio'
@@ -31,7 +33,8 @@ function App() {
   const copy = siteCopy[language]
   const projects = getProjects(language)
   const projectGroups = getProjectGroups(language)
-  const studioFeatures = getStudioFeatures(language)
+  const echoesFeature = getEchoesFeature(language)
+  const studioFeature = getStudioFeature(language)
   const experience = getExperience(language)
   const education = getEducation(language)
 
@@ -56,7 +59,8 @@ function App() {
       />
       <main id="main-content">
         <Hero copy={copy} />
-        <StudioSection copy={copy.studio} features={studioFeatures} />
+        <EchoesSection feature={echoesFeature} />
+        <StudioSection copy={copy.studio} feature={studioFeature} />
         <ProjectShowcase
           projects={projects}
           copy={copy.projectSection}

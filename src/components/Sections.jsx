@@ -15,40 +15,55 @@ function SectionHeading({ eyebrow, title, id }) {
   )
 }
 
-export function StudioSection({ copy, features }) {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const activeFeature = features[activeIndex] ?? features[0]
-  const logoSource = resolvePublicAsset(features[0].logo.src)
+export function EchoesSection({ feature }) {
+  return (
+    <section
+      className="echoes-section section-shell"
+      id="echoes"
+      aria-labelledby="echoes-title"
+    >
+      <div className="echoes-section__intro">
+        <header data-reveal>
+          <p className="eyebrow">
+            <span />
+            {feature.format}
+          </p>
+          <h2 id="echoes-title">{feature.title}</h2>
+        </header>
+        <p data-reveal>{feature.summary}</p>
+      </div>
 
-  const selectProject = (index) => {
-    setActiveIndex(index)
-  }
-
-  const handleProjectKeyDown = (event, index) => {
-    const lastIndex = features.length - 1
-    let nextIndex = null
-
-    if (event.key === 'ArrowRight') nextIndex = index === lastIndex ? 0 : index + 1
-    if (event.key === 'ArrowLeft') nextIndex = index === 0 ? lastIndex : index - 1
-    if (event.key === 'Home') nextIndex = 0
-    if (event.key === 'End') nextIndex = lastIndex
-
-    if (nextIndex === null) return
-
-    event.preventDefault()
-    setActiveIndex(nextIndex)
-    const projectTabs =
-      event.currentTarget.parentElement.querySelectorAll('[role="tab"]')
-    projectTabs[nextIndex]?.focus()
-  }
-
-  const projectMedia = (
-    <MediaFrame
-      image={activeFeature.primaryImage}
-      accent="#e82bb7"
-      fit={activeFeature.imageFit ?? 'cover'}
-    />
+      <a
+        className="echoes-feature"
+        href={feature.primaryHref}
+        target="_blank"
+        rel="noreferrer"
+        aria-label={feature.links[0]?.label ?? feature.title}
+        data-reveal
+      >
+        <MediaFrame
+          image={feature.primaryImage}
+          accent="#e82bb7"
+          fit="cover"
+        />
+        <span
+          className="image-light-sweep"
+          data-scroll-light
+          aria-hidden="true"
+        />
+        <span className="echoes-feature__label">{feature.status}</span>
+        <span className="echoes-feature__action">
+          <span>{feature.links[0]?.label}</span>
+          <ArrowUpRight />
+        </span>
+      </a>
+    </section>
   )
+}
+
+export function StudioSection({ copy, feature }) {
+  const imageSource = resolvePublicAsset(feature.primaryImage.src)
+  const logoSource = resolvePublicAsset(feature.logo.src)
 
   return (
     <section
@@ -56,109 +71,84 @@ export function StudioSection({ copy, features }) {
       id="studio"
       aria-labelledby="studio-title"
     >
-      <div className="studio-brand-row">
-        <div className="studio-logo-lockup" data-reveal>
-          {logoSource ? (
-            <img src={logoSource} alt={features[0].logo.alt} />
-          ) : (
-            <span>Fracture Interactive</span>
-          )}
+      <header className="studio-masthead">
+        <div className="studio-masthead__identity" data-reveal>
+          <div className="studio-masthead__logo">
+            {logoSource ? (
+              <img src={logoSource} alt={feature.logo.alt} />
+            ) : (
+              <span>FI</span>
+            )}
+          </div>
+          <div>
+            <p>{copy.eyebrow}</p>
+            <h2 id="studio-title">{copy.title}</h2>
+          </div>
         </div>
-        <div className="studio-intro">
-          <SectionHeading
-            eyebrow={copy.eyebrow}
-            title={copy.title}
-            id="studio-title"
-          />
+
+        <div className="studio-masthead__statement" data-reveal>
+          <span aria-hidden="true" />
           <p data-reveal>{copy.description}</p>
         </div>
-      </div>
 
-      <div className="studio-showcase" data-reveal>
-        <div
-          className="studio-project-switcher"
-          role="tablist"
-          aria-label={copy.featuredProject}
-          style={{
-            '--active-project': activeIndex,
-            '--project-count': features.length,
-          }}
-        >
-          {features.map((feature, index) => (
-            <button
-              type="button"
-              role="tab"
-              id={`studio-tab-${feature.id}`}
-              aria-controls={`studio-panel-${feature.id}`}
-              aria-selected={index === activeIndex}
-              tabIndex={index === activeIndex ? 0 : -1}
-              className={index === activeIndex ? 'is-active' : ''}
-              onClick={() => selectProject(index)}
-              onKeyDown={(event) => handleProjectKeyDown(event, index)}
-              key={feature.id}
-            >
-              <span className="studio-project-switcher__index">
-                {String(index + 1).padStart(2, '0')}
-              </span>
-              <span className="studio-project-switcher__title">
-                {feature.title}
-              </span>
-              <span className="studio-project-switcher__status">
-                {feature.status}
-              </span>
-            </button>
-          ))}
+        <span className="studio-masthead__index" aria-hidden="true">
+          FI — 01
+        </span>
+      </header>
+
+      <article className="studio-project" data-reveal>
+        <div className="studio-project__art">
+          <img
+            src={imageSource}
+            alt={feature.primaryImage.alt}
+            loading="lazy"
+            decoding="async"
+          />
+          <span
+            className="image-light-sweep"
+            data-scroll-light
+            aria-hidden="true"
+          />
+          <span className="studio-project__shade" aria-hidden="true" />
+
+          <div className="studio-project__topline">
+            <span>{copy.featuredProject}</span>
+            <span className="studio-project__status">
+              <i aria-hidden="true" />
+              {copy.productionStatus}
+            </span>
+          </div>
+
+          <div className="studio-project__content">
+            <p className="studio-project__presenter">
+              {copy.title} / {feature.format}
+            </p>
+            <h3>{feature.title}</h3>
+
+            <div className="studio-project__details">
+              <p>{feature.summary}</p>
+              <dl>
+                <div>
+                  <dt>{copy.formatLabel}</dt>
+                  <dd>{feature.format}</dd>
+                </div>
+                <div>
+                  <dt>{copy.releaseLabel}</dt>
+                  <dd>{feature.status}</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+
+          <div className="studio-project__coordinates" aria-hidden="true">
+            <span>FI.P01</span>
+            <span>45°30&apos;N / 73°34&apos;W</span>
+          </div>
+
+          <span className="studio-project__corner studio-project__corner--top" aria-hidden="true" />
+          <span className="studio-project__corner studio-project__corner--bottom" aria-hidden="true" />
         </div>
-
-        <article
-          className="studio-feature"
-          role="tabpanel"
-          id={`studio-panel-${activeFeature.id}`}
-          aria-labelledby={`studio-tab-${activeFeature.id}`}
-          aria-live="polite"
-          key={activeFeature.id}
-        >
-          <div className="studio-feature__visuals">
-            <div className="studio-feature__primary">
-              {activeFeature.primaryHref ? (
-                <a
-                  className="studio-feature__image-link"
-                  href={activeFeature.primaryHref}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={activeFeature.links[0]?.label ?? activeFeature.title}
-                >
-                  {projectMedia}
-                  <span className="studio-feature__image-action">
-                    <span>{activeFeature.links[0]?.label}</span>
-                    <ArrowUpRight />
-                  </span>
-                </a>
-              ) : (
-                projectMedia
-              )}
-            </div>
-            <span className="studio-feature__visual-label">
-              FI / {String(activeIndex + 1).padStart(2, '0')}
-            </span>
-            <span className="studio-feature__visual-count" aria-hidden="true">
-              {String(activeIndex + 1).padStart(2, '0')}
-            </span>
-          </div>
-
-          <div className="studio-feature__content">
-            <div className="studio-feature__meta">
-              <span>{copy.featuredProject}</span>
-              <span>{activeFeature.status}</span>
-            </div>
-            <div className="studio-feature__heading">
-              <p className="studio-feature__format">{activeFeature.format}</p>
-              <h3>{activeFeature.title}</h3>
-            </div>
-            <p className="studio-feature__summary">{activeFeature.summary}</p>
-          </div>
-        </article>
-      </div>
+      </article>
     </section>
   )
 }

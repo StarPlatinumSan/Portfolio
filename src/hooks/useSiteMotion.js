@@ -117,6 +117,37 @@ export function useSiteMotion(scope, dependency) {
             ),
         })
 
+        gsap.utils.toArray('[data-scroll-light]').forEach((light) => {
+          const frame = light.parentElement
+          const playSweep = () => {
+            gsap.killTweensOf(light)
+
+            gsap.fromTo(
+              light,
+              {
+                xPercent: 0,
+                x: () => -light.offsetWidth * 1.4,
+              },
+              {
+                xPercent: 0,
+                x: () => frame.clientWidth + light.offsetWidth * 0.4,
+                duration: 1.45,
+                ease: 'power2.inOut',
+                overwrite: true,
+              },
+            )
+          }
+
+          ScrollTrigger.create({
+            trigger: frame,
+            start: 'top 88%',
+            end: 'bottom 18%',
+            onEnter: playSweep,
+            onEnterBack: playSweep,
+            invalidateOnRefresh: true,
+          })
+        })
+
         return () => entrance.kill()
       })
     }, scope)

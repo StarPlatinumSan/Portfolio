@@ -267,12 +267,8 @@ export const projectGroups = [
 	},
 ];
 
-export const echoesStudioFeature = {
+export const echoesFeature = {
 	id: "echoes",
-	logo: {
-		src: "/FractureInteractive.png",
-		alt: "Fracture Interactive studio logo",
-	},
 	primaryImage: {
 		src: "/EchoesLowRez.png",
 		alt: "Interactive map of the Echoes fictional universe",
@@ -288,11 +284,11 @@ export const echoesStudioFeature = {
 	},
 	status: {
 		en: "Constantly evolving",
-		fr: "En constante évolution",
+		fr: "Mon Univers",
 	},
 	summary: {
 		en: "Discover all my stories within my constantly evolving, interactive fictional universe of Echoes here.",
-		fr: "Retrouve toutes mes histoires au sein de mon Univers Fictif et interactif de Echoes en constant évolution ici.",
+		fr: "Retrouve toutes mes histoires au sein de mon Univers Fictif et interactif de Echoes en constante évolution ici.",
 	},
 	linksTitle: {
 		en: "Explore the universe",
@@ -322,10 +318,10 @@ export const studioFeature = {
 	imageFit: "contain",
 	title: "The Lucid",
 	format: { en: "FMV narrative game", fr: "Jeu narratif FMV" },
-	status: { en: "In development", fr: "En développement" },
+	status: { en: "Q4 2026 on Steam", fr: "Q4 2026 sur Steam" },
 	summary: {
 		en: "The flagship Fracture Interactive project: a live-action branching narrative where player choices reshape scenes, relationships, and endings.",
-		fr: "Le projet phare de Fracture Interactive : un récit FMV à embranchements où les choix transforment les scènes, les relations et les fins.",
+		fr: "Le projet phare de Fracture Interactive : un film FMV Unity à embranchements où les choix transforment les scènes, les relations et les fins. Bientôt sur Steam.",
 	},
 	links: [
 		{
@@ -379,8 +375,11 @@ export const siteCopy = {
 		studio: {
 			eyebrow: "Independent studio",
 			title: "Fracture Interactive",
-			description: "My narrative-first game studio explores meaningful player choice, atmosphere, and branching story systems. The work is built mainly in Unity, with Unreal exploration ahead.",
-			featuredProject: "Featured project",
+			description: "My narrative game studio begins with The Lucid, its first project: a Unity FMV experience shaped by atmosphere, branching stories, and meaningful player choice.",
+			featuredProject: "First studio project",
+			productionStatus: "In development",
+			formatLabel: "Format",
+			releaseLabel: "Release",
 			linksTitle: "Watch, follow, or wishlist",
 			linkComingSoon: "Coming soon",
 		},
@@ -419,7 +418,7 @@ export const siteCopy = {
 			lead: "Je crée des mondes",
 			accent: "interactifs et narratifs",
 			description:
-				"Je suis Andrei Bituleanu, un designer narratif, développeur web et d'expériences vidéoludiques interactives et narratives. J'implémente la direction de projets vidéoludiques, l'ingénierie fullstack et le design narratif et frontend afin de pouvoir partager ma passion pour la création d'histoires et les expériences numériques interactives.",
+				"Je suis Andrei Bituleanu, un designer narratif, développeur web et d'expériences vidéoludiques numériques interactives et narratives. Je combine ces compétences et continue de les élargir afin de pouvoir partager ma passion de faire vibrer et réfléchir l'humanité à travers mes histoires.",
 			primaryAction: "Explorer les projets",
 			secondaryAction: "Contacte-moi",
 			status: "Photo peu professionnelle",
@@ -439,8 +438,11 @@ export const siteCopy = {
 		studio: {
 			eyebrow: "Studio indépendant",
 			title: "Fracture Interactive",
-			description: "Mon studio de jeux narratifs explore l'univers interactif d'Echoes, l'atmosphère et les récits à embranchements. Le travail est principalement réalisé avec Unity. Unreal et le web à venir.",
-			featuredProject: "Projet phare",
+			description: "Mon studio de jeux narratifs débute avec The Lucid, son premier projet : une expérience FMV sous Unity façonnée par l'atmosphère, les récits à embranchements et les choix du joueur.",
+			featuredProject: "Premier projet du studio",
+			productionStatus: "En développement",
+			formatLabel: "Format",
+			releaseLabel: "Sortie",
 			linksTitle: "Voir, suivre ou ajouter à la liste",
 			linkComingSoon: "Bientôt",
 		},
@@ -482,7 +484,7 @@ export const experienceItems = [
 	},
 	{
 		period: "Semester 3 & 4",
-		place: { en: "Contract", fr: "Contrat" },
+		place: { en: "Contract", fr: "Contrats" },
 		role: { en: "Teaching Assistant", fr: "Auxiliaire d'enseignement" },
 		summary: {
 			en: "Taught web development to University of Montreal students in IFT1005.",
@@ -539,6 +541,18 @@ export const gameTools = ["Unity", "C#", "Narrative Design", "Game Design", "Cin
 
 const localize = (value, language) => (typeof value === "object" && value !== null && !Array.isArray(value) ? value[language] : value);
 
+const localizeFeature = (feature, language) => ({
+	...feature,
+	format: localize(feature.format, language),
+	status: localize(feature.status, language),
+	summary: localize(feature.summary, language),
+	linksTitle: feature.linksTitle ? localize(feature.linksTitle, language) : null,
+	links: feature.links.map((link) => ({
+		...link,
+		label: localize(link.label, language),
+	})),
+});
+
 export const getProjects = (language) =>
 	projects.map((project) => ({
 		...project,
@@ -562,18 +576,9 @@ export const getProjectGroups = (language) =>
 		})),
 	}));
 
-export const getStudioFeatures = (language) =>
-	[echoesStudioFeature, studioFeature].map((feature) => ({
-		...feature,
-		format: localize(feature.format, language),
-		status: localize(feature.status, language),
-		summary: localize(feature.summary, language),
-		linksTitle: feature.linksTitle ? localize(feature.linksTitle, language) : null,
-		links: feature.links.map((link) => ({
-			...link,
-			label: localize(link.label, language),
-		})),
-	}));
+export const getEchoesFeature = (language) => localizeFeature(echoesFeature, language);
+
+export const getStudioFeature = (language) => localizeFeature(studioFeature, language);
 
 export const getExperience = (language) =>
 	experienceItems.map((item) => ({
