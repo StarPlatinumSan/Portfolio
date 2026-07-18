@@ -321,7 +321,7 @@ export const studioFeature = {
 	status: { en: "Q4 2026 on Steam", fr: "Q4 2026 sur Steam" },
 	summary: {
 		en: "The flagship Fracture Interactive project: a live-action branching narrative where player choices reshape scenes, the storyline and endings.",
-		fr: "Le projet phare de Fracture Interactive : un film FMV Unity à embranchements où les choix transforment l'histoire, les scènes et les fins. Date de sortie prévue sur Steam en Q4 2026.",
+		fr: "Le projet phare de Fracture Interactive : un film FMV Unity à embranchements où les choix fracturent l'histoire, les scènes et les fins. Date de sortie prévue sur Steam en Q4 2026.",
 	},
 	links: [
 		{
