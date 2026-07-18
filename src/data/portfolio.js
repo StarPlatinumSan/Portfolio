@@ -183,8 +183,8 @@ export const projectGroups = [
 				title: "QTE Reflex Trainer",
 				year: "2025",
 				category: {
-					en: "Browser interaction",
-					fr: "Interaction navigateur",
+					en: "Interactive web game",
+					fr: "Jeu web interactif",
 				},
 				role: { en: "Interaction design", fr: "Design d'interaction" },
 				description: {
