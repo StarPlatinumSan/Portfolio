@@ -351,7 +351,7 @@ export const siteCopy = {
 			contact: "Contact",
 		},
 		hero: {
-			eyebrow: "Creative developer / Montreal",
+			eyebrow: "Creative developer",
 			lead: "I build story-driven",
 			accent: "interactive worlds",
 			description:
@@ -414,7 +414,7 @@ export const siteCopy = {
 			contact: "Contact",
 		},
 		hero: {
-			eyebrow: "Développeur créatif / Montréal",
+			eyebrow: "Développeur créatif",
 			lead: "Je crée des mondes",
 			accent: "interactifs et narratifs",
 			description:
