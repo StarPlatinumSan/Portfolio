@@ -124,7 +124,7 @@ function DesktopScene({
   )
 }
 
-function MobileProject({ project, index, total, copy }) {
+function MobileProject({ project, copy }) {
   return (
     <article
       className="mobile-project"
@@ -132,10 +132,6 @@ function MobileProject({ project, index, total, copy }) {
       data-reveal
     >
       <div className="mobile-project__topline">
-        <span>
-          {String(index + 1).padStart(2, '0')} /{' '}
-          {String(total).padStart(2, '0')}
-        </span>
         <span>{project.year}</span>
       </div>
       <MediaFrame
@@ -196,14 +192,13 @@ function CollectionProject({ project, copy }) {
   )
 }
 
-function ProjectCollection({ group, copy, index }) {
+function ProjectCollection({ group, copy }) {
   return (
     <section
       className={`project-collection project-collection--${group.id}`}
       aria-labelledby={`project-group-${group.id}`}
     >
       <header className="project-collection__header" data-reveal>
-        <span>0{index + 1}</span>
         <div>
           <h3 id={`project-group-${group.id}`}>{group.title}</h3>
           <p>{group.description}</p>
@@ -221,12 +216,11 @@ function ProjectCollection({ group, copy, index }) {
 export function ProjectCollections({ groups, copy }) {
   return (
     <div className="project-collections section-shell" id="project-collections">
-      {groups.map((group, index) => (
+      {groups.map((group) => (
         <ProjectCollection
           key={group.id}
           group={group}
           copy={copy}
-          index={index}
         />
       ))}
     </div>
@@ -486,12 +480,10 @@ export default function ProjectShowcase({ projects, copy }) {
       </div>
 
       <div className="mobile-project-list section-shell">
-        {projects.map((project, index) => (
+        {projects.map((project) => (
           <MobileProject
             key={project.id}
             project={project}
-            index={index}
-            total={projects.length}
             copy={copy}
           />
         ))}

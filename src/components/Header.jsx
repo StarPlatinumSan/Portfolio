@@ -70,9 +70,8 @@ export default function Header({ copy, language, onLanguageChange }) {
         aria-hidden={!menuOpen}
       >
         <nav aria-label="Mobile navigation">
-          {links.map(([href, label], index) => (
+          {links.map(([href, label]) => (
             <a key={href} href={href} onClick={() => setMenuOpen(false)}>
-              <span>0{index + 1}</span>
               {label}
             </a>
           ))}

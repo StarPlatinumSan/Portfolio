@@ -3,10 +3,27 @@ const imageAspectRatios = {
 	"/Mask.png": "1 / 1",
 	"/FractureInteractive.png": "1 / 1",
 	"/VisualStoryWriting.gif": "830 / 467",
+	"/generation.png": "1087 / 532",
+	"/Logo_UdeM-RVB-002.png": "768 / 362",
 	"/JeSuisQuark.png": "1280 / 705",
+	"/quark1.png": "1480 / 761",
+	"/quark2.png": "1486 / 792",
 	"/Prophunt.jpg": "3 / 2",
 	"/MaVille.png": "1915 / 941",
+	"/map.png": "1355 / 910",
+	"/map2.png": "889 / 858",
+	"/mtl.png": "300 / 168",
 };
+
+const imageFitModes = {
+	"/mtl.png": "cover",
+};
+
+const imagePositions = {
+	"/mtl.png": "50% 50%",
+};
+
+const centeredImageCrops = new Set(["/mtl.png"]);
 
 const projectImages = (sources, alt) => {
 	const imageSources = Array.isArray(sources) ? sources : [sources];
@@ -18,8 +35,10 @@ const projectImages = (sources, alt) => {
 		return {
 			src,
 			alt: index === 0 ? `${alt} main project view` : `${alt} project detail`,
-			position: "center",
+			position: imagePositions[src] ?? "center",
 			aspectRatio: imageAspectRatios[src] ?? "16 / 10",
+			fit: imageFitModes[src],
+			centeredCrop: centeredImageCrops.has(src),
 			label,
 		};
 	});
@@ -63,7 +82,7 @@ const projects = [
 		href: "https://github.com/StarPlatinumSan/VisualStoryWriting-Andrei",
 		decorative: "STORY",
 		accent: "#e82bb7",
-		images: projectImages("/VisualStoryWriting.gif", "Visual Story-Writing"),
+		images: projectImages(["/VisualStoryWriting.gif", "/generation.png", "/mtl.png"], "Visual Story-Writing"),
 	},
 	{
 		id: "je-suis-quark",
@@ -82,7 +101,7 @@ const projects = [
 		href: null,
 		decorative: "QUARK",
 		accent: "#63d8fa",
-		images: projectImages("/JeSuisQuark.png", "Je Suis Quark"),
+		images: projectImages(["/JeSuisQuark.png", "/quark1.png", "/quark2.png"], "Je Suis Quark"),
 	},
 	{
 		id: "prop-hunt",
@@ -123,7 +142,7 @@ const projects = [
 		href: "https://github.com/StarPlatinumSan/MaVille",
 		decorative: "CITY",
 		accent: "#45bff2",
-		images: projectImages("/MaVille.png", "MaVille"),
+		images: projectImages(["/MaVille.png", "/map.png", "/map2.png"], "MaVille"),
 	},
 ];
 
@@ -421,7 +440,7 @@ export const siteCopy = {
 				"Je suis Andrei Bituleanu, un designer narratif, développeur web et d'expériences vidéoludiques numériques interactives et narratives. Je combine ces compétences et continue de les élargir afin de pouvoir partager ma passion de faire vibrer et réfléchir l'humanité à travers mes histoires.",
 			primaryAction: "Explorer les projets",
 			secondaryAction: "Contacte-moi",
-			status: "Photo peu professionnelle",
+			status: "C'est bien la chaîne de Belledonne",
 			focus: "Focus actuel",
 			focusValue: "Systèmes narratifs, projets FMV Unity, mondes UE5 3D et expériences web interactives.",
 			profileAlt: "Portrait de Andrei Bituleanu",
@@ -452,7 +471,7 @@ export const siteCopy = {
 		},
 		about: {
 			eyebrow: "Compétences",
-			title: "Deux disciplines, un même regard",
+			title: "Deux disciplines créatives",
 			webLabel: "Développement web",
 			gameLabel: "Développement jeu",
 			education: "Formation",

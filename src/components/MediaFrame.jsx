@@ -8,6 +8,16 @@ export default function MediaFrame({
   fit = 'cover',
 }) {
   const imageSource = resolvePublicAsset(image.src)
+  const centeredCropStyle = image.centeredCrop
+    ? {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        width: '100%',
+        height: 'auto',
+        transform: 'translate(-50%, -50%)',
+      }
+    : null
 
   return (
     <figure
@@ -23,8 +33,9 @@ export default function MediaFrame({
           fetchPriority={eager ? 'high' : 'auto'}
           decoding="async"
           style={{
-            objectFit: fit,
+            objectFit: image.fit ?? fit,
             objectPosition: image.position ?? 'center',
+            ...centeredCropStyle,
           }}
         />
       ) : (

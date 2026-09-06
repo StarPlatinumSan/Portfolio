@@ -2,7 +2,7 @@ import MediaFrame from "./MediaFrame";
 import { ArrowDown, ArrowUpRight } from "./Icons";
 
 const profileImage = {
-	src: "/Andrei.png",
+	src: "/Andrei.jpg",
 	alt: "Portrait of Andrei Bituleanu",
 	position: "center",
 	label: "Portrait / 01",
@@ -49,10 +49,6 @@ export default function Hero({ copy }) {
 			</div>
 
 			<div className="hero-visual" data-hero-visual>
-				<div className="hero-visual__label">
-					<span>01</span>
-					<span>Andrei / 2026</span>
-				</div>
 				<MediaFrame image={{ ...profileImage, alt: copy.hero.profileAlt }} className="hero-portrait" accent="#e82bb7" eager fit="contain" />
 				<div className="hero-status-card" data-hero-status>
 					<span className="status-light" aria-hidden="true" />
