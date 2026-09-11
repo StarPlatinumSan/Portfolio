@@ -684,7 +684,7 @@
 }
 
 .echoes-floor {
-	--floor-content-y: -1.25rem;
+	--floor-content-y: -1.75rem;
 
 	display: flex;
 	align-items: center;
@@ -2098,10 +2098,12 @@
 
 @media (min-width: 1025px) and (min-height: 740px) and (pointer: fine) {
 	html {
+		scroll-padding-top: 0;
 		scroll-snap-type: y mandatory;
 	}
 
 	html.continuous-scroll-active {
+		scroll-padding-top: 6rem;
 		scroll-snap-type: none;
 	}
 
@@ -2231,7 +2233,7 @@
 	}
 
 	.echoes-floor {
-		--floor-content-y: -1rem;
+		--floor-content-y: -1.25rem;
 
 		min-height: 48rem;
 		padding-block: 5.5rem;
@@ -2481,7 +2483,7 @@
 	}
 
 	.echoes-floor {
-		--floor-content-y: -0.5rem;
+		--floor-content-y: -0.75rem;
 
 		min-height: 100svh;
 		padding-block: 5rem;
