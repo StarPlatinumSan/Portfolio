@@ -26,23 +26,31 @@ export default function MediaFrame({
       data-image-path={image.src}
     >
       {imageSource ? (
-        <img
-          src={imageSource}
-          alt={image.alt}
-          loading={eager ? 'eager' : 'lazy'}
-          fetchPriority={eager ? 'high' : 'auto'}
-          decoding="async"
-          style={{
-            objectFit: image.fit ?? fit,
-            objectPosition: image.position ?? 'center',
-            ...centeredCropStyle,
-          }}
-        />
+        <picture>
+          {image.motionFallback && (
+            <source
+              media="(prefers-reduced-motion: reduce)"
+              srcSet={resolvePublicAsset(image.motionFallback)}
+            />
+          )}
+          <img
+            src={imageSource}
+            alt={image.alt}
+            loading={eager ? 'eager' : 'lazy'}
+            fetchPriority={eager ? 'high' : 'auto'}
+            decoding="async"
+            style={{
+              objectFit: image.fit ?? fit,
+              objectPosition: image.position ?? 'center',
+              ...centeredCropStyle,
+            }}
+          />
+        </picture>
       ) : (
         <div className="media-placeholder" aria-hidden="true">
-          <span className="media-placeholder__index">{image.label}</span>
-          <span className="media-placeholder__mark">AB</span>
-          <span className="media-placeholder__path">{image.src}</span>
+          <span className="media-placeholder-index">{image.label}</span>
+          <span className="media-placeholder-mark">AB</span>
+          <span className="media-placeholder-path">{image.src}</span>
         </div>
       )}
     </figure>

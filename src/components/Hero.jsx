@@ -10,7 +10,7 @@ const profileImage = {
 
 export default function Hero({ copy }) {
 	return (
-		<section className="hero-section" id="top" aria-labelledby="hero-title">
+		<section className="floor hero-section" id="top" data-floor-id="top" aria-labelledby="hero-title">
 			<div className="hero-grid" aria-hidden="true" />
 			<div className="hero-orbit hero-orbit--one" aria-hidden="true" />
 			<div className="hero-orbit hero-orbit--two" aria-hidden="true" />
@@ -20,7 +20,7 @@ export default function Hero({ copy }) {
 					<span />
 					{copy.hero.eyebrow}
 				</p>
-				<h1 id="hero-title">
+				<h1 id="hero-title" tabIndex="-1">
 					<span className="hero-title-line">
 						<span data-hero-line>{copy.hero.lead}</span>
 					</span>
@@ -32,13 +32,13 @@ export default function Hero({ copy }) {
 					{copy.hero.description}
 				</p>
 				<div className="hero-actions" data-hero-fade>
-					<a className="button button--primary" href="#work">
+					<a className="button button--primary" href="#echoes">
 						{copy.hero.primaryAction}
-						<ArrowDown className="button__icon" />
+						<ArrowDown className="button-icon" />
 					</a>
 					<a className="text-link" href="#contact">
 						{copy.hero.secondaryAction}
-						<ArrowUpRight className="text-link__icon" />
+						<ArrowUpRight className="text-link-icon" />
 					</a>
 				</div>
 

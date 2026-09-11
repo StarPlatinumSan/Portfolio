@@ -34,12 +34,3 @@ export function ArrowDown({ className = '' }) {
   )
 }
 
-export function MenuIcon({ open }) {
-  return (
-    <span className={`menu-icon ${open ? 'is-open' : ''}`} aria-hidden="true">
-      <span />
-      <span />
-    </span>
-  )
-}
-

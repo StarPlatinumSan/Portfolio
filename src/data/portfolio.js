@@ -25,6 +25,89 @@ const imagePositions = {
 
 const centeredImageCrops = new Set(["/mtl.png"]);
 
+const imageMotionFallbacks = {
+	"/VisualStoryWriting.gif": "/generation.png",
+};
+
+const imageAltText = {
+	"/TheLucidMask.png": {
+		en: "Fractured mask artwork for The Lucid",
+		fr: "Illustration du masque fracturé de The Lucid",
+	},
+	"/Mask.png": {
+		en: "Fracture Interactive mask emblem",
+		fr: "Emblème du masque de Fracture Interactive",
+	},
+	"/FractureInteractive.png": {
+		en: "Fracture Interactive studio logo",
+		fr: "Logo du studio Fracture Interactive",
+	},
+	"/VisualStoryWriting.gif": {
+		en: "Overview of the Visual Story Writing interface",
+		fr: "Aperçu de l'interface Visual Story Writing",
+	},
+	"/generation.png": {
+		en: "Story-generation workspace in Visual Story Writing",
+		fr: "Espace de génération narrative de Visual Story Writing",
+	},
+	"/mtl.png": {
+		en: "Université de Montréal logo",
+		fr: "Logo de l'Université de Montréal",
+	},
+	"/JeSuisQuark.png": {
+		en: "Je Suis Quark game title screen",
+		fr: "Écran-titre du jeu Je Suis Quark",
+	},
+	"/quark1.png": {
+		en: "Space scene from Je Suis Quark",
+		fr: "Scène spatiale de Je Suis Quark",
+	},
+	"/quark2.png": {
+		en: "Game interface from Je Suis Quark",
+		fr: "Interface du jeu Je Suis Quark",
+	},
+	"/Prophunt.jpg": {
+		en: "Unreal Engine environment for the Prop Hunt prototype",
+		fr: "Environnement Unreal Engine du prototype Prop Hunt",
+	},
+	"/MaVille.png": {
+		en: "MaVille civic platform interface",
+		fr: "Interface de la plateforme civique MaVille",
+	},
+	"/map.png": {
+		en: "Interactive construction map in MaVille",
+		fr: "Carte interactive des chantiers dans MaVille",
+	},
+	"/map2.png": {
+		en: "Map detail from the MaVille platform",
+		fr: "Détail cartographique de la plateforme MaVille",
+	},
+	"/dnd.png": {
+		en: "D&D character creator interface",
+		fr: "Interface du créateur de personnages D&D",
+	},
+	"/heartbeat.png": {
+		en: "Heartbeat QTE reflex-game interface",
+		fr: "Interface du jeu de réflexes Heartbeat QTE",
+	},
+	"/qte.png": {
+		en: "QTE Reflex Trainer interface",
+		fr: "Interface de QTE Reflex Trainer",
+	},
+	"/designresp.png": {
+		en: "Responsive university course website",
+		fr: "Site responsive d'un cours universitaire",
+	},
+	"/footballdb.png": {
+		en: "FootballDB statistics platform interface",
+		fr: "Interface de la plateforme statistique FootballDB",
+	},
+	"/d3.png": {
+		en: "Interactive D3.js chess-ranking boxplot",
+		fr: "Diagramme en boîte interactif D3.js des classements d'échecs",
+	},
+};
+
 const projectImages = (sources, alt) => {
 	const imageSources = Array.isArray(sources) ? sources : [sources];
 	const labels = ["Main", "Detail 01", "Detail 02"];
@@ -34,11 +117,15 @@ const projectImages = (sources, alt) => {
 
 		return {
 			src,
-			alt: index === 0 ? `${alt} main project view` : `${alt} project detail`,
+			alt: imageAltText[src] ?? {
+				en: index === 0 ? `${alt} main project view` : `${alt} project detail`,
+				fr: index === 0 ? `Aperçu principal de ${alt}` : `Détail du projet ${alt}`,
+			},
 			position: imagePositions[src] ?? "center",
 			aspectRatio: imageAspectRatios[src] ?? "16 / 10",
 			fit: imageFitModes[src],
 			centeredCrop: centeredImageCrops.has(src),
+			motionFallback: imageMotionFallbacks[src],
 			label,
 		};
 	});
@@ -88,6 +175,7 @@ const projects = [
 		id: "je-suis-quark",
 		title: "Je Suis Quark",
 		year: { en: "Game project", fr: "Projet de jeu" },
+		yearLabel: { en: "Status", fr: "Statut" },
 		category: { en: "Interactive game", fr: "Jeu interactif" },
 		role: {
 			en: "Game design & development",
@@ -107,6 +195,7 @@ const projects = [
 		id: "prop-hunt",
 		title: "Prop Hunt",
 		year: { en: "Work in progress", fr: "En cours" },
+		yearLabel: { en: "Status", fr: "Statut" },
 		category: { en: "Game prototype", fr: "Prototype de jeu" },
 		role: {
 			en: "Gameplay & level design",
@@ -290,7 +379,10 @@ export const echoesFeature = {
 	id: "echoes",
 	primaryImage: {
 		src: "/EchoesLowRez.png",
-		alt: "Interactive map of the Echoes fictional universe",
+		alt: {
+			en: "Interactive map of the Echoes fictional universe",
+			fr: "Carte interactive de l'univers fictif Echoes",
+		},
 		position: "center",
 		label: "Echoes / Interactive universe",
 	},
@@ -309,6 +401,10 @@ export const echoesFeature = {
 		en: "Discover all my stories within my constantly evolving, interactive fictional universe of Echoes here.",
 		fr: "Retrouve toutes mes histoires au sein de mon Univers Fictif et interactif de Echoes en constante évolution ici.",
 	},
+	transmedia: {
+		en: "A world created to unite interactive films, books, and games set within Echoes.",
+		fr: "Mon monde destiné à réunir des films interactifs, des livres et des jeux se déroulant dans l'univers d'Echoes.",
+	},
 	linksTitle: {
 		en: "Explore the universe",
 		fr: "Explorer l'univers",
@@ -326,11 +422,17 @@ export const studioFeature = {
 	id: "the-lucid",
 	logo: {
 		src: "/FractureInteractive.png",
-		alt: "Fracture Interactive studio logo",
+		alt: {
+			en: "Fracture Interactive studio logo",
+			fr: "Logo du studio Fracture Interactive",
+		},
 	},
 	primaryImage: {
 		src: "/TheLucidMask.png",
-		alt: "The Lucid fractured mask artwork",
+		alt: {
+			en: "The Lucid fractured mask artwork",
+			fr: "Illustration du masque fracturé de The Lucid",
+		},
 		position: "center",
 		label: "The Lucid / Key art",
 	},
@@ -366,8 +468,33 @@ export const siteCopy = {
 			work: "Work",
 			studio: "Studio",
 			experience: "Experience",
-			about: "About",
+			education: "Education",
 			contact: "Contact",
+			primaryLabel: "Primary navigation",
+			switchLanguage: "Switch language",
+			skipToContent: "Skip to content",
+		},
+		floors: {
+			top: "Home",
+			echoes: "Echoes universe",
+			studio: "Fracture Interactive",
+			"the-lucid": "The Lucid",
+			"visual-story-writing": "Visual Story Writing",
+			"je-suis-quark": "Je suis Quark",
+			maville: "MaVille",
+			"short-film": "Short film — WIP",
+			"prop-hunt": "Prop Hunt — WIP",
+			experience: "My Experience",
+			"other-projects": "Other Projects",
+			skills: "Skills",
+			education: "Education",
+			"relevant-courses": "Relevant coursework",
+			contact: "Contact",
+		},
+		floorNavigation: {
+			progressLabel: "Portfolio progress",
+			floorLabel: "Floor",
+			ofLabel: "of",
 		},
 		hero: {
 			eyebrow: "Creative developer",
@@ -387,9 +514,17 @@ export const siteCopy = {
 			title: "Projects",
 			introduction: "A collection of fullstack tools, data products, and interaction experiments. Scroll to move through the layers.",
 			scrollCue: "Scroll to explore",
+			previousProject: "Previous project",
+			nextProject: "Next project",
 			viewProject: "View project",
+			opensInNewTab: "Opens in a new tab",
 			comingSoon: "Coming soon",
 			imagePending: "Image ready for replacement",
+			categoryLabel: "Category",
+			roleLabel: "Role",
+			yearLabel: "Year",
+			technologiesLabel: "Technologies",
+			workInProgress: "Work in Progress",
 		},
 		studio: {
 			eyebrow: "Independent studio",
@@ -398,20 +533,43 @@ export const siteCopy = {
 			featuredProject: "First studio project",
 			productionStatus: "In development",
 			formatLabel: "Format",
+			studioLabel: "Studio",
 			releaseLabel: "Release",
 			linksTitle: "Watch, follow, or wishlist",
 			linkComingSoon: "Coming soon",
+			discoverProject: "Discover The Lucid",
+			returnToStudio: "Return to the studio",
+			sublevel: "Studio sublevel / 01",
 		},
 		experience: {
 			eyebrow: "Experience",
 			title: "My Experience",
+			introduction: "Three connected roles at the intersection of teaching, product development, and visual interfaces.",
 		},
 		about: {
 			eyebrow: "Capabilities",
 			title: "Two disciplines, one point of view",
+			introduction: "From interface systems to playable narratives, I use two complementary toolsets to create complete interactive experiences.",
 			webLabel: "Web development",
 			gameLabel: "Game development",
 			education: "Education",
+		},
+		educationSection: {
+			eyebrow: "Education",
+			title: "A path between systems and stories",
+			introduction: "A technical education shaped by computer science, mathematics, international exchange, and creative practice.",
+		},
+		relevantCourses: {
+			eyebrow: "Education",
+			title: "Relevant coursework",
+			introduction: "Two Université de Montréal courses connecting video games, cinema, visualization, and collaborative production.",
+		},
+		shortFilm: {
+			eyebrow: "Film project",
+			title: "Short film",
+			status: "Work in Progress",
+			description: "A short-film project currently in development. More information to come.",
+			confidential: "In development",
 		},
 		contact: {
 			eyebrow: "Contact",
@@ -420,6 +578,7 @@ export const siteCopy = {
 			email: "Email me",
 			github: "GitHub",
 			linkedin: "LinkedIn",
+			backToTop: "Back to top",
 		},
 		footer: "Andrei Bituleanu / Creative development",
 	},
@@ -429,8 +588,33 @@ export const siteCopy = {
 			work: "Projets",
 			studio: "Studio",
 			experience: "Expérience",
-			about: "À propos",
+			education: "Formation",
 			contact: "Contact",
+			primaryLabel: "Navigation principale",
+			switchLanguage: "Changer de langue",
+			skipToContent: "Aller au contenu",
+		},
+		floors: {
+			top: "Accueil",
+			echoes: "Univers Echoes",
+			studio: "Fracture Interactive",
+			"the-lucid": "The Lucid",
+			"visual-story-writing": "Visual Story Writing",
+			"je-suis-quark": "Je suis Quark",
+			maville: "MaVille",
+			"short-film": "Court-métrage",
+			"prop-hunt": "Prop Hunt",
+			experience: "Mon Expérience",
+			"other-projects": "Autres projets",
+			skills: "Compétences",
+			education: "Formation",
+			"relevant-courses": "Cours pertinents",
+			contact: "Contact",
+		},
+		floorNavigation: {
+			progressLabel: "Progression dans le portfolio",
+			floorLabel: "Étage",
+			ofLabel: "sur",
 		},
 		hero: {
 			eyebrow: "Développeur créatif",
@@ -450,9 +634,17 @@ export const siteCopy = {
 			title: "Projets",
 			introduction: "Une collection d'outils fullstack, de produits de données et d'expériences interactives. Faites défiler pour traverser les couches.",
 			scrollCue: "Défiler pour explorer",
+			previousProject: "Projet précédent",
+			nextProject: "Projet suivant",
 			viewProject: "Voir le projet",
+			opensInNewTab: "S’ouvre dans un nouvel onglet",
 			comingSoon: "Bientôt",
 			imagePending: "Image prête à être remplacée",
+			categoryLabel: "Catégorie",
+			roleLabel: "Rôle",
+			yearLabel: "Année",
+			technologiesLabel: "Technologies",
+			workInProgress: "Work in Progress",
 		},
 		studio: {
 			eyebrow: "Studio indépendant",
@@ -461,20 +653,43 @@ export const siteCopy = {
 			featuredProject: "Premier projet du studio",
 			productionStatus: "En développement",
 			formatLabel: "Format",
+			studioLabel: "Studio",
 			releaseLabel: "Sortie",
 			linksTitle: "Voir, suivre ou ajouter à la liste",
 			linkComingSoon: "Bientôt",
+			discoverProject: "Découvrir The Lucid",
+			returnToStudio: "Revenir au studio",
+			sublevel: "Sous-niveau du studio / 01",
 		},
 		experience: {
 			eyebrow: "Expérience",
 			title: "Mon Expérience",
+			introduction: "Trois rôles reliés, à la croisée de l'enseignement, du développement produit et des interfaces visuelles.",
 		},
 		about: {
 			eyebrow: "Compétences",
 			title: "Deux disciplines créatives",
+			introduction: "Des systèmes d'interface aux récits jouables, je combine deux ensembles d'outils complémentaires pour créer des expériences interactives complètes.",
 			webLabel: "Développement web",
 			gameLabel: "Développement jeu",
 			education: "Formation",
+		},
+		educationSection: {
+			eyebrow: "Formation",
+			title: "Un parcours entre systèmes et récits",
+			introduction: "Une formation technique nourrie par l'informatique, les mathématiques, l'échange international et la pratique créative.",
+		},
+		relevantCourses: {
+			eyebrow: "Formation",
+			title: "Cours pertinents",
+			introduction: "Deux cours de l’Université de Montréal à la croisée du jeu vidéo, du cinéma, de la visualisation et de la production en équipe.",
+		},
+		shortFilm: {
+			eyebrow: "Projet cinématographique",
+			title: "Court-métrage",
+			status: "Work in Progress",
+			description: "Un projet de court-métrage actuellement en développement. Plus d'informations à venir.",
+			confidential: "En développement",
 		},
 		contact: {
 			eyebrow: "Contact",
@@ -483,6 +698,7 @@ export const siteCopy = {
 			email: "Me contacter",
 			github: "GitHub",
 			linkedin: "LinkedIn",
+			backToTop: "Retour en haut",
 		},
 		footer: "Andrei Bituleanu / Développement créatif",
 	},
@@ -497,17 +713,17 @@ export const experienceItems = [
 			fr: "Application Visual Story-Writing",
 		},
 		summary: {
-			en: "Built a React interface for visual story manipulation, including AI support for narrative generation and editing.",
-			fr: "Développement d'une interface React pour manipuler des récits visuellement, avec assistance IA pour la génération et l'édition.",
+			en: "Completed an internship with a professor at Université de Montréal, building a React interface for visual story manipulation with AI-assisted generation and editing.",
+			fr: "Stage réalisé avec un professeur de l'Université de Montréal : développement d'une interface React pour manipuler des récits visuellement, avec assistance IA pour la génération et l'édition.",
 		},
 	},
 	{
-		period: "Semester 3 & 4",
-		place: { en: "Contract", fr: "Contrats" },
+		period: { en: "Semesters 3 & 4", fr: "Trimestres 3 et 4" },
+		place: { en: "2 teaching contracts", fr: "2 contrats d'enseignement" },
 		role: { en: "Teaching Assistant", fr: "Auxiliaire d'enseignement" },
 		summary: {
-			en: "Taught web development to University of Montreal students in IFT1005.",
-			fr: "Enseignement du développement web aux étudiants de l'Université de Montréal dans le cours IFT1005.",
+			en: "Held two teaching-assistant contracts across two semesters, teaching web development to Université de Montréal students in IFT1005.",
+			fr: "Deux contrats d'auxiliaire d'enseignement sur deux trimestres pour enseigner le développement web aux étudiants de l'Université de Montréal dans le cours IFT1005.",
 		},
 	},
 	{
@@ -533,8 +749,23 @@ export const educationItems = [
 			fr: "Université de Montréal",
 		},
 		note: {
-			en: "International track, including a Master 2-level exchange at Université Grenoble Alpes.",
-			fr: "Parcours international, incluant un échange de niveau Master 2 à l'Université Grenoble Alpes.",
+			en: "University studies combining computer science and operations research.",
+			fr: "Parcours universitaire combinant informatique et recherche opérationnelle.",
+		},
+	},
+	{
+		period: "M2",
+		degree: {
+			en: "Master 2-level academic exchange",
+			fr: "Échange universitaire de niveau Master 2",
+		},
+		institution: {
+			en: "Université Grenoble Alpes",
+			fr: "Université Grenoble Alpes",
+		},
+		note: {
+			en: "An international component of my academic path at Master 2 level.",
+			fr: "Un volet international de mon parcours universitaire au niveau M2.",
 		},
 	},
 	{
@@ -554,6 +785,33 @@ export const educationItems = [
 	},
 ];
 
+export const relevantCourseItems = [
+	{
+		code: "JEU1003",
+		title: {
+			en: "Video Games and Cinema",
+			fr: "Jeu vidéo et Cinéma",
+		},
+		institution: "Université de Montréal",
+		description: {
+			en: "I learned the theoretical foundations of developing narratological video game products that unite the worlds of cinema and video games.",
+			fr: "J’y ai appris les fondations théoriques du développement de produits vidéoludiques narratologiques qui unissent les univers du cinéma et du jeu vidéo.",
+		},
+	},
+	{
+		code: "DIN3140",
+		title: {
+			en: "Design and Visualization Tools",
+			fr: "Outil de conception et visualisation",
+		},
+		institution: "Université de Montréal",
+		description: {
+			en: "I designed and produced a short film within a supervised team.",
+			fr: "J’y ai conçu et produit un court-métrage au sein d’une équipe encadrée.",
+		},
+	},
+];
+
 export const webTools = ["HTML5", "CSS3", "JavaScript", "TypeScript", "React", "Node.js", "Express", "Java", "Spring Boot", "MongoDB", "PostgreSQL", "Git/GitHub", "Figma"];
 
 export const gameTools = ["Unity", "C#", "Narrative Design", "Game Design", "Cinemachine", "Scriptable Objects", "2D Prototyping", "Level Design", "FMV Workflow", "Version Control"];
@@ -562,9 +820,20 @@ const localize = (value, language) => (typeof value === "object" && value !== nu
 
 const localizeFeature = (feature, language) => ({
 	...feature,
+	logo: feature.logo
+		? {
+				...feature.logo,
+				alt: localize(feature.logo.alt, language),
+			}
+		: undefined,
+	primaryImage: {
+		...feature.primaryImage,
+		alt: localize(feature.primaryImage.alt, language),
+	},
 	format: localize(feature.format, language),
 	status: localize(feature.status, language),
 	summary: localize(feature.summary, language),
+	transmedia: feature.transmedia ? localize(feature.transmedia, language) : null,
 	linksTitle: feature.linksTitle ? localize(feature.linksTitle, language) : null,
 	links: feature.links.map((link) => ({
 		...link,
@@ -579,6 +848,11 @@ export const getProjects = (language) =>
 		category: localize(project.category, language),
 		role: localize(project.role, language),
 		description: localize(project.description, language),
+		yearLabel: project.yearLabel ? localize(project.yearLabel, language) : undefined,
+		images: project.images.map((image) => ({
+			...image,
+			alt: localize(image.alt, language),
+		})),
 	}));
 
 export const getProjectGroups = (language) =>
@@ -592,6 +866,10 @@ export const getProjectGroups = (language) =>
 			category: localize(project.category, language),
 			role: localize(project.role, language),
 			description: localize(project.description, language),
+			images: project.images.map((image) => ({
+				...image,
+				alt: localize(image.alt, language),
+			})),
 		})),
 	}));
 
@@ -602,6 +880,7 @@ export const getStudioFeature = (language) => localizeFeature(studioFeature, lan
 export const getExperience = (language) =>
 	experienceItems.map((item) => ({
 		...item,
+		period: localize(item.period, language),
 		place: localize(item.place, language),
 		role: localize(item.role, language),
 		summary: localize(item.summary, language),
@@ -613,4 +892,11 @@ export const getEducation = (language) =>
 		degree: localize(item.degree, language),
 		institution: localize(item.institution, language),
 		note: localize(item.note, language),
+	}));
+
+export const getRelevantCourses = (language) =>
+	relevantCourseItems.map((item) => ({
+		...item,
+		title: localize(item.title, language),
+		description: localize(item.description, language),
 	}));
