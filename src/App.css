@@ -1,5 +1,5 @@
 .portfolio {
-	--floor-content-y: -5.5rem;
+	--floor-content-y: -2.5rem;
 
 	position: relative;
 	overflow-x: clip;
@@ -35,7 +35,7 @@
 
 .floor {
 	position: relative;
-	min-height: var(--floor-viewport-height, 100dvh);
+	min-height: 100svh;
 	overflow: clip;
 	border-bottom: 1px solid var(--line);
 	isolation: isolate;
@@ -413,7 +413,7 @@
 }
 
 .hero-section {
-	height: var(--floor-viewport-height, 100dvh);
+	height: 100svh;
 	display: grid;
 	grid-template-columns: minmax(0, 1.22fr) minmax(17rem, 0.68fr);
 	align-items: center;
@@ -684,6 +684,8 @@
 }
 
 .echoes-floor {
+	--floor-content-y: -1.25rem;
+
 	display: flex;
 	align-items: center;
 	padding-block: clamp(4.6rem, 7svh, 5.4rem);
@@ -797,7 +799,7 @@
 
 .studio-overview {
 	height: 100%;
-	min-height: var(--floor-viewport-height, 100dvh);
+	min-height: 100svh;
 	display: grid;
 	grid-template-columns: minmax(19rem, 0.78fr) minmax(0, 1fr);
 	align-items: center;
@@ -925,7 +927,7 @@
 
 .lucid-floor-inner {
 	height: 100%;
-	min-height: var(--floor-viewport-height, 100dvh);
+	min-height: 100svh;
 	display: grid;
 	grid-template-columns: minmax(21rem, 0.82fr) minmax(25rem, 1.18fr);
 	align-items: center;
@@ -1107,7 +1109,7 @@
 .project-floor-inner {
 	position: relative;
 	height: 100%;
-	min-height: var(--floor-viewport-height, 100dvh);
+	min-height: 100svh;
 	display: grid;
 	grid-template-columns: minmax(18rem, 0.74fr) minmax(27rem, 1.26fr);
 	align-items: center;
@@ -1418,7 +1420,7 @@
 .education-floor-inner,
 .courses-floor-inner {
 	height: 100%;
-	min-height: var(--floor-viewport-height, 100dvh);
+	min-height: 100svh;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -2094,13 +2096,23 @@
 	color: var(--ink);
 }
 
-@media (min-width: 1025px) {
+@media (min-width: 1025px) and (min-height: 740px) and (pointer: fine) {
+	html {
+		scroll-snap-type: y mandatory;
+	}
+
+	html.continuous-scroll-active {
+		scroll-snap-type: none;
+	}
+
 	.floor {
-		height: var(--floor-viewport-height, 100dvh);
+		height: 100svh;
+		scroll-snap-align: start;
+		scroll-snap-stop: normal;
 	}
 }
 
-@media (min-width: 1025px) and (max-height: 820px) {
+@media (min-width: 1025px) and (min-height: 740px) and (max-height: 820px) and (pointer: fine) {
 	.experience-floor-inner,
 	.collection-floor-inner,
 	.skills-floor-inner,
@@ -2187,7 +2199,7 @@
 	}
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1024px), (max-height: 739px) {
 	.portfolio {
 		--floor-content-y: -1rem;
 	}
@@ -2198,7 +2210,7 @@
 
 	.floor {
 		height: auto;
-		min-height: var(--floor-viewport-height, 100dvh);
+		min-height: 100svh;
 		overflow: hidden;
 	}
 
@@ -2219,6 +2231,8 @@
 	}
 
 	.echoes-floor {
+		--floor-content-y: -1rem;
+
 		min-height: 48rem;
 		padding-block: 5.5rem;
 	}
@@ -2228,7 +2242,7 @@
 	}
 
 	.studio-overview {
-		min-height: max(var(--floor-viewport-height, 100dvh), 47rem);
+		min-height: max(100svh, 47rem);
 	}
 
 	.studio-overview {
@@ -2236,7 +2250,7 @@
 	}
 
 	.project-floor-inner {
-		min-height: max(var(--floor-viewport-height, 100dvh), 48rem);
+		min-height: max(100svh, 48rem);
 		grid-template-columns: minmax(16rem, 0.72fr) minmax(23rem, 1.28fr);
 		padding-block: 6rem;
 	}
@@ -2250,7 +2264,7 @@
 	.skills-floor-inner,
 	.education-floor-inner,
 	.courses-floor-inner {
-		min-height: max(var(--floor-viewport-height, 100dvh), 48rem);
+		min-height: max(100svh, 48rem);
 	}
 
 	.collection-carousel-track {
@@ -2265,7 +2279,7 @@
 @media (max-width: 820px) {
 	.hero-section {
 		height: auto;
-		min-height: var(--floor-viewport-height, 100dvh);
+		min-height: 100svh;
 		grid-template-columns: minmax(0, 1fr) minmax(15rem, 0.55fr);
 		gap: 2rem;
 	}
@@ -2467,7 +2481,9 @@
 	}
 
 	.echoes-floor {
-		min-height: var(--floor-viewport-height, 100dvh);
+		--floor-content-y: -0.5rem;
+
+		min-height: 100svh;
 		padding-block: 5rem;
 	}
 
@@ -2516,7 +2532,7 @@
 	}
 
 	.studio-overview {
-		min-height: max(var(--floor-viewport-height, 100dvh), 50rem);
+		min-height: max(100svh, 50rem);
 	}
 
 	.studio-overview {
@@ -2547,7 +2563,7 @@
 
 	.lucid-floor-inner {
 		height: auto;
-		min-height: var(--floor-viewport-height, 100dvh);
+		min-height: 100svh;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -2785,7 +2801,7 @@
 	}
 
 	.contact-floor {
-		min-height: max(var(--floor-viewport-height, 100dvh), 42rem);
+		min-height: max(100svh, 42rem);
 		padding-bottom: 9.5rem;
 	}
 

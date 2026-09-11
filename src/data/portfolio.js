@@ -676,7 +676,7 @@ export const siteCopy = {
 		},
 		educationSection: {
 			eyebrow: "Formation",
-			title: "Un parcours entre systèmes et récits",
+			title: "Un parcours international",
 			introduction: "",
 		},
 		relevantCourses: {

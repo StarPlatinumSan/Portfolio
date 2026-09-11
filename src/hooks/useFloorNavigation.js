@@ -9,20 +9,14 @@ import {
 const clamp = (value, minimum, maximum) =>
   Math.min(Math.max(value, minimum), maximum)
 
-const getViewportHeight = () =>
-  window.visualViewport?.height ?? window.innerHeight
-
 const containsViewportCenter = (element) => {
   if (!element || typeof window === 'undefined') return false
 
   const rect = element.getBoundingClientRect()
-  const viewportProbe = getViewportHeight() * 0.5 + 1
+  const viewportProbe = window.innerHeight * 0.5 + 1
 
   return rect.top <= viewportProbe && rect.bottom > viewportProbe
 }
-
-const getDocumentTop = (element) =>
-  window.scrollY + element.getBoundingClientRect().top
 
 const shouldUseNativeScroll = (
   currentIndex,
@@ -197,7 +191,7 @@ export function useFloorNavigation(floorIds, { floorCount } = {}) {
       updateActiveIndex(index)
 
       window.scrollTo({
-        top: getDocumentTop(section),
+        top: section.offsetTop,
         behavior: shouldMoveImmediately ? 'auto' : 'smooth',
       })
 
@@ -214,7 +208,7 @@ export function useFloorNavigation(floorIds, { floorCount } = {}) {
 
         if (!containsViewportCenter(section)) {
           window.scrollTo({
-            top: getDocumentTop(section),
+            top: section.offsetTop,
             behavior: 'instant',
           })
         }
@@ -238,13 +232,15 @@ export function useFloorNavigation(floorIds, { floorCount } = {}) {
   )
 
   useLayoutEffect(() => {
-    const desktopQuery = window.matchMedia('(min-width: 1025px)')
+    const desktopQuery = window.matchMedia(
+      '(min-width: 1025px) and (min-height: 740px)',
+    )
+    const precisePointerQuery = window.matchMedia('(pointer: fine)')
     const reducedMotionQuery = window.matchMedia(
       '(prefers-reduced-motion: reduce)',
     )
     let scrollFrame = null
     let historyFrame = null
-    let viewportResizeTimer = null
 
     const sections = stableFloorIds
       .map((id, index) => ({
@@ -252,38 +248,6 @@ export function useFloorNavigation(floorIds, { floorCount } = {}) {
         index,
       }))
       .filter(({ element }) => element)
-
-    const applyViewportHeight = () => {
-      const viewportHeight = getViewportHeight()
-
-      document.documentElement.style.setProperty(
-        '--floor-viewport-height',
-        `${viewportHeight}px`,
-      )
-    }
-
-    const handleViewportResize = () => {
-      applyViewportHeight()
-      window.clearTimeout(viewportResizeTimer)
-      viewportResizeTimer = window.setTimeout(() => {
-        const index = activeIndexRef.current
-        if (index < 0 || index >= managedFloorCount) return
-
-        const section = sections.find(
-          (candidate) => candidate.index === index,
-        )?.element
-        if (!section) return
-
-        window.clearTimeout(releaseRef.current)
-        transitionRef.current = { lockedUntil: 0, target: null }
-        window.scrollTo({
-          top: getDocumentTop(section),
-          behavior: 'instant',
-        })
-      }, 120)
-    }
-
-    applyViewportHeight()
 
     const syncFromScroll = ({ replaceHash = true } = {}) => {
       scrollFrame = null
@@ -311,7 +275,7 @@ export function useFloorNavigation(floorIds, { floorCount } = {}) {
       const transition = transitionRef.current
       if (transition.target !== null) return
 
-      const viewportCenter = getViewportHeight() * 0.5
+      const viewportCenter = window.innerHeight * 0.5
       const sectionAtCenter = sections.find(({ element }) =>
         containsViewportCenter(element),
       )
@@ -389,12 +353,12 @@ export function useFloorNavigation(floorIds, { floorCount } = {}) {
     const queueContinuousSlide = (distance) => {
       const maximumScroll = Math.max(
         0,
-        document.documentElement.scrollHeight - getViewportHeight(),
+        document.documentElement.scrollHeight - window.innerHeight,
       )
       const currentScroll = window.scrollY
       const currentTarget =
         continuousScrollTargetRef.current ?? currentScroll
-      const maximumLead = getViewportHeight() * 0.9
+      const maximumLead = window.innerHeight * 0.9
       const nextTarget = clamp(
         currentTarget + distance * 1.15,
         currentScroll - maximumLead,
@@ -429,7 +393,7 @@ export function useFloorNavigation(floorIds, { floorCount } = {}) {
         event.deltaMode === WheelEvent.DOM_DELTA_LINE
           ? 18
           : event.deltaMode === WheelEvent.DOM_DELTA_PAGE
-            ? getViewportHeight()
+            ? window.innerHeight
             : 1
       const normalizedWheelDelta = event.deltaY * deltaMultiplier
       const wheelDirection = Math.sign(normalizedWheelDelta)
@@ -457,7 +421,8 @@ export function useFloorNavigation(floorIds, { floorCount } = {}) {
 
       if (
         reducedMotionQuery.matches ||
-        !desktopQuery.matches
+        !desktopQuery.matches ||
+        !precisePointerQuery.matches
       ) {
         return
       }
@@ -542,7 +507,7 @@ export function useFloorNavigation(floorIds, { floorCount } = {}) {
           event.preventDefault()
           queueContinuousSlide(
             direction *
-              (event.key.startsWith('Page') ? getViewportHeight() * 0.82 : 110),
+              (event.key.startsWith('Page') ? window.innerHeight * 0.82 : 110),
           )
           return
         }
@@ -569,7 +534,7 @@ export function useFloorNavigation(floorIds, { floorCount } = {}) {
           if (reducedMotionQuery.matches) return
 
           event.preventDefault()
-          queueContinuousSlide(direction * getViewportHeight() * 0.82)
+          queueContinuousSlide(direction * window.innerHeight * 0.82)
           return
         }
 
@@ -684,8 +649,6 @@ export function useFloorNavigation(floorIds, { floorCount } = {}) {
     window.addEventListener('scroll', requestScrollSync, { passive: true })
     window.addEventListener('wheel', handleWheel, { passive: false })
     window.addEventListener('keydown', handleKeyDown)
-    window.addEventListener('resize', handleViewportResize)
-    window.visualViewport?.addEventListener('resize', handleViewportResize)
     window.addEventListener('popstate', requestHistoryNavigation)
     window.addEventListener('hashchange', requestHistoryNavigation)
     window.addEventListener('scrollend', releaseSettledNavigation)
@@ -706,10 +669,7 @@ export function useFloorNavigation(floorIds, { floorCount } = {}) {
           })
         } else {
           setContinuousScrollMode(false)
-          window.scrollTo({
-            top: getDocumentTop(initialSection),
-            behavior: 'auto',
-          })
+          window.scrollTo({ top: initialSection.offsetTop, behavior: 'auto' })
         }
       }
     }
@@ -719,15 +679,9 @@ export function useFloorNavigation(floorIds, { floorCount } = {}) {
       if (historyFrame !== null) window.cancelAnimationFrame(historyFrame)
       window.clearTimeout(wheelResetRef.current)
       window.clearTimeout(releaseRef.current)
-      window.clearTimeout(viewportResizeTimer)
       window.removeEventListener('scroll', requestScrollSync)
       window.removeEventListener('wheel', handleWheel)
       window.removeEventListener('keydown', handleKeyDown)
-      window.removeEventListener('resize', handleViewportResize)
-      window.visualViewport?.removeEventListener(
-        'resize',
-        handleViewportResize,
-      )
       window.removeEventListener('popstate', requestHistoryNavigation)
       window.removeEventListener('hashchange', requestHistoryNavigation)
       window.removeEventListener('scrollend', releaseSettledNavigation)
@@ -743,7 +697,6 @@ export function useFloorNavigation(floorIds, { floorCount } = {}) {
   }, [
     cancelContinuousSlide,
     continuousStartIndex,
-    managedFloorCount,
     navigateTo,
     stableFloorIds,
     updateActiveIndex,
