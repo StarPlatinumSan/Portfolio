@@ -212,9 +212,8 @@ export function ShortFilmSection({ copy }) {
 export function ExperienceSection({ copy, items }) {
   return (
     <section
-      className="floor experience-floor"
+      className="flow-section experience-floor"
       id="experience"
-      data-floor-id="experience"
       aria-labelledby="experience-title"
     >
       <div className="floor-grid" aria-hidden="true" />
@@ -361,9 +360,8 @@ export function CollectionFloor({ groups = [], copy }) {
 
   return (
     <section
-      className="floor collection-floor collection-floor--carousel"
+      className="flow-section collection-floor collection-floor--carousel"
       id={floorId}
-      data-floor-id={floorId}
       aria-labelledby={`${floorId}-title`}
     >
       <div className="floor-grid" aria-hidden="true" />
@@ -448,9 +446,8 @@ export function SkillsSection({ copy, webTools, gameTools }) {
 
   return (
     <section
-      className="floor skills-floor"
+      className="flow-section skills-floor"
       id="skills"
-      data-floor-id="skills"
       aria-labelledby="skills-title"
     >
       <div className="floor-grid" aria-hidden="true" />
@@ -521,9 +518,8 @@ export function SkillsSection({ copy, webTools, gameTools }) {
 export function EducationSection({ copy, items }) {
   return (
     <section
-      className="floor education-floor"
+      className="flow-section education-floor"
       id="education"
-      data-floor-id="education"
       aria-labelledby="education-title"
     >
       <div className="floor-grid" aria-hidden="true" />
@@ -555,9 +551,8 @@ export function EducationSection({ copy, items }) {
 export function CoursesSection({ copy, items }) {
   return (
     <section
-      className="floor courses-floor"
+      className="flow-section courses-floor"
       id="relevant-courses"
-      data-floor-id="relevant-courses"
       aria-labelledby="relevant-courses-title"
     >
       <div className="floor-grid" aria-hidden="true" />
@@ -591,9 +586,8 @@ export function CoursesSection({ copy, items }) {
 export function ContactSection({ copy, footerCopy }) {
   return (
     <section
-      className="floor contact-floor"
+      className="flow-section contact-floor"
       id="contact"
-      data-floor-id="contact"
       aria-labelledby="contact-title"
     >
       <div className="floor-grid contact-floor-grid" aria-hidden="true" />

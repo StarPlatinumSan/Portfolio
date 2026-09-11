@@ -557,7 +557,7 @@ export const siteCopy = {
 		educationSection: {
 			eyebrow: "Education",
 			title: "A path between systems and stories",
-			introduction: "A technical education shaped by computer science, mathematics, international exchange, and creative practice.",
+			introduction: "",
 		},
 		relevantCourses: {
 			eyebrow: "Education",
@@ -677,7 +677,7 @@ export const siteCopy = {
 		educationSection: {
 			eyebrow: "Formation",
 			title: "Un parcours entre systèmes et récits",
-			introduction: "Une formation technique nourrie par l'informatique, les mathématiques, l'échange international et la pratique créative.",
+			introduction: "",
 		},
 		relevantCourses: {
 			eyebrow: "Formation",

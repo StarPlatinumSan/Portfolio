@@ -8,13 +8,21 @@ export const floorIds = [
   'je-suis-quark',
   'maville',
   'prop-hunt',
-  'experience',
+]
+
+export const flowSectionIds = [
   'other-projects',
+  'experience',
   'skills',
   'education',
   'relevant-courses',
   'contact',
 ]
 
+export const sectionIds = [...floorIds, ...flowSectionIds]
+
 export const getFloors = (copy) =>
   floorIds.map((id) => ({ id, label: copy.floors[id] }))
+
+export const getSections = (copy) =>
+  sectionIds.map((id) => ({ id, label: copy.floors[id] }))

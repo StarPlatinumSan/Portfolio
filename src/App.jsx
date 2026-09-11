@@ -15,7 +15,12 @@ import {
   SkillsSection,
   StudioSection,
 } from './components/Sections'
-import { floorIds, getFloors } from './data/floors'
+import {
+  floorIds,
+  getFloors,
+  getSections,
+  sectionIds,
+} from './data/floors'
 import {
   gameTools,
   getEducation,
@@ -41,6 +46,7 @@ function App() {
     technologiesLabel: copy.projectSection.technologiesLabel,
   }
   const floors = useMemo(() => getFloors(copy), [copy])
+  const sections = useMemo(() => getSections(copy), [copy])
   const projects = getProjects(language)
   const projectGroups = getProjectGroups(language)
   const echoesFeature = getEchoesFeature(language)
@@ -54,10 +60,13 @@ function App() {
   const groupById = Object.fromEntries(
     projectGroups.map((group) => [group.id, group]),
   )
-  const { activeIndex, progress } = useFloorNavigation(floorIds)
-  const activeFloorId = floorIds[activeIndex]
+  const { activeIndex, isContinuousSection, progress } =
+    useFloorNavigation(sectionIds, {
+      floorCount: floorIds.length,
+    })
+  const activeSectionId = sectionIds[activeIndex]
 
-  useSiteMotion(appRef, activeFloorId)
+  useSiteMotion(appRef, isContinuousSection ? null : activeSectionId)
 
   useEffect(() => {
     document.documentElement.lang = language
@@ -70,19 +79,21 @@ function App() {
       </a>
       <Header
         copy={copy}
-        floors={floors}
-        activeFloorId={activeFloorId}
+        floors={sections}
+        activeFloorId={activeSectionId}
         language={language}
         onLanguageChange={() =>
           setLanguage((current) => (current === 'en' ? 'fr' : 'en'))
         }
       />
-      <FloorProgress
-        floors={floors}
-        activeIndex={activeIndex}
-        progress={progress}
-        copy={copy.floorNavigation}
-      />
+      {!isContinuousSection && (
+        <FloorProgress
+          floors={floors}
+          activeIndex={activeIndex}
+          progress={progress}
+          copy={copy.floorNavigation}
+        />
+      )}
 
       <main id="main-content" tabIndex="-1">
         <Hero copy={copy} />
@@ -118,22 +129,24 @@ function App() {
           layout="poster"
           workInProgress
         />
-        <ExperienceSection copy={copy.experience} items={experience} />
-        <CollectionFloor
-          groups={[
-            groupById['dnd-web-tools'],
-            groupById['other-projects'],
-          ]}
-          copy={copy.projectSection}
-        />
-        <SkillsSection
-          copy={copy.about}
-          webTools={webTools}
-          gameTools={gameTools}
-        />
-        <EducationSection copy={copy.educationSection} items={education} />
-        <CoursesSection copy={copy.relevantCourses} items={relevantCourses} />
-        <ContactSection copy={copy.contact} footerCopy={copy.footer} />
+        <div className="smooth-scroll-region">
+          <CollectionFloor
+            groups={[
+              groupById['dnd-web-tools'],
+              groupById['other-projects'],
+            ]}
+            copy={copy.projectSection}
+          />
+          <ExperienceSection copy={copy.experience} items={experience} />
+          <SkillsSection
+            copy={copy.about}
+            webTools={webTools}
+            gameTools={gameTools}
+          />
+          <EducationSection copy={copy.educationSection} items={education} />
+          <CoursesSection copy={copy.relevantCourses} items={relevantCourses} />
+          <ContactSection copy={copy.contact} footerCopy={copy.footer} />
+        </div>
       </main>
     </div>
   )

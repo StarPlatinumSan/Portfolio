@@ -9,13 +9,35 @@ import {
 const clamp = (value, minimum, maximum) =>
   Math.min(Math.max(value, minimum), maximum)
 
+const getViewportHeight = () =>
+  window.visualViewport?.height ?? window.innerHeight
+
 const containsViewportCenter = (element) => {
   if (!element || typeof window === 'undefined') return false
 
   const rect = element.getBoundingClientRect()
-  const viewportProbe = window.innerHeight * 0.5 + 1
+  const viewportProbe = getViewportHeight() * 0.5 + 1
 
   return rect.top <= viewportProbe && rect.bottom > viewportProbe
+}
+
+const getDocumentTop = (element) =>
+  window.scrollY + element.getBoundingClientRect().top
+
+const shouldUseNativeScroll = (
+  currentIndex,
+  direction,
+  continuousStartIndex,
+) =>
+  continuousStartIndex >= 0 &&
+  (currentIndex >= continuousStartIndex ||
+    (currentIndex === continuousStartIndex - 1 && direction > 0))
+
+const setContinuousScrollMode = (enabled) => {
+  document.documentElement.classList.toggle(
+    'continuous-scroll-active',
+    enabled,
+  )
 }
 
 const isInteractiveTarget = (target) =>
@@ -53,12 +75,33 @@ const writeFloorHash = (floorIds, index, mode) => {
   )
 }
 
-export function useFloorNavigation(floorIds) {
+const focusSectionHeading = (section) => {
+  const visibleHeading = Array.from(
+    section.querySelectorAll('h1, h2, h3'),
+  ).find(
+    (heading) =>
+      !heading.closest('[inert], [aria-hidden="true"]') &&
+      heading.getClientRects().length > 0,
+  )
+
+  visibleHeading?.focus({ preventScroll: true })
+}
+
+export function useFloorNavigation(floorIds, { floorCount } = {}) {
   const floorKey = floorIds.join('|')
   const stableFloorIds = useMemo(
     () => (floorKey ? floorKey.split('|') : []),
     [floorKey],
   )
+  const managedFloorCount = clamp(
+    Number.isFinite(floorCount)
+      ? Math.trunc(floorCount)
+      : stableFloorIds.length,
+    0,
+    stableFloorIds.length,
+  )
+  const continuousStartIndex =
+    managedFloorCount < stableFloorIds.length ? managedFloorCount : -1
   const [activeIndex, setActiveIndex] = useState(() => {
     const locationIndex = getLocationFloorIndex(stableFloorIds)
     return locationIndex >= 0 ? locationIndex : 0
@@ -69,10 +112,24 @@ export function useFloorNavigation(floorIds) {
   const wheelArmedRef = useRef(true)
   const wheelResetRef = useRef(null)
   const releaseRef = useRef(null)
+  const continuousTargetRef = useRef(null)
+  const continuousScrollTargetRef = useRef(null)
+  const continuousScrollFrameRef = useRef(null)
+  const continuousScrollTimeRef = useRef(null)
 
   const updateActiveIndex = useCallback((index) => {
     activeIndexRef.current = index
     setActiveIndex((current) => (current === index ? current : index))
+  }, [])
+
+  const cancelContinuousSlide = useCallback(() => {
+    if (continuousScrollFrameRef.current !== null) {
+      window.cancelAnimationFrame(continuousScrollFrameRef.current)
+    }
+
+    continuousScrollFrameRef.current = null
+    continuousScrollTargetRef.current = null
+    continuousScrollTimeRef.current = null
   }, [])
 
   const navigateTo = useCallback(
@@ -95,6 +152,38 @@ export function useFloorNavigation(floorIds) {
         '(prefers-reduced-motion: reduce)',
       ).matches
       const shouldMoveImmediately = immediate || reducedMotion
+      const isContinuousTarget =
+        continuousStartIndex >= 0 && index >= continuousStartIndex
+
+      cancelContinuousSlide()
+
+      if (isContinuousTarget) {
+        window.clearTimeout(releaseRef.current)
+        transitionRef.current = { lockedUntil: 0, target: null }
+        continuousTargetRef.current = index
+        wheelIntentRef.current = 0
+        wheelArmedRef.current = true
+        setContinuousScrollMode(true)
+        updateActiveIndex(index)
+
+        section.scrollIntoView({
+          behavior: shouldMoveImmediately ? 'instant' : 'smooth',
+          block: 'start',
+        })
+
+        if (updateHash) {
+          writeFloorHash(stableFloorIds, index, 'push')
+        } else if (replaceHash) {
+          writeFloorHash(stableFloorIds, index, 'replace')
+        }
+
+        if (focusHeading) focusSectionHeading(section)
+
+        return true
+      }
+
+      continuousTargetRef.current = null
+      setContinuousScrollMode(false)
       const floorDistance = Math.abs(index - activeIndexRef.current)
       const transitionDuration = shouldMoveImmediately
         ? 80
@@ -108,7 +197,7 @@ export function useFloorNavigation(floorIds) {
       updateActiveIndex(index)
 
       window.scrollTo({
-        top: section.offsetTop,
+        top: getDocumentTop(section),
         behavior: shouldMoveImmediately ? 'auto' : 'smooth',
       })
 
@@ -118,24 +207,14 @@ export function useFloorNavigation(floorIds) {
         writeFloorHash(stableFloorIds, index, 'replace')
       }
 
-      if (focusHeading) {
-        const visibleHeading = Array.from(
-          section.querySelectorAll('h1, h2, h3'),
-        ).find(
-          (heading) =>
-            !heading.closest('[inert], [aria-hidden="true"]') &&
-            heading.getClientRects().length > 0,
-        )
-
-        visibleHeading?.focus({ preventScroll: true })
-      }
+      if (focusHeading) focusSectionHeading(section)
 
       releaseRef.current = window.setTimeout(() => {
         if (transitionRef.current.target !== index) return
 
         if (!containsViewportCenter(section)) {
           window.scrollTo({
-            top: section.offsetTop,
+            top: getDocumentTop(section),
             behavior: 'instant',
           })
         }
@@ -150,19 +229,22 @@ export function useFloorNavigation(floorIds) {
 
       return true
     },
-    [stableFloorIds, updateActiveIndex],
+    [
+      cancelContinuousSlide,
+      continuousStartIndex,
+      stableFloorIds,
+      updateActiveIndex,
+    ],
   )
 
   useLayoutEffect(() => {
-    const desktopQuery = window.matchMedia(
-      '(min-width: 1025px) and (min-height: 740px)',
-    )
-    const precisePointerQuery = window.matchMedia('(pointer: fine)')
+    const desktopQuery = window.matchMedia('(min-width: 1025px)')
     const reducedMotionQuery = window.matchMedia(
       '(prefers-reduced-motion: reduce)',
     )
     let scrollFrame = null
     let historyFrame = null
+    let viewportResizeTimer = null
 
     const sections = stableFloorIds
       .map((id, index) => ({
@@ -171,14 +253,65 @@ export function useFloorNavigation(floorIds) {
       }))
       .filter(({ element }) => element)
 
+    const applyViewportHeight = () => {
+      const viewportHeight = getViewportHeight()
+
+      document.documentElement.style.setProperty(
+        '--floor-viewport-height',
+        `${viewportHeight}px`,
+      )
+    }
+
+    const handleViewportResize = () => {
+      applyViewportHeight()
+      window.clearTimeout(viewportResizeTimer)
+      viewportResizeTimer = window.setTimeout(() => {
+        const index = activeIndexRef.current
+        if (index < 0 || index >= managedFloorCount) return
+
+        const section = sections.find(
+          (candidate) => candidate.index === index,
+        )?.element
+        if (!section) return
+
+        window.clearTimeout(releaseRef.current)
+        transitionRef.current = { lockedUntil: 0, target: null }
+        window.scrollTo({
+          top: getDocumentTop(section),
+          behavior: 'instant',
+        })
+      }, 120)
+    }
+
+    applyViewportHeight()
+
     const syncFromScroll = ({ replaceHash = true } = {}) => {
       scrollFrame = null
       if (!sections.length) return
 
+      const continuousTargetIndex = continuousTargetRef.current
+      if (continuousTargetIndex !== null) {
+        const targetSection = sections.find(
+          ({ index }) => index === continuousTargetIndex,
+        )?.element
+        if (!containsViewportCenter(targetSection)) return
+
+        continuousTargetRef.current = null
+        updateActiveIndex(continuousTargetIndex)
+        if (replaceHash) {
+          writeFloorHash(
+            stableFloorIds,
+            continuousTargetIndex,
+            'replace',
+          )
+        }
+        return
+      }
+
       const transition = transitionRef.current
       if (transition.target !== null) return
 
-      const viewportCenter = window.innerHeight * 0.5
+      const viewportCenter = getViewportHeight() * 0.5
       const sectionAtCenter = sections.find(({ element }) =>
         containsViewportCenter(element),
       )
@@ -204,6 +337,14 @@ export function useFloorNavigation(floorIds) {
         updateActiveIndex(closestIndex)
       }
 
+      if (continuousStartIndex >= 0) {
+        if (closestIndex >= continuousStartIndex) {
+          setContinuousScrollMode(true)
+        } else if (closestIndex < continuousStartIndex - 1) {
+          setContinuousScrollMode(false)
+        }
+      }
+
       if (replaceHash) {
         writeFloorHash(stableFloorIds, closestIndex, 'replace')
       }
@@ -214,18 +355,114 @@ export function useFloorNavigation(floorIds) {
       scrollFrame = window.requestAnimationFrame(syncFromScroll)
     }
 
+    const animateContinuousSlide = (timestamp) => {
+      const target = continuousScrollTargetRef.current
+      if (target === null) {
+        continuousScrollFrameRef.current = null
+        continuousScrollTimeRef.current = null
+        return
+      }
+
+      const distance = target - window.scrollY
+      if (Math.abs(distance) <= 0.75) {
+        window.scrollTo({ top: target, behavior: 'instant' })
+        continuousScrollTargetRef.current = null
+        continuousScrollFrameRef.current = null
+        continuousScrollTimeRef.current = null
+        return
+      }
+
+      const previousTimestamp = continuousScrollTimeRef.current ?? timestamp
+      const frameScale = clamp((timestamp - previousTimestamp) / 16.667, 0.5, 2)
+      const easing = 1 - Math.pow(1 - 0.11, frameScale)
+      continuousScrollTimeRef.current = timestamp
+
+      window.scrollTo({
+        top: window.scrollY + distance * easing,
+        behavior: 'instant',
+      })
+      continuousScrollFrameRef.current = window.requestAnimationFrame(
+        animateContinuousSlide,
+      )
+    }
+
+    const queueContinuousSlide = (distance) => {
+      const maximumScroll = Math.max(
+        0,
+        document.documentElement.scrollHeight - getViewportHeight(),
+      )
+      const currentScroll = window.scrollY
+      const currentTarget =
+        continuousScrollTargetRef.current ?? currentScroll
+      const maximumLead = getViewportHeight() * 0.9
+      const nextTarget = clamp(
+        currentTarget + distance * 1.15,
+        currentScroll - maximumLead,
+        currentScroll + maximumLead,
+      )
+
+      continuousScrollTargetRef.current = clamp(
+        nextTarget,
+        0,
+        maximumScroll,
+      )
+
+      if (continuousScrollFrameRef.current === null) {
+        continuousScrollTimeRef.current = null
+        continuousScrollFrameRef.current = window.requestAnimationFrame(
+          animateContinuousSlide,
+        )
+      }
+    }
+
+    const releaseFloorControl = () => {
+      window.clearTimeout(releaseRef.current)
+      transitionRef.current = { lockedUntil: 0, target: null }
+      continuousTargetRef.current = null
+    }
+
     const handleWheel = (event) => {
+      if (event.ctrlKey) return
+      if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) return
+
+      const deltaMultiplier =
+        event.deltaMode === WheelEvent.DOM_DELTA_LINE
+          ? 18
+          : event.deltaMode === WheelEvent.DOM_DELTA_PAGE
+            ? getViewportHeight()
+            : 1
+      const normalizedWheelDelta = event.deltaY * deltaMultiplier
+      const wheelDirection = Math.sign(normalizedWheelDelta)
+
+      if (!wheelDirection) return
+
       if (
-        !desktopQuery.matches ||
-        !precisePointerQuery.matches ||
+        shouldUseNativeScroll(
+          activeIndexRef.current,
+          wheelDirection,
+          continuousStartIndex,
+        )
+      ) {
+        setContinuousScrollMode(true)
+        releaseFloorControl()
+
+        if (reducedMotionQuery.matches) return
+
+        event.preventDefault()
+        wheelIntentRef.current = 0
+        wheelArmedRef.current = true
+        queueContinuousSlide(normalizedWheelDelta)
+        return
+      }
+
+      if (
         reducedMotionQuery.matches ||
-        event.ctrlKey
+        !desktopQuery.matches
       ) {
         return
       }
 
-      if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) return
-
+      cancelContinuousSlide()
       event.preventDefault()
 
       window.clearTimeout(wheelResetRef.current)
@@ -249,14 +486,7 @@ export function useFloorNavigation(floorIds) {
         return
       }
 
-      const deltaMultiplier =
-        event.deltaMode === WheelEvent.DOM_DELTA_LINE
-          ? 18
-          : event.deltaMode === WheelEvent.DOM_DELTA_PAGE
-            ? window.innerHeight
-            : 1
-
-      wheelIntentRef.current += event.deltaY * deltaMultiplier
+      wheelIntentRef.current += normalizedWheelDelta
 
       if (Math.abs(wheelIntentRef.current) < 54) return
 
@@ -279,7 +509,6 @@ export function useFloorNavigation(floorIds) {
 
     const handleKeyDown = (event) => {
       if (
-        !desktopQuery.matches ||
         event.defaultPrevented ||
         event.repeat ||
         event.metaKey ||
@@ -290,8 +519,6 @@ export function useFloorNavigation(floorIds) {
         return
       }
 
-      if (performance.now() < transitionRef.current.lockedUntil) return
-
       const commands = {
         ArrowDown: 1,
         PageDown: 1,
@@ -300,16 +527,62 @@ export function useFloorNavigation(floorIds) {
       }
 
       if (event.key in commands) {
+        const direction = commands[event.key]
+        if (
+          shouldUseNativeScroll(
+            activeIndexRef.current,
+            direction,
+            continuousStartIndex,
+          )
+        ) {
+          setContinuousScrollMode(true)
+          releaseFloorControl()
+          if (reducedMotionQuery.matches) return
+
+          event.preventDefault()
+          queueContinuousSlide(
+            direction *
+              (event.key.startsWith('Page') ? getViewportHeight() * 0.82 : 110),
+          )
+          return
+        }
+
+        if (!desktopQuery.matches) return
+        cancelContinuousSlide()
+        if (performance.now() < transitionRef.current.lockedUntil) return
         event.preventDefault()
-        navigateByKeyboard(activeIndexRef.current + commands[event.key])
+        navigateByKeyboard(activeIndexRef.current + direction)
         return
       }
 
       if (event.key === ' ' || event.code === 'Space') {
+        const direction = event.shiftKey ? -1 : 1
+        if (
+          shouldUseNativeScroll(
+            activeIndexRef.current,
+            direction,
+            continuousStartIndex,
+          )
+        ) {
+          setContinuousScrollMode(true)
+          releaseFloorControl()
+          if (reducedMotionQuery.matches) return
+
+          event.preventDefault()
+          queueContinuousSlide(direction * getViewportHeight() * 0.82)
+          return
+        }
+
+        if (!desktopQuery.matches) return
+        cancelContinuousSlide()
+        if (performance.now() < transitionRef.current.lockedUntil) return
         event.preventDefault()
-        navigateByKeyboard(activeIndexRef.current + (event.shiftKey ? -1 : 1))
+        navigateByKeyboard(activeIndexRef.current + direction)
         return
       }
+
+      if (!desktopQuery.matches) return
+      if (performance.now() < transitionRef.current.lockedUntil) return
 
       if (event.key === 'Home') {
         event.preventDefault()
@@ -383,6 +656,18 @@ export function useFloorNavigation(floorIds) {
         return
       }
 
+      const continuousTargetIndex = continuousTargetRef.current
+      if (continuousTargetIndex !== null) {
+        const targetSection = sections.find(
+          ({ index }) => index === continuousTargetIndex,
+        )?.element
+        if (!containsViewportCenter(targetSection)) return
+
+        continuousTargetRef.current = null
+        updateActiveIndex(continuousTargetIndex)
+        return
+      }
+
       const targetIndex = transitionRef.current.target
       if (targetIndex === null) return
 
@@ -399,6 +684,8 @@ export function useFloorNavigation(floorIds) {
     window.addEventListener('scroll', requestScrollSync, { passive: true })
     window.addEventListener('wheel', handleWheel, { passive: false })
     window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('resize', handleViewportResize)
+    window.visualViewport?.addEventListener('resize', handleViewportResize)
     window.addEventListener('popstate', requestHistoryNavigation)
     window.addEventListener('hashchange', requestHistoryNavigation)
     window.addEventListener('scrollend', releaseSettledNavigation)
@@ -408,7 +695,22 @@ export function useFloorNavigation(floorIds) {
     if (initialIndex >= 0) {
       const initialSection = document.getElementById(stableFloorIds[initialIndex])
       if (initialSection) {
-        window.scrollTo({ top: initialSection.offsetTop, behavior: 'auto' })
+        if (
+          continuousStartIndex >= 0 &&
+          initialIndex >= continuousStartIndex
+        ) {
+          setContinuousScrollMode(true)
+          initialSection.scrollIntoView({
+            behavior: 'instant',
+            block: 'start',
+          })
+        } else {
+          setContinuousScrollMode(false)
+          window.scrollTo({
+            top: getDocumentTop(initialSection),
+            behavior: 'auto',
+          })
+        }
       }
     }
 
@@ -417,26 +719,47 @@ export function useFloorNavigation(floorIds) {
       if (historyFrame !== null) window.cancelAnimationFrame(historyFrame)
       window.clearTimeout(wheelResetRef.current)
       window.clearTimeout(releaseRef.current)
+      window.clearTimeout(viewportResizeTimer)
       window.removeEventListener('scroll', requestScrollSync)
       window.removeEventListener('wheel', handleWheel)
       window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('resize', handleViewportResize)
+      window.visualViewport?.removeEventListener(
+        'resize',
+        handleViewportResize,
+      )
       window.removeEventListener('popstate', requestHistoryNavigation)
       window.removeEventListener('hashchange', requestHistoryNavigation)
       window.removeEventListener('scrollend', releaseSettledNavigation)
       document.removeEventListener('click', handleAnchorClick)
 
       transitionRef.current = { lockedUntil: 0, target: null }
+      continuousTargetRef.current = null
       wheelIntentRef.current = 0
       wheelArmedRef.current = true
+      cancelContinuousSlide()
+      setContinuousScrollMode(false)
     }
-  }, [navigateTo, stableFloorIds, updateActiveIndex])
+  }, [
+    cancelContinuousSlide,
+    continuousStartIndex,
+    managedFloorCount,
+    navigateTo,
+    stableFloorIds,
+    updateActiveIndex,
+  ])
+
+  const lastManagedFloorIndex = Math.max(managedFloorCount - 1, 0)
 
   return {
     activeIndex,
+    isContinuousSection:
+      continuousStartIndex >= 0 && activeIndex >= continuousStartIndex,
     navigateTo,
     progress:
-      stableFloorIds.length > 1
-        ? activeIndex / (stableFloorIds.length - 1)
+      managedFloorCount > 1
+        ? Math.min(activeIndex, lastManagedFloorIndex) /
+          lastManagedFloorIndex
         : 1,
   }
 }
