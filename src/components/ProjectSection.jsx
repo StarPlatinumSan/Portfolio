@@ -80,7 +80,6 @@ export default function ProjectSection({
       <div className="project-section-inner section-shell">
         <div className="project-section-copy">
           <p className="eyebrow" data-reveal>
-            <span />
             {workInProgress ? copy.workInProgress : project.category}
           </p>
           <h2 id={`${project.id}-title`} tabIndex="-1" data-reveal>

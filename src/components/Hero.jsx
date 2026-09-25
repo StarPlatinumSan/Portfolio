@@ -14,7 +14,6 @@ export default function Hero({ copy }) {
 
 			<div className="hero-copy">
 				<p className="eyebrow" data-hero-kicker>
-					<span />
 					{copy.hero.eyebrow}
 				</p>
 				<h1 id="hero-title" tabIndex="-1">

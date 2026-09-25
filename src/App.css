@@ -64,7 +64,6 @@
 .eyebrow {
 	display: flex;
 	align-items: center;
-	gap: 0.7rem;
 	color: var(--muted-strong);
 	font-size: 0.72rem;
 	font-weight: 700;
@@ -72,14 +71,6 @@
 	line-height: 1.4;
 	text-transform: uppercase;
 }
-
-.eyebrow > span {
-	width: 1.8rem;
-	height: 1px;
-	flex: 0 0 auto;
-	background: linear-gradient(90deg, var(--blue), var(--violet), var(--magenta));
-}
-
 .section-heading {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.62fr);
@@ -2126,7 +2117,6 @@
 
 	.experience-card {
 		min-height: 0;
-		margin-left: 1.2rem;
 		transform: none;
 	}
 
@@ -2199,7 +2189,6 @@
 
 	.education-card {
 		min-height: 14rem;
-		margin-left: 1.2rem;
 	}
 
 	.education-card:last-child {

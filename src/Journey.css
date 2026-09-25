@@ -16,54 +16,32 @@
 .scene-transition {
   display: grid;
   place-items: center;
-  background:
-    radial-gradient(circle at 50% 55%, rgba(124, 88, 223, 0.2), transparent 28%),
-    #090d17;
-  clip-path: inset(100% 0 0 0);
+  background: #0b0f18;
+  clip-path: inset(0 0 100% 0);
 }
 
-.scene-transition-glow,
-.scene-transition-node,
-.scene-transition-line {
+.scene-transition-rule,
+.scene-transition-marker {
   position: absolute;
-  left: 50%;
   top: 50%;
 }
 
-.scene-transition-glow {
-  width: min(34rem, 70vw);
-  aspect-ratio: 1;
-  border: 1px solid rgba(99, 216, 250, 0.18);
-  border-radius: 50%;
-  box-shadow: 0 0 8rem rgba(124, 88, 223, 0.24), inset 0 0 5rem rgba(232, 43, 183, 0.08);
-  transform: translate(-50%, -50%) scale(0.4);
-}
-
-.scene-transition-node {
-  width: 0.7rem;
-  aspect-ratio: 1;
-  border: 2px solid var(--ink);
-  border-radius: 50%;
-  background: var(--magenta);
-  box-shadow: 0 0 1.5rem var(--magenta);
-  transform: translate(-50%, -50%) scale(0);
-}
-
-.scene-transition-line {
-  width: min(27rem, 58vw);
+.scene-transition-rule {
+  right: 12vw;
+  left: 12vw;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--cyan));
-  transform-origin: right;
-}
-
-.scene-transition-line--left {
-  transform: translate(-100%, -50%) rotate(22deg) scaleX(0);
-}
-
-.scene-transition-line--right {
-  background: linear-gradient(90deg, var(--pink), transparent);
+  background: rgba(200, 202, 214, 0.46);
   transform-origin: left;
-  transform: translate(0, -50%) rotate(-22deg) scaleX(0);
+  transform: scaleX(0);
+}
+
+.scene-transition-marker {
+  left: 12vw;
+  width: 0.45rem;
+  height: 0.45rem;
+  background: var(--ink);
+  opacity: 0;
+  transform: translate(-50%, -50%);
 }
 
 .is-transitioning-choice .scene-transition {
@@ -71,59 +49,39 @@
   animation: choice-scene-wipe 1150ms cubic-bezier(0.76, 0, 0.24, 1) both;
 }
 
-.is-transitioning-choice .scene-transition-glow {
-  animation: choice-scene-glow 1150ms cubic-bezier(0.22, 1, 0.36, 1) both;
+.is-transitioning-choice .scene-transition-rule {
+  animation: choice-scene-rule 1150ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.is-transitioning-choice .scene-transition-node {
-  animation: choice-scene-node 1150ms ease both;
-}
-
-.is-transitioning-choice .scene-transition-line--left {
-  animation: choice-scene-left 1150ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.is-transitioning-choice .scene-transition-line--right {
-  animation: choice-scene-right 1150ms cubic-bezier(0.22, 1, 0.36, 1) both;
+.is-transitioning-choice .scene-transition-marker {
+  animation: choice-scene-marker 1150ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .is-transitioning-choice .hero-section {
   animation: hero-scene-depart 620ms cubic-bezier(0.76, 0, 0.24, 1) both;
-  transform-origin: 50% 55%;
 }
 
 @keyframes choice-scene-wipe {
-  0% { clip-path: inset(100% 0 0 0); }
+  0% { clip-path: inset(0 0 100% 0); }
   38%, 62% { clip-path: inset(0 0 0 0); }
-  100% { clip-path: inset(0 0 100% 0); }
+  100% { clip-path: inset(100% 0 0 0); }
 }
 
-@keyframes choice-scene-glow {
-  0%, 16% { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
-  48% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.45); }
+@keyframes choice-scene-rule {
+  0%, 25% { opacity: 0; transform: scaleX(0); }
+  48%, 70% { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(1); }
 }
 
-@keyframes choice-scene-node {
-  0%, 20% { transform: translate(-50%, -50%) scale(0); }
-  42%, 65% { transform: translate(-50%, -50%) scale(1); }
-  100% { transform: translate(-50%, -50%) scale(0); }
-}
-
-@keyframes choice-scene-left {
-  0%, 28% { transform: translate(-100%, -50%) rotate(22deg) scaleX(0); }
-  55%, 72% { transform: translate(-100%, -50%) rotate(22deg) scaleX(1); }
-  100% { opacity: 0; transform: translate(-100%, -50%) rotate(22deg) scaleX(1); }
-}
-
-@keyframes choice-scene-right {
-  0%, 28% { transform: translate(0, -50%) rotate(-22deg) scaleX(0); }
-  55%, 72% { transform: translate(0, -50%) rotate(-22deg) scaleX(1); }
-  100% { opacity: 0; transform: translate(0, -50%) rotate(-22deg) scaleX(1); }
+@keyframes choice-scene-marker {
+  0%, 28% { left: 12vw; opacity: 0; }
+  38% { opacity: 1; }
+  68% { left: 88vw; opacity: 1; }
+  82%, 100% { left: 88vw; opacity: 0; }
 }
 
 @keyframes hero-scene-depart {
-  to { opacity: 0.25; filter: blur(8px); transform: scale(0.965); }
+  to { opacity: 0.35; transform: translateY(-0.75rem); }
 }
 
 .branch-transition {
@@ -131,10 +89,8 @@
   display: grid;
   place-items: center;
   color: var(--ink);
-  background:
-    radial-gradient(circle at 50% 48%, rgba(55, 142, 223, 0.1), transparent 32%),
-    #090d17;
-  clip-path: circle(0 at 50% 52%);
+  background: #0b0f18;
+  clip-path: inset(0 0 100% 0);
 }
 
 .is-branching .branch-transition {
@@ -184,11 +140,9 @@
 .branch-tree-origin,
 .branch-tree-node {
   position: absolute;
-  width: 0.8rem;
+  width: 0.55rem;
   aspect-ratio: 1;
-  border-radius: 50%;
   background: var(--muted);
-  box-shadow: 0 0 0 0.35rem rgba(153, 155, 168, 0.08);
 }
 
 .branch-tree-origin {
@@ -230,13 +184,13 @@
   transform-origin: top;
 }
 
-.branch-tree-arm--studio,
-.branch-tree-node--studio {
+.branch-tree-arm--creative,
+.branch-tree-node--creative {
   left: 18%;
 }
 
-.branch-tree-arm--creative,
-.branch-tree-node--creative {
+.branch-tree-arm--studio,
+.branch-tree-node--studio {
   right: 18%;
 }
 
@@ -247,7 +201,7 @@
   transform: translateX(-50%);
 }
 
-.branch-tree-node--creative {
+.branch-tree-node--studio {
   transform: translateX(50%);
 }
 
@@ -265,12 +219,12 @@
   text-transform: uppercase;
 }
 
-.branch-tree-label--studio {
+.branch-tree-label--creative {
   left: 18%;
   transform: translateX(-50%);
 }
 
-.branch-tree-label--creative {
+.branch-tree-label--studio {
   right: 18%;
   transform: translateX(50%);
 }
@@ -307,19 +261,17 @@
 [data-branch="studio"] .branch-tree-node--studio,
 [data-branch="studio"] .branch-tree-arm--studio {
   background: var(--pink);
-  box-shadow: 0 0 1.5rem rgba(245, 166, 223, 0.62);
 }
 
 [data-branch="creative"] .branch-tree-node--creative,
 [data-branch="creative"] .branch-tree-arm--creative {
   background: var(--cyan);
-  box-shadow: 0 0 1.5rem rgba(99, 216, 250, 0.62);
 }
 
 @keyframes branch-transition-cover {
-  0% { clip-path: circle(0 at 50% 52%); }
-  27%, 68% { clip-path: circle(150vmax at 50% 52%); }
-  100% { clip-path: circle(0 at 50% -15%); }
+  0% { clip-path: inset(0 0 100% 0); }
+  27%, 68% { clip-path: inset(0 0 0 0); }
+  100% { clip-path: inset(100% 0 0 0); }
 }
 
 @keyframes branch-copy-in {
@@ -417,7 +369,6 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(90deg, var(--blue), var(--progress-accent));
-  box-shadow: 0 0 1rem color-mix(in srgb, var(--progress-accent) 55%, transparent);
   transform: scaleX(var(--journey-progress));
   transform-origin: left;
   transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -427,19 +378,17 @@
   position: absolute;
   top: 50%;
   left: calc(var(--node-position) * 100%);
-  width: 0.42rem;
+  width: 0.36rem;
   aspect-ratio: 1;
   border: 1px solid rgba(200, 202, 214, 0.38);
-  border-radius: 50%;
   background: #090d17;
   transform: translate(-50%, -50%);
-  transition: border-color 350ms ease, background 350ms ease, box-shadow 350ms ease;
+  transition: border-color 350ms ease, background 350ms ease;
 }
 
 .journey-progress-track > span.is-reached {
   border-color: var(--progress-accent);
   background: var(--progress-accent);
-  box-shadow: 0 0 0.75rem color-mix(in srgb, var(--progress-accent) 68%, transparent);
 }
 
 @keyframes journey-progress-enter {
@@ -471,8 +420,8 @@
   overflow: hidden;
   isolation: isolate;
   background:
-    radial-gradient(circle at 16% 38%, rgba(245, 166, 223, 0.075), transparent 29%),
-    radial-gradient(circle at 84% 60%, rgba(99, 216, 250, 0.075), transparent 30%),
+    radial-gradient(circle at 16% 38%, rgba(99, 216, 250, 0.075), transparent 29%),
+    radial-gradient(circle at 84% 60%, rgba(245, 166, 223, 0.075), transparent 30%),
     #0b0f19;
 }
 
@@ -824,10 +773,6 @@
   font-size: 0.88rem;
 }
 
-.creative-introduction-copy .text-link {
-  margin-top: 1.5rem;
-}
-
 .journey-bridge {
   --choice-accent: var(--cyan);
   display: grid;
@@ -1001,13 +946,13 @@
     font-size: 0.56rem;
   }
 
-  .branch-tree-arm--studio,
-  .branch-tree-node--studio {
+  .branch-tree-arm--creative,
+  .branch-tree-node--creative {
     left: 12%;
   }
 
-  .branch-tree-arm--creative,
-  .branch-tree-node--creative {
+  .branch-tree-arm--studio,
+  .branch-tree-node--studio {
     right: 12%;
   }
 
@@ -1016,11 +961,11 @@
     width: 76%;
   }
 
-  .branch-tree-label--studio {
+  .branch-tree-label--creative {
     left: 12%;
   }
 
-  .branch-tree-label--creative {
+  .branch-tree-label--studio {
     right: 12%;
   }
 }

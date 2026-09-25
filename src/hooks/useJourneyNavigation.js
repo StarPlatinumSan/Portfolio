@@ -22,8 +22,15 @@ export function useJourneyNavigation(stopScroll, enterChoice) {
     stopScroll()
     const heading = section.querySelector('h1, h2') ?? section
     if (focus) heading.focus({ preventScroll: true })
+    const behavior = immediate || window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'
+    if (section.dataset.scrollAlign === 'viewport') {
+      const sectionTop = section.getBoundingClientRect().top + window.scrollY
+      const centeredTop = sectionTop - Math.max(0, (window.innerHeight - section.offsetHeight) / 2)
+      window.scrollTo({ top: centeredTop, behavior })
+      return
+    }
     section.scrollIntoView({
-      behavior: immediate || window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+      behavior,
       block: 'start',
     })
   }, [stopScroll])
@@ -92,13 +99,19 @@ export function useJourneyNavigation(stopScroll, enterChoice) {
 
   useEffect(() => {
     let frame = null
-    const sections = Array.from(document.querySelectorAll('main section[id]')).filter((section) => !section.closest('[hidden]'))
     const sync = () => {
       frame = null
       const probe = window.innerHeight * 0.35
       let current = 'top'
+      let closestTop = Number.NEGATIVE_INFINITY
+      const sections = document.querySelectorAll('main section[id]')
       for (const section of sections) {
-        if (section.getBoundingClientRect().top <= probe) current = section.id
+        if (section.closest('[hidden]')) continue
+        const top = section.getBoundingClientRect().top
+        if (top <= probe && top > closestTop) {
+          closestTop = top
+          current = section.id
+        }
       }
       setActiveSection(current)
     }

@@ -5,10 +5,8 @@ export function JourneyTransitions({ copy }) {
   return (
     <>
       <div className="scene-transition" aria-hidden="true">
-        <span className="scene-transition-glow" />
-        <span className="scene-transition-line scene-transition-line--left" />
-        <span className="scene-transition-line scene-transition-line--right" />
-        <span className="scene-transition-node" />
+        <span className="scene-transition-rule" />
+        <span className="scene-transition-marker" />
       </div>
       <div className="branch-transition" aria-hidden="true">
         <div className="branch-transition-copy">
@@ -19,12 +17,12 @@ export function JourneyTransitions({ copy }) {
           <span className="branch-tree-origin" />
           <span className="branch-tree-trunk" />
           <span className="branch-tree-rail" />
-          <span className="branch-tree-arm branch-tree-arm--studio" />
           <span className="branch-tree-arm branch-tree-arm--creative" />
-          <span className="branch-tree-node branch-tree-node--studio" />
+          <span className="branch-tree-arm branch-tree-arm--studio" />
           <span className="branch-tree-node branch-tree-node--creative" />
-          <span className="branch-tree-label branch-tree-label--studio">{copy.transition.studio}</span>
+          <span className="branch-tree-node branch-tree-node--studio" />
           <span className="branch-tree-label branch-tree-label--creative">{copy.transition.creative}</span>
+          <span className="branch-tree-label branch-tree-label--studio">{copy.transition.studio}</span>
         </div>
       </div>
     </>
@@ -67,7 +65,7 @@ export function JourneyProgress({ activeSection, copy }) {
 
 export function JourneyChoice({ copy, paths }) {
   return (
-    <section className="journey-choice" id="choose" aria-labelledby="choice-title">
+    <section className="journey-choice" id="choose" aria-labelledby="choice-title" data-scroll-align="viewport">
       <div className="choice-atmosphere" aria-hidden="true">
         <span />
         <span />
@@ -80,7 +78,7 @@ export function JourneyChoice({ copy, paths }) {
         <p data-reveal>{copy.introduction}</p>
       </header>
       <div className="choice-panels">
-        {['studio', 'creative'].map((id, index) => (
+        {['creative', 'studio'].map((id, index) => (
           <a className={`choice-panel choice-panel--${id}`} href={`#${id}`} key={id}
             aria-labelledby={`choice-${id}-title`} aria-describedby={`choice-${id}-details`}>
             <div className="choice-panel-top">
@@ -123,7 +121,6 @@ export function CreativeIntroduction({ copy }) {
       <div className="creative-introduction-copy" data-reveal>
         <p>{copy.description}</p>
         <p>{copy.detail}</p>
-        <a className="text-link" href="#visual-story-writing">{copy.action}<ArrowDown className="text-link-icon" /></a>
       </div>
     </section>
   )

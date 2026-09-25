@@ -39,9 +39,9 @@ export function useSiteMotion(scope, pathKey) {
             if (visuals.length) timeline.fromTo(visuals, { y: 30, clipPath: 'inset(6% 0 6% 0)', opacity: 0 },
               { y: 0, clipPath: 'inset(0% 0 0% 0)', opacity: 1, duration: 1, stagger: 0.12 }, 0)
             if (target.id === 'choose') {
-              timeline.fromTo('.choice-panel--studio', { x: -38, opacity: 0, clipPath: 'inset(0 12% 0 0)' },
+              timeline.fromTo('.choice-panel--creative', { x: -38, opacity: 0, clipPath: 'inset(0 12% 0 0)' },
                 { x: 0, opacity: 1, clipPath: 'inset(0 0% 0 0)', duration: 1.1 }, 0.18)
-              timeline.fromTo('.choice-panel--creative', { x: 38, opacity: 0, clipPath: 'inset(0 0 0 12%)' },
+              timeline.fromTo('.choice-panel--studio', { x: 38, opacity: 0, clipPath: 'inset(0 0 0 12%)' },
                 { x: 0, opacity: 1, clipPath: 'inset(0 0 0 0%)', duration: 1.1 }, 0.3)
             }
           })

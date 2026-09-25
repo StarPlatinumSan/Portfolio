@@ -8,7 +8,6 @@ const imageAspectRatios = {
 	"/JeSuisQuark.png": "1280 / 705",
 	"/quark1.png": "1480 / 761",
 	"/quark2.png": "1486 / 792",
-	"/Prophunt.jpg": "3 / 2",
 	"/MaVille.png": "1915 / 941",
 	"/map.png": "1355 / 910",
 	"/map2.png": "889 / 858",
@@ -65,10 +64,6 @@ const imageAltText = {
 	"/quark2.png": {
 		en: "Game interface from Je Suis Quark",
 		fr: "Interface du jeu Je Suis Quark",
-	},
-	"/Prophunt.jpg": {
-		en: "Unreal Engine environment for the Prop Hunt prototype",
-		fr: "Environnement Unreal Engine du prototype Prop Hunt",
 	},
 	"/MaVille.png": {
 		en: "MaVille civic platform interface",
@@ -187,25 +182,6 @@ const projects = [
 		href: null,
 		accent: "#63d8fa",
 		images: projectImages(["/JeSuisQuark.png", "/quark1.png", "/quark2.png"], "Je Suis Quark"),
-	},
-	{
-		id: "prop-hunt",
-		title: "Prop Hunt",
-		year: { en: "Work in progress", fr: "En cours" },
-		yearLabel: { en: "Status", fr: "Statut" },
-		category: { en: "Game prototype", fr: "Prototype de jeu" },
-		role: {
-			en: "Gameplay & level design",
-			fr: "Gameplay et level design",
-		},
-		description: {
-			en: "An in-progress game prototype focused on learning Blueprints on Unreal Engine 5 through the building of a custom Prop Hunt game.",
-			fr: "Un prototype en cours du jeu Prop Hunt pour améliorer mes compétences en Blueprints Unreal Engine 5.",
-		},
-		technologies: ["Game Design", "Level Design", "Prototyping"],
-		href: null,
-		accent: "#9188ef",
-		images: projectImages("/Prophunt.jpg", "Prop Hunt"),
 	},
 	{
 		id: "maville",
@@ -388,17 +364,13 @@ export const echoesFeature = {
 		en: "Interactive fictional universe",
 		fr: "Univers fictif interactif",
 	},
-	status: {
-		en: "Constantly evolving",
-		fr: "En constante évolution",
-	},
 	summary: {
-		en: "Echoes is the fictional universe I am building to connect my stories. Its interactive map invites you to discover the places and tales that bring it to life.",
-		fr: "Echoes est l’univers fictif que je construis pour relier mes récits. Sa carte interactive invite à découvrir les lieux et les histoires qui lui donnent vie.",
+		en: "Echoes is the fictional universe I am building to connect my stories. Its interactive map invites you to discover its places and stories within an ever-evolving world.",
+		fr: "Echoes est l’univers fictif que je construis pour relier mes récits. Sa carte interactive invite à découvrir les lieux et les histoires qui y sont dans un monde en permanente évolution.",
 	},
 	transmedia: {
-		en: "A world created to unite interactive films, books, and games set within Echoes.",
-		fr: "Mon monde destiné à réunir des films interactifs, des livres et des jeux se déroulant dans l'univers d'Echoes.",
+		en: "My world, designed to bring together interactive films, books, and games set in the Echoes universe.",
+		fr: "Mon monde destiné à réunir des films interactifs, livres, oneshots D&D et des jeux à embranchements se déroulant dans l'univers d'Echoes.",
 	},
 	linksTitle: {
 		en: "Explore the universe",
@@ -406,26 +378,18 @@ export const echoesFeature = {
 	},
 	presentation: {
 		fr: {
-			tagline: "Là où mes histoires prennent vie.",
-			atlas: "L’atlas d’Echoes",
-			preview: "Un aperçu de mon monde",
+			tagline: "L'Univers de mes histoires.",
 			exploreMap: "Explorer la carte",
-			expand: "Agrandir",
-			close: "Fermer l’aperçu de la carte",
-			newTab: "S’ouvre dans un nouvel onglet",
-			transmediaTitle: "Un univers, plusieurs formes de récit.",
-			mediums: ["Films interactifs", "Livres", "Jeux"],
+			newTab: "",
+			transmediaTitle: "Un univers avec plusieurs formes de récit.",
+			mediums: ["", "", ""],
 		},
 		en: {
-			tagline: "Where my stories come to life.",
-			atlas: "The Echoes atlas",
-			preview: "A glimpse into my world",
+			tagline: "The universe of my stories.",
 			exploreMap: "Explore the map",
-			expand: "Expand",
-			close: "Close the map preview",
-			newTab: "Opens in a new tab",
+			newTab: "",
 			transmediaTitle: "One universe, many ways to tell a story.",
-			mediums: ["Interactive films", "Books", "Games"],
+			mediums: ["", "", ""],
 		},
 	},
 	links: [
@@ -460,7 +424,7 @@ export const studioFeature = {
 	format: { en: "FMV narrative game", fr: "Jeu narratif FMV" },
 	status: { en: "Q4 2026 on Steam", fr: "Q4 2026 sur Steam" },
 	summary: {
-		en: "The flagship Fracture Interactive project: a live-action branching narrative where player choices reshape scenes, the storyline and endings.",
+		en: "Fracture Interactive's flagship project: a branching Unity FMV film where choices fracture the story, scenes, and endings. Planned for release on Steam in Q4 2026.",
 		fr: "Le projet phare de Fracture Interactive : un film FMV Unity à embranchements où les choix fracturent l'histoire, les scènes et les fins. Date de sortie prévue sur Steam en Q4 2026.",
 	},
 	links: [
@@ -487,7 +451,7 @@ export const siteCopy = {
 			name: "Andrei Bituleanu",
 		},
 		navigation: {
-			work: "Work",
+			work: "Projects",
 			studio: "Studio",
 			experience: "Experience",
 			education: "Education",
@@ -499,21 +463,21 @@ export const siteCopy = {
 		},
 		hero: {
 			eyebrow: "Creative developer",
-			lead: "I build story-driven",
-			accent: "interactive worlds",
+			lead: "I create worlds",
+			accent: "that are interactive and narrative",
 			description:
-				"I am Andrei Bituleanu, a narrative/game designer, web and interactive story-driven game developer. I bring together video game project direction, fullstack engineering, narrative design, and frontend design to share my passion for storytelling and interactive digital experiences.",
-			primaryAction: "Explore selected work",
+				"I am Andrei Bituleanu, a narrative game designer and a developer of web, audiovisual, digital, interactive, and narrative experiences. I combine these skills with UI/UX through my experience in design and frontend web development, and I continue to broaden them so I can share my passion for moving people and making them think through my stories.",
+			primaryAction: "Explore the projects",
 			secondaryAction: "Contact me",
-			status: "Available for work",
+			status: "Yes, that is the Belledonne mountain range",
 			focus: "Current focus",
 			focusValue: "Narrative systems, Unity FMV projects, UE5 3D worlds and interactive web experiences.",
 			profileAlt: "Portrait of Andrei Bituleanu",
 		},
 		projectSection: {
-			eyebrow: "Selected work / 2024-2026",
+			eyebrow: "Selected projects / 2024-2026",
 			title: "Projects",
-			introduction: "A collection of fullstack tools, data products, and interaction experiments. Explore at your own pace.",
+			introduction: "A collection of fullstack tools, data products, and interactive experiences. Explore at your own pace.",
 			scrollCue: "Scroll to explore",
 			previousProject: "Previous project",
 			nextProject: "Next project",
@@ -548,7 +512,7 @@ export const siteCopy = {
 		},
 		about: {
 			eyebrow: "Capabilities",
-			title: "Two disciplines, one point of view",
+			title: "Two creative disciplines",
 			introduction: "From interface systems to playable narratives, I use two complementary toolsets to create complete interactive experiences.",
 			webLabel: "Web development",
 			gameLabel: "Game development",
@@ -556,7 +520,7 @@ export const siteCopy = {
 		},
 		educationSection: {
 			eyebrow: "Education",
-			title: "A path between systems and stories",
+			title: "An international journey",
 			introduction: "",
 		},
 		relevantCourses: {
@@ -566,14 +530,14 @@ export const siteCopy = {
 		},
 		shortFilm: {
 			eyebrow: "Film project",
-			title: "Short film",
+			title: "Hostile",
 			status: "Work in Progress",
 			description: "A short-film project currently in development. More information to come.",
 			confidential: "In development",
 		},
 		contact: {
 			eyebrow: "Contact",
-			title: "Join my World.",
+			title: "Join my Universe.",
 			subtitle: "Let's tell its story.",
 			email: "Email me",
 			emailAddress: "andrei.bituleanu@umontreal.ca",
@@ -610,7 +574,7 @@ export const siteCopy = {
 			lead: "Je crée des mondes",
 			accent: "interactifs et narratifs",
 			description:
-				"Je suis Andrei Bituleanu, un designer narratif, développeur web et d'expériences vidéoludiques numériques interactives et narratives. Je combine ces compétences et continue de les élargir afin de pouvoir partager ma passion de faire vibrer et réfléchir l'humanité à travers mes histoires.",
+				"Je suis Andrei Bituleanu, un game designer narratif, développeur web et d'expériences audiovisuelles, numériques, interactives et narratives. Je combine ces compétences avec le UI/UX de par mon expérience en design et frontend web dev et continue de les élargir afin de pouvoir partager ma passion de faire vibrer et réfléchir l'humanité à travers mes histoires.",
 			primaryAction: "Explorer les projets",
 			secondaryAction: "Contacte-moi",
 			status: "C'est bien la chaîne de Belledonne",
@@ -627,7 +591,7 @@ export const siteCopy = {
 			nextProject: "Projet suivant",
 			viewProject: "Voir le projet",
 			opensInNewTab: "S’ouvre dans un nouvel onglet",
-			comingSoon: "Bientôt",
+			comingSoon: "Projet de cegep",
 			imagePending: "Image prête à être remplacée",
 			categoryLabel: "Catégorie",
 			roleLabel: "Rôle",
@@ -674,7 +638,7 @@ export const siteCopy = {
 		},
 		shortFilm: {
 			eyebrow: "Projet cinématographique",
-			title: "Court-métrage",
+			title: "Hostile",
 			status: "Work in Progress",
 			description: "Un projet de court-métrage actuellement en développement. Plus d'informations à venir.",
 			confidential: "En développement",
@@ -708,8 +672,8 @@ export const experienceItems = [
 			fr: "Application Visual Story-Writing",
 		},
 		summary: {
-			en: "Completed an internship with a professor at Université de Montréal, building a React interface for visual story manipulation with AI-assisted generation and editing.",
-			fr: "Stage réalisé avec un professeur de l'Université de Montréal : développement d'une interface React pour manipuler des récits visuellement, avec assistance IA pour la génération et l'édition.",
+			en: "Completed a four-month internship with a professor at Université de Montréal, developing a React interface for visual story manipulation with AI-assisted generation and editing.",
+			fr: "Stage de 4 mois réalisé avec un professeur de l'Université de Montréal : développement d'une interface React pour manipuler des récits visuellement, avec assistance IA pour la génération et l'édition.",
 		},
 	},
 	{
@@ -717,8 +681,8 @@ export const experienceItems = [
 		place: { en: "2 teaching contracts", fr: "2 contrats d'enseignement" },
 		role: { en: "Teaching Assistant", fr: "Auxiliaire d'enseignement" },
 		summary: {
-			en: "Held two teaching-assistant contracts across two semesters, teaching web development to Université de Montréal students in IFT1005.",
-			fr: "Deux contrats d'auxiliaire d'enseignement sur deux trimestres pour enseigner le développement web aux étudiants de l'Université de Montréal dans le cours IFT1005.",
+			en: "Held two teaching-assistant contracts across two semesters, totaling eight months, teaching web development to Université de Montréal students in IFT1005.",
+			fr: "Deux contrats d'auxiliaire d'enseignement sur deux trimestres, soit 8 mois, pour enseigner le développement web aux étudiants de l'Université de Montréal dans le cours IFT1005.",
 		},
 	},
 	{
@@ -726,8 +690,8 @@ export const experienceItems = [
 		place: { en: "Volunteer", fr: "Bénévolat" },
 		role: { en: "Frontend Developer", fr: "Développeur frontend" },
 		summary: {
-			en: "Contributed to UDEM's 2025 Hackathon app and the university physics-department journal.",
-			fr: "Contribution à l'application du Hackathon UDEM 2025 et au journal du département de physique.",
+			en: "Designed and developed the frontend for the UDEM 2025 Hackathon web app and the physics department's journal.",
+			fr: "Design et développement frontend de l'application web du Hackathon UDEM 2025 et au journal du département de physique.",
 		},
 	},
 ];
@@ -797,7 +761,7 @@ export const relevantCourseItems = [
 		code: "DIN3140",
 		title: {
 			en: "Design and Visualization Tools",
-			fr: "Outil de conception et visualisation",
+			fr: "Outils de conception et visualisation",
 		},
 		institution: "Université de Montréal",
 		description: {

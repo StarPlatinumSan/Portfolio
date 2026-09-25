@@ -31,7 +31,7 @@ function App() {
   const studioFeature = getStudioFeature(language)
   const { stopScroll, enterChoice } = useSmoothScroll()
   const { paths, activeSection, onNavigate } = useJourneyNavigation(stopScroll, enterChoice)
-  const pathOrder = [...paths, ...['studio', 'creative'].filter((id) => !paths.includes(id))]
+  const pathOrder = [...paths, ...['creative', 'studio'].filter((id) => !paths.includes(id))]
 
   useSiteMotion(appRef, paths.join('|'))
   useEffect(() => { document.documentElement.lang = language }, [language])
@@ -51,21 +51,22 @@ function App() {
               <>
                 <StudioSection copy={studioCopy} feature={studioFeature} />
                 <LucidSection copy={studioCopy} feature={studioFeature} project={projectById['the-lucid']} />
-                <EchoesSection feature={getEchoesFeature(language)} />
                 <ShortFilmSection copy={copy.shortFilm} />
+                <EchoesSection feature={getEchoesFeature(language)} />
               </>
             ) : (
               <>
                 <CreativeIntroduction copy={journey.about} />
+                <div className="continuous-content continuous-content--profile">
+                  <ExperienceSection copy={copy.experience} items={getExperience(language)} />
+                  <EducationSection copy={copy.educationSection} items={getEducation(language)} />
+                </div>
                 <ProjectSection project={projectById['visual-story-writing']} copy={copy.projectSection} />
                 <ProjectSection project={projectById['je-suis-quark']} copy={copy.projectSection} layout="visual-left" />
                 <ProjectSection project={projectById.maville} copy={copy.projectSection} />
-                <ProjectSection project={projectById['prop-hunt']} copy={copy.projectSection} layout="poster" workInProgress />
                 <div className="continuous-content">
                   <ProjectCollection groups={getProjectGroups(language)} copy={copy.projectSection} />
-                  <ExperienceSection copy={copy.experience} items={getExperience(language)} />
                   <SkillsSection copy={copy.about} webTools={webTools} gameTools={gameTools} />
-                  <EducationSection copy={copy.educationSection} items={getEducation(language)} />
                   <CoursesSection copy={copy.relevantCourses} items={getRelevantCourses(language)} />
                 </div>
               </>

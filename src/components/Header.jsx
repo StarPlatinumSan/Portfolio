@@ -4,8 +4,8 @@ export default function Header({ copy, journeyCopy, activeSection, language, onL
   const activePath = getJourneyForSection(activeSection)
   const links = [
     { id: 'choose', label: journeyCopy.back, active: activeSection === 'choose' },
-    { id: 'studio', label: copy.navigation.studio, active: activePath === 'studio' },
     { id: 'creative', label: journeyCopy.creativeNav, active: activePath === 'creative' },
+    { id: 'studio', label: copy.navigation.studio, active: activePath === 'studio' },
     { id: 'contact', label: copy.navigation.contact, active: activeSection === 'contact' },
   ]
   return (

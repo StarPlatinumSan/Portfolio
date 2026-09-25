@@ -33,10 +33,7 @@ export function useSmoothScroll() {
     }
     cancelRef.current = cancel
 
-    const choiceTop = () => Math.max(0,
-      choice.getBoundingClientRect().top + window.scrollY -
-      (document.querySelector('.site-header')?.offsetHeight ?? 80) - 16,
-    )
+    const choiceTop = () => Math.max(0, choice.getBoundingClientRect().top + window.scrollY)
     const canEnter = () => !introUsed && !reduced.matches &&
       window.scrollY < choiceTop() - 8 &&
       // A tall mobile hero can be read normally before its exit transition.

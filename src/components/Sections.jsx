@@ -9,7 +9,6 @@ function SectionHeading({ eyebrow, title, id, introduction }) {
   return (
     <header className="section-heading">
       <p className="eyebrow" data-reveal>
-        <span />
         {eyebrow}
       </p>
       <h2 id={id} tabIndex="-1" data-reveal>
@@ -21,16 +20,6 @@ function SectionHeading({ eyebrow, title, id, introduction }) {
 }
 
 export function EchoesSection({ feature }) {
-  const previewRef = useRef(null)
-  const closeOnBackdrop = (event) => {
-    if (event.target !== event.currentTarget) return
-    const bounds = event.currentTarget.getBoundingClientRect()
-    if (event.clientX < bounds.left || event.clientX > bounds.right ||
-        event.clientY < bounds.top || event.clientY > bounds.bottom) {
-      previewRef.current.close()
-    }
-  }
-
   return (
     <section
       className="page-section echoes-section"
@@ -58,31 +47,13 @@ export function EchoesSection({ feature }) {
         </header>
 
         <figure className="echoes-atlas" data-reveal-media>
-          <div className="echoes-atlas-heading">
-            <span>{feature.presentation.atlas}</span>
-            <span>{feature.status}</span>
-          </div>
           <div className="echoes-map">
             <a className="echoes-map-link" href={feature.primaryHref} target="_blank" rel="noopener noreferrer"
               aria-label={`${feature.presentation.exploreMap}. ${feature.presentation.newTab}`}>
               <img src={resolvePublicAsset(feature.primaryImage.src)} alt={feature.primaryImage.alt}
                 width="861" height="645" loading="lazy" decoding="async" />
             </a>
-            <button className="echoes-expand" type="button" onClick={() => previewRef.current.showModal()}
-              aria-haspopup="dialog" aria-controls="echoes-preview">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-                <path d="M9 4H4v5m11-5h5v5M4 15v5h5m11-5v5h-5" />
-              </svg>
-              {feature.presentation.expand}
-            </button>
           </div>
-          <figcaption className="echoes-atlas-caption">
-            <span>{feature.presentation.preview}</span>
-            <a href={feature.primaryHref} target="_blank" rel="noopener noreferrer"
-              aria-describedby="echoes-link-note">
-              {feature.presentation.exploreMap}<ArrowUpRight />
-            </a>
-          </figcaption>
         </figure>
 
         <div className="echoes-transmedia" data-reveal>
@@ -95,27 +66,6 @@ export function EchoesSection({ feature }) {
           </ul>
         </div>
       </div>
-
-      <dialog ref={previewRef} className="echoes-dialog" id="echoes-preview"
-        aria-labelledby="echoes-preview-title" onClick={closeOnBackdrop}>
-        <div className="echoes-dialog-heading">
-          <h3 id="echoes-preview-title">{feature.presentation.atlas}</h3>
-          <button type="button" onClick={() => previewRef.current.close()} aria-label={feature.presentation.close}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-              <path d="m6 6 12 12M6 18 18 6" />
-            </svg>
-          </button>
-        </div>
-        <img className="echoes-dialog-map" src={resolvePublicAsset(feature.primaryImage.src)} alt={feature.primaryImage.alt}
-          width="861" height="645" loading="lazy" decoding="async" />
-        <div className="echoes-atlas-caption">
-          <span>{feature.presentation.preview}</span>
-          <a href={feature.primaryHref} target="_blank" rel="noopener noreferrer"
-            aria-label={`${feature.presentation.exploreMap}. ${feature.presentation.newTab}`}>
-            {feature.presentation.exploreMap}<ArrowUpRight />
-          </a>
-        </div>
-      </dialog>
     </section>
   )
 }
@@ -128,6 +78,7 @@ export function StudioSection({ copy, feature }) {
       className="page-section studio-section"
       id="studio"
       aria-labelledby="studio-title"
+      data-scroll-align="viewport"
     >
       <div className="studio-overview section-shell">
         <div className="studio-overview-mark" data-reveal-media>
@@ -140,7 +91,6 @@ export function StudioSection({ copy, feature }) {
 
         <div className="studio-overview-copy">
           <p className="eyebrow" data-reveal>
-            <span />
             {copy.eyebrow}
           </p>
           <h2 id="studio-title" tabIndex="-1" data-reveal>
@@ -168,13 +118,13 @@ export function LucidSection({ copy, feature, project }) {
       className="page-section lucid-section"
       id="the-lucid"
       aria-labelledby="the-lucid-title"
+      data-scroll-align="viewport"
       style={{ '--project-accent': project.accent }}
     >
 
       <div className="lucid-section-inner section-shell">
         <div className="lucid-section-copy">
           <p className="eyebrow" data-reveal>
-            <span />
             {copy.featuredProject}
           </p>
           <h2 id="the-lucid-title" tabIndex="-1" data-reveal>
@@ -230,7 +180,6 @@ export function ShortFilmSection({ copy }) {
       <div className="short-film-section-frame section-shell" data-reveal-media>
         <div className="short-film-section-copy">
           <p className="eyebrow" data-reveal>
-            <span />
             {copy.eyebrow}
           </p>
           <h2 id="short-film-title" tabIndex="-1" data-reveal>
@@ -629,7 +578,6 @@ export function ContactSection({ copy, footerCopy }) {
       <div className="contact-section-inner section-shell">
         <div className="contact-section-copy">
           <p className="eyebrow" data-reveal>
-            <span />
             {copy.eyebrow}
           </p>
           <h2 id="contact-title" tabIndex="-1" data-reveal>
