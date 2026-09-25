@@ -483,6 +483,9 @@ export const studioFeature = {
 export const siteCopy = {
 	en: {
 		languageName: "English",
+		identity: {
+			name: "Andrei Bituleanu",
+		},
 		navigation: {
 			work: "Work",
 			studio: "Studio",
@@ -573,14 +576,24 @@ export const siteCopy = {
 			title: "Join my World.",
 			subtitle: "Let's tell its story.",
 			email: "Email me",
+			emailAddress: "andrei.bituleanu@umontreal.ca",
 			github: "GitHub",
+			githubHandle: "@StarPlatinumSan",
+			githubUrl: "https://github.com/StarPlatinumSan",
 			linkedin: "LinkedIn",
+			linkedinName: "Andrei Bituleanu",
+			linkedinUrl: "https://www.linkedin.com/in/andrei-bituleanu-65b1832aa/",
+			location: "Montréal, QC",
+			year: "2026",
 			backToTop: "Back to top",
 		},
 		footer: "Andrei Bituleanu / Creative development",
 	},
 	fr: {
 		languageName: "Français",
+		identity: {
+			name: "Andrei Bituleanu",
+		},
 		navigation: {
 			work: "Projets",
 			studio: "Studio",
@@ -671,8 +684,15 @@ export const siteCopy = {
 			title: "Rejoins mon Univers.",
 			subtitle: "Racontons son histoire.",
 			email: "Me contacter",
+			emailAddress: "andrei.bituleanu@umontreal.ca",
 			github: "GitHub",
+			githubHandle: "@StarPlatinumSan",
+			githubUrl: "https://github.com/StarPlatinumSan",
 			linkedin: "LinkedIn",
+			linkedinName: "Andrei Bituleanu",
+			linkedinUrl: "https://www.linkedin.com/in/andrei-bituleanu-65b1832aa/",
+			location: "Montréal, QC",
+			year: "2026",
 			backToTop: "Retour en haut",
 		},
 		footer: "Andrei Bituleanu / Développement créatif",

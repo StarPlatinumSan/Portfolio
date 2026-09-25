@@ -639,27 +639,27 @@ export function ContactSection({ copy, footerCopy }) {
         </div>
 
         <div className="contact-links" data-reveal-media>
-          <a href="mailto:andrei.bituleanu@umontreal.ca">
+          <a href={`mailto:${copy.emailAddress}`}>
             <span>{copy.email}</span>
-            <small>andrei.bituleanu@umontreal.ca</small>
+            <small>{copy.emailAddress}</small>
             <ArrowUpRight />
           </a>
           <a
-            href="https://github.com/StarPlatinumSan"
+            href={copy.githubUrl}
             target="_blank"
             rel="noreferrer"
           >
             <span>{copy.github}</span>
-            <small>@StarPlatinumSan</small>
+            <small>{copy.githubHandle}</small>
             <ArrowUpRight />
           </a>
           <a
-            href="https://www.linkedin.com/in/andrei-bituleanu-65b1832aa/"
+            href={copy.linkedinUrl}
             target="_blank"
             rel="noreferrer"
           >
             <span>{copy.linkedin}</span>
-            <small>Andrei Bituleanu</small>
+            <small>{copy.linkedinName}</small>
             <ArrowUpRight />
           </a>
         </div>
@@ -667,9 +667,9 @@ export function ContactSection({ copy, footerCopy }) {
 
       <footer className="site-footer section-shell">
         <p>{footerCopy}</p>
-        <p>Montréal, QC</p>
+        <p>{copy.location}</p>
         <a href="#top">{copy.backToTop}</a>
-        <span>2026</span>
+        <span>{copy.year}</span>
       </footer>
     </section>
   )

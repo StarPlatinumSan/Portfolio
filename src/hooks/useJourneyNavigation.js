@@ -6,13 +6,15 @@ const readHash = () => {
   catch { return 'top' }
 }
 
-export function useJourneyNavigation(stopScroll) {
+export function useJourneyNavigation(stopScroll, enterChoice) {
   const [paths, setPaths] = useState(() => {
     const path = getJourneyForSection(readHash())
     return path ? [path] : []
   })
   const [activeSection, setActiveSection] = useState(readHash)
   const pending = useRef(null)
+  const branching = useRef(false)
+  const branchTimers = useRef([])
 
   const scrollTo = useCallback((id, immediate = false, focus = false) => {
     const section = document.getElementById(id)
@@ -27,13 +29,46 @@ export function useJourneyNavigation(stopScroll) {
   }, [stopScroll])
 
   const navigate = useCallback((id, { immediate = false, focus = true } = {}) => {
+    if (id === 'choose' && !immediate && enterChoice?.(focus)) return
+
     const path = getJourneyForSection(id)
+    const shouldBranch = path === id && !immediate &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    if (shouldBranch && branching.current) return
+    if (shouldBranch && !branching.current) {
+      stopScroll()
+      branching.current = true
+      document.documentElement.dataset.branch = path
+      document.documentElement.classList.add('is-branching')
+
+      const revealTimer = window.setTimeout(() => {
+        if (!paths.includes(path)) {
+          pending.current = { id, immediate: true, focus }
+          setPaths((current) => current.includes(path) ? current : [...current, path])
+        } else scrollTo(id, true, focus)
+      }, 680)
+      const finishTimer = window.setTimeout(() => {
+        document.documentElement.classList.remove('is-branching')
+        delete document.documentElement.dataset.branch
+        branching.current = false
+      }, 1520)
+      branchTimers.current = [revealTimer, finishTimer]
+      return
+    }
+
     if (path && !paths.includes(path)) {
       stopScroll()
       pending.current = { id, immediate, focus }
       setPaths((current) => current.includes(path) ? current : [...current, path])
     } else scrollTo(id, immediate, focus)
-  }, [paths, scrollTo, stopScroll])
+  }, [enterChoice, paths, scrollTo, stopScroll])
+
+  useEffect(() => () => {
+    branchTimers.current.forEach(window.clearTimeout)
+    document.documentElement.classList.remove('is-branching')
+    delete document.documentElement.dataset.branch
+  }, [])
 
   useLayoutEffect(() => {
     if (!pending.current) return

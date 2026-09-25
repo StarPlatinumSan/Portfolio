@@ -5,7 +5,9 @@ const interactive = 'a, button, input, textarea, select, summary, dialog, [conte
 
 export function useSmoothScroll() {
   const cancelRef = useRef(() => {})
+  const enterRef = useRef(() => false)
   const stopScroll = useCallback(() => cancelRef.current(), [])
+  const enterChoice = useCallback((focus = false) => enterRef.current(focus), [])
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -27,6 +29,7 @@ export function useSmoothScroll() {
       previousTime = null
       lastScroll = null
       intro = null
+      document.documentElement.classList.remove('is-transitioning-choice')
     }
     cancelRef.current = cancel
 
@@ -41,8 +44,11 @@ export function useSmoothScroll() {
 
     const tick = (time) => {
       if (intro) {
-        const progress = Math.min(1, (time - intro.time) / 1050)
-        window.scrollTo({ top: intro.from + (choiceTop() - intro.from) * (1 - (1 - progress) ** 4), behavior: 'instant' })
+        const progress = Math.min(1, (time - intro.time) / 1150)
+        if (!intro.swapped && progress >= 0.46) {
+          intro.swapped = true
+          window.scrollTo({ top: choiceTop(), behavior: 'instant' })
+        }
         if (progress === 1) {
           const focus = intro.focus
           cancel()
@@ -64,12 +70,16 @@ export function useSmoothScroll() {
       frame = requestAnimationFrame(tick)
     }
 
-    const enterChoice = (focus = false) => {
+    const beginChoice = (focus = false) => {
+      if (!canEnter()) return false
       cancel()
       introUsed = true
-      intro = { from: window.scrollY, time: performance.now(), focus }
+      intro = { time: performance.now(), focus, swapped: false }
+      document.documentElement.classList.add('is-transitioning-choice')
       frame = requestAnimationFrame(tick)
+      return true
     }
+    enterRef.current = beginChoice
 
     const nestedScroll = (element, delta) => {
       for (let node = element; node instanceof HTMLElement && node !== document.body; node = node.parentElement) {
@@ -85,12 +95,12 @@ export function useSmoothScroll() {
       if (event.defaultPrevented || event.ctrlKey || event.metaKey || event.shiftKey || reduced.matches ||
           Math.abs(event.deltaX) > Math.abs(event.deltaY) || !event.deltaY || nestedScroll(event.target, event.deltaY)) return
       if (intro) {
-        if (event.deltaY > 0) { event.preventDefault(); return }
-        cancel()
+        event.preventDefault()
+        return
       }
       if (event.deltaY > 0 && canEnter()) {
         event.preventDefault()
-        enterChoice()
+        beginChoice()
         return
       }
       if (!pointer.matches) return
@@ -107,7 +117,7 @@ export function useSmoothScroll() {
       if (event.defaultPrevented || event.ctrlKey || event.altKey || event.metaKey || event.target.closest(interactive)) return
       if (['ArrowDown', 'PageDown', ' '].includes(event.key) && !event.shiftKey && (intro || canEnter())) {
         event.preventDefault()
-        if (!intro) enterChoice(true)
+        if (!intro) beginChoice(true)
       } else if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ', 'Escape'].includes(event.key)) {
         cancel()
         if (event.key === 'End') introUsed = true
@@ -125,14 +135,15 @@ export function useSmoothScroll() {
         if (event.cancelable) event.preventDefault()
       } else if (delta > 35 && canEnter()) {
         if (event.cancelable) event.preventDefault()
-        enterChoice()
+        beginChoice()
       }
     }
     const onClick = (event) => {
-      if (event.target.closest('a[href^="#"]')) {
-        cancel()
-        introUsed = true
-      }
+      const link = event.target.closest('a[href^="#"]')
+      if (!link) return
+      if (link.hash === '#choose' && canEnter()) return
+      cancel()
+      introUsed = true
     }
     const onScroll = () => {
       if (target !== null && lastScroll !== null && Math.abs(window.scrollY - lastScroll) > 2) cancel()
@@ -152,6 +163,7 @@ export function useSmoothScroll() {
     return () => {
       cancel()
       cancelRef.current = () => {}
+      enterRef.current = () => false
       window.removeEventListener('wheel', onWheel)
       window.removeEventListener('keydown', onKey)
       window.removeEventListener('touchstart', onTouchStart)
@@ -164,5 +176,5 @@ export function useSmoothScroll() {
     }
   }, [])
 
-  return stopScroll
+  return { stopScroll, enterChoice }
 }

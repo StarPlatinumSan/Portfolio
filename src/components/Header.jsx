@@ -5,13 +5,13 @@ export default function Header({ copy, journeyCopy, activeSection, language, onL
   const links = [
     { id: 'choose', label: journeyCopy.back, active: activeSection === 'choose' },
     { id: 'studio', label: copy.navigation.studio, active: activePath === 'studio' },
-    { id: 'creative', label: language === 'fr' ? 'Mon parcours' : 'My journey', active: activePath === 'creative' },
+    { id: 'creative', label: journeyCopy.creativeNav, active: activePath === 'creative' },
     { id: 'contact', label: copy.navigation.contact, active: activeSection === 'contact' },
   ]
   return (
     <header className="site-header" data-header-reveal>
-      <a className="brand" href="#top" aria-label={`Andrei Bituleanu, ${copy.navigation.home}`}>
-        <span className="brand-name">Andrei Bituleanu<small>{copy.hero.eyebrow}</small></span>
+      <a className="brand" href="#top" aria-label={`${copy.identity.name}, ${copy.navigation.home}`}>
+        <span className="brand-name">{copy.identity.name}<small>{copy.hero.eyebrow}</small></span>
       </a>
       <nav className="desktop-nav" aria-label={copy.navigation.primaryLabel}>
         {links.map((link) => <a key={link.id} href={`#${link.id}`} aria-current={link.active ? 'location' : undefined}>{link.label}</a>)}

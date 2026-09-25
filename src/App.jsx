@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import ProjectSection from './components/ProjectSection'
-import { CreativeIntroduction, JourneyBridge, JourneyChoice } from './components/Journey'
+import {
+  CreativeIntroduction, JourneyBridge, JourneyChoice, JourneyProgress, JourneyTransitions,
+} from './components/Journey'
 import {
   ProjectCollection, ContactSection, CoursesSection, EchoesSection,
   EducationSection, ExperienceSection, LucidSection, ShortFilmSection,
@@ -27,8 +29,8 @@ function App() {
   const studioCopy = { ...copy.studio, technologiesLabel: copy.projectSection.technologiesLabel }
   const projectById = Object.fromEntries(getProjects(language).map((project) => [project.id, project]))
   const studioFeature = getStudioFeature(language)
-  const stopScroll = useSmoothScroll()
-  const { paths, activeSection, onNavigate } = useJourneyNavigation(stopScroll)
+  const { stopScroll, enterChoice } = useSmoothScroll()
+  const { paths, activeSection, onNavigate } = useJourneyNavigation(stopScroll, enterChoice)
   const pathOrder = [...paths, ...['studio', 'creative'].filter((id) => !paths.includes(id))]
 
   useSiteMotion(appRef, paths.join('|'))
@@ -37,6 +39,7 @@ function App() {
   return (
     <div className="portfolio" ref={appRef} onClick={onNavigate}>
       <a className="skip-link" href="#main-content">{copy.navigation.skipToContent}</a>
+      <JourneyTransitions copy={journey} />
       <Header copy={copy} journeyCopy={journey} activeSection={activeSection} language={language}
         onLanguageChange={() => setLanguage((current) => current === 'en' ? 'fr' : 'en')} />
       <main id="main-content" tabIndex="-1">
@@ -72,6 +75,7 @@ function App() {
         ))}
         <ContactSection copy={copy.contact} footerCopy={copy.footer} />
       </main>
+      <JourneyProgress activeSection={activeSection} copy={journey} />
     </div>
   )
 }

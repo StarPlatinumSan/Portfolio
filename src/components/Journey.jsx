@@ -1,8 +1,79 @@
 import { ArrowDown, ArrowUpRight } from './Icons'
+import { getJourneyForSection, journeySections } from '../data/journeys'
+
+export function JourneyTransitions({ copy }) {
+  return (
+    <>
+      <div className="scene-transition" aria-hidden="true">
+        <span className="scene-transition-glow" />
+        <span className="scene-transition-line scene-transition-line--left" />
+        <span className="scene-transition-line scene-transition-line--right" />
+        <span className="scene-transition-node" />
+      </div>
+      <div className="branch-transition" aria-hidden="true">
+        <div className="branch-transition-copy">
+          <span>{copy.transition.eyebrow}</span>
+          <strong>{copy.transition.title}</strong>
+        </div>
+        <div className="branch-tree">
+          <span className="branch-tree-origin" />
+          <span className="branch-tree-trunk" />
+          <span className="branch-tree-rail" />
+          <span className="branch-tree-arm branch-tree-arm--studio" />
+          <span className="branch-tree-arm branch-tree-arm--creative" />
+          <span className="branch-tree-node branch-tree-node--studio" />
+          <span className="branch-tree-node branch-tree-node--creative" />
+          <span className="branch-tree-label branch-tree-label--studio">{copy.transition.studio}</span>
+          <span className="branch-tree-label branch-tree-label--creative">{copy.transition.creative}</span>
+        </div>
+      </div>
+    </>
+  )
+}
+
+export function JourneyProgress({ activeSection, copy }) {
+  const path = getJourneyForSection(activeSection)
+  if (!path) return null
+
+  const sections = journeySections[path]
+  const currentIndex = Math.max(0, sections.indexOf(activeSection))
+  const progress = sections.length > 1 ? currentIndex / (sections.length - 1) : 1
+  const labels = copy.progress.labels[path]
+
+  return (
+    <nav
+      className={`journey-progress journey-progress--${path}`}
+      aria-label={copy.progress.ariaLabel}
+      style={{ '--journey-progress': progress }}
+    >
+      <div className="journey-progress-meta">
+        <span>{copy.progress[path]}</span>
+        <strong>{labels[activeSection]}</strong>
+        <span>{String(currentIndex + 1).padStart(2, '0')} / {String(sections.length).padStart(2, '0')}</span>
+      </div>
+      <div className="journey-progress-track" aria-hidden="true">
+        <span className="journey-progress-fill" />
+        {sections.map((id, index) => (
+          <span
+            className={index <= currentIndex ? 'is-reached' : undefined}
+            key={id}
+            style={{ '--node-position': sections.length > 1 ? index / (sections.length - 1) : 0 }}
+          />
+        ))}
+      </div>
+    </nav>
+  )
+}
 
 export function JourneyChoice({ copy, paths }) {
   return (
-    <section className="journey-choice section-shell" id="choose" aria-labelledby="choice-title">
+    <section className="journey-choice" id="choose" aria-labelledby="choice-title">
+      <div className="choice-atmosphere" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+      </div>
+      <div className="journey-choice-inner section-shell">
       <header className="choice-heading">
         <p className="eyebrow" data-reveal>{copy.eyebrow}</p>
         <h2 id="choice-title" tabIndex="-1" data-reveal>{copy.title}</h2>
@@ -32,6 +103,7 @@ export function JourneyChoice({ copy, paths }) {
         ))}
       </div>
       <p className="choice-note" data-reveal>{copy.note}</p>
+      </div>
     </section>
   )
 }
