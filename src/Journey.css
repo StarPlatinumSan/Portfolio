@@ -1,0 +1,441 @@
+/* The entrance is the only staged scroll. All sections stay in document flow. */
+[hidden] {
+  display: none !important;
+}
+
+.hero-section {
+  height: auto;
+  min-height: 100svh;
+}
+
+.hero-scroll svg {
+  width: 1.15rem;
+  transition: transform 250ms ease;
+}
+
+.hero-scroll:hover svg {
+  transform: translateY(4px);
+}
+
+.mobile-journey-link {
+  display: none;
+}
+
+.journey-choice {
+  min-height: calc(100svh - 6rem);
+  padding-block: clamp(2rem, 4vh, 4rem);
+}
+
+.choice-heading {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  align-items: end;
+  gap: 0.9rem 3rem;
+  margin-bottom: 2.25rem;
+}
+
+.choice-heading .eyebrow {
+  grid-column: 1 / -1;
+  color: var(--muted);
+}
+
+.choice-heading h2,
+.creative-introduction h2,
+.journey-bridge h2 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 1.1;
+  letter-spacing: -0.055em;
+}
+
+.choice-heading > p:last-child {
+  max-width: 28rem;
+  justify-self: end;
+  color: var(--muted-strong);
+  font-size: 0.86rem;
+  line-height: 1.8;
+}
+
+.choice-panels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.choice-panel {
+  --choice-accent: var(--pink);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: clamp(27rem, 56svh, 36rem);
+  padding: clamp(1.35rem, 2.6vw, 2.5rem);
+  overflow: hidden;
+  isolation: isolate;
+  background: #0a0d14;
+  border: 1px solid rgba(245, 166, 223, 0.16);
+  transition: border-color 450ms ease, background 450ms ease;
+}
+
+.choice-panel--creative {
+  --choice-accent: var(--cyan);
+  background: #1b2030;
+  border-color: rgba(99, 216, 250, 0.16);
+}
+
+.choice-panel-top {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.62rem;
+  line-height: 1.5;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-strong);
+}
+
+.choice-number {
+  color: var(--choice-accent);
+  font-family: var(--display);
+}
+
+.choice-panel-top svg {
+  width: 1.3rem;
+  flex: 0 0 auto;
+  margin-left: auto;
+  color: var(--choice-accent);
+  transition: transform 450ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.choice-art {
+  position: absolute;
+  z-index: -1;
+  top: 7%;
+  right: -5%;
+  width: 73%;
+  height: 78%;
+  pointer-events: none;
+  opacity: 0.5;
+  transition: opacity 700ms ease, transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.choice-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.choice-panel--studio .choice-art {
+  mix-blend-mode: screen;
+  transform: rotate(-12deg) scale(1.1);
+}
+
+.choice-panel--creative .choice-art {
+  top: 12%;
+  right: 0;
+  width: 52%;
+  height: 64%;
+  opacity: 0.42;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, black 25%), linear-gradient(0deg, transparent, black 45%);
+  mask-composite: intersect;
+}
+
+.choice-panel--creative .choice-art img {
+  object-fit: cover;
+  object-position: 50% 35%;
+  filter: grayscale(1);
+  transition: filter 900ms ease;
+}
+
+.choice-panel-copy {
+  position: relative;
+  padding-block: 5rem 2.5rem;
+}
+
+.choice-panel h3 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(1.65rem, 3.65vw, 3.55rem);
+  line-height: 1.06;
+  letter-spacing: -0.06em;
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.choice-panel h3 em,
+.journey-next em,
+.creative-introduction h2 em {
+  display: block;
+  color: var(--choice-accent, var(--cyan));
+  font-style: normal;
+}
+
+.choice-panel-copy > p {
+  max-width: 24rem;
+  margin-top: 1.25rem;
+  color: var(--muted-strong);
+  font-size: 0.82rem;
+  line-height: 1.7;
+}
+
+.choice-panel-bottom {
+  position: relative;
+  display: grid;
+  gap: 1.4rem;
+}
+
+.choice-panel-bottom > p {
+  color: var(--muted);
+  font-size: 0.66rem;
+  line-height: 1.6;
+}
+
+.choice-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 0.65rem;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+}
+
+.choice-action svg {
+  width: 1.3rem;
+  flex: 0 0 auto;
+  color: var(--choice-accent);
+  transition: transform 450ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.choice-panel:focus-visible,
+.choice-panel:hover {
+  border-color: var(--choice-accent);
+}
+
+.choice-panel:is(:hover, :focus-visible) h3 {
+  transform: translateY(-6px);
+}
+
+.choice-panel:is(:hover, :focus-visible) .choice-panel-top svg {
+  transform: translate(3px, -3px);
+}
+
+.choice-panel:is(:hover, :focus-visible) .choice-action svg {
+  transform: translateY(4px);
+}
+
+.choice-panel--studio:is(:hover, :focus-visible) .choice-art {
+  opacity: 0.75;
+  transform: rotate(-5deg) scale(1.17);
+}
+
+.choice-panel--creative:is(:hover, :focus-visible) .choice-art {
+  opacity: 0.65;
+  transform: scale(1.04);
+}
+
+.choice-panel--creative:is(:hover, :focus-visible) img {
+  filter: grayscale(0);
+}
+
+.choice-note {
+  margin-top: 1.5rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  text-align: center;
+  line-height: 1.7;
+}
+
+.journey-path {
+  background: var(--navy-deep);
+}
+
+.creative-introduction {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: clamp(2rem, 7vw, 7rem);
+  min-height: 80svh;
+  padding-block: clamp(5rem, 12vh, 9rem);
+}
+
+.creative-introduction h2 {
+  margin-top: 1.75rem;
+  font-size: clamp(2.6rem, 5.6vw, 5.8rem);
+}
+
+.creative-disciplines {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 2.5rem;
+  font-size: 0.8rem;
+  color: var(--muted-strong);
+}
+
+.creative-disciplines span {
+  display: inline-block;
+  margin-right: 1.4rem;
+  font-size: 0.65rem;
+  color: var(--cyan);
+  font-family: var(--display);
+}
+
+.creative-introduction-copy > p:first-child {
+  font-size: clamp(1.1rem, 1.7vw, 1.55rem);
+  line-height: 1.8;
+}
+
+.creative-introduction-copy > p + p {
+  margin-top: 1.5rem;
+  color: var(--muted);
+  line-height: 1.8;
+  font-size: 0.88rem;
+}
+
+.creative-introduction-copy .text-link {
+  margin-top: 1.5rem;
+}
+
+.journey-bridge {
+  --choice-accent: var(--cyan);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: clamp(2rem, 6vw, 6rem);
+  min-height: 65svh;
+  padding-block: clamp(5rem, 10vh, 8rem);
+}
+
+.journey-bridge--studio {
+  --choice-accent: var(--pink);
+}
+
+.journey-bridge .eyebrow {
+  color: var(--choice-accent);
+}
+
+.journey-bridge h2 {
+  margin-top: 1.5rem;
+  font-size: clamp(2rem, 3.5vw, 3.5rem);
+}
+
+.journey-bridge-copy > p:not(.eyebrow) {
+  max-width: 29rem;
+  margin-top: 1.5rem;
+  color: var(--muted-strong);
+  font-size: 0.88rem;
+  line-height: 1.8;
+}
+
+.journey-bridge .text-link {
+  margin-top: 1.5rem;
+  font-size: 0.6rem;
+}
+
+.journey-next {
+  display: grid;
+  gap: 2.5rem;
+  padding: clamp(1.5rem, 3vw, 3rem);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--navy);
+  transition: background 400ms ease, border-color 400ms ease;
+}
+
+.journey-next-label {
+  color: var(--muted);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.journey-next strong {
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 3.2vw, 3.2rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.05em;
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.journey-next:is(:hover, :focus-visible) {
+  border-color: var(--choice-accent);
+  background: var(--navy-light);
+}
+
+.journey-next:is(:hover, :focus-visible) strong {
+  transform: translateX(0.5rem);
+}
+
+.journey-next:is(:hover, :focus-visible) svg {
+  transform: translate(4px, -4px);
+}
+
+@media (max-width: 1024px), (max-height: 739px) {
+  .mobile-journey-link {
+    display: block;
+    padding: 0.8rem 0.3rem;
+    font-size: 0.7rem;
+    color: var(--muted-strong);
+  }
+}
+
+@media (max-width: 760px) {
+  .choice-heading {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .choice-heading > p:last-child {
+    justify-self: start;
+  }
+
+  .choice-panels {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .choice-panel {
+    min-height: 25rem;
+  }
+
+  .choice-panel h3 {
+    font-size: clamp(1.8rem, 7.5vw, 3.4rem);
+  }
+
+  .choice-panel-copy {
+    padding-block: 3.5rem 2rem;
+  }
+
+  .creative-introduction,
+  .journey-bridge {
+    grid-template-columns: 1fr;
+  }
+
+  .journey-next strong {
+    font-size: clamp(1.8rem, 7vw, 3rem);
+  }
+}
+
+@media (max-width: 420px) {
+  .brand-name {
+    max-width: 7rem;
+    font-size: 0.56rem;
+  }
+
+  .mobile-journey-link {
+    max-width: 5rem;
+    font-size: 0.64rem;
+    text-align: right;
+  }
+
+  .choice-panel-top {
+    gap: 0.65rem;
+    font-size: 0.56rem;
+  }
+}

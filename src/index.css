@@ -45,10 +45,7 @@ body {
   min-height: 100svh;
   margin: 0;
   overflow-x: clip;
-  background:
-    radial-gradient(circle at 8% 4%, rgba(55, 142, 223, 0.13), transparent 34rem),
-    radial-gradient(circle at 92% 12%, rgba(232, 43, 183, 0.11), transparent 36rem),
-    var(--navy);
+  background: var(--navy);
 }
 
 body,

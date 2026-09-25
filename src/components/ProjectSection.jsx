@@ -36,7 +36,7 @@ export function TechnologyList({ technologies, label }) {
 
 function ProjectMeta({ project, copy }) {
   return (
-    <dl className="project-floor-meta" data-floor-animate>
+    <dl className="project-section-meta" data-reveal>
       <div>
         <dt>{copy.categoryLabel}</dt>
         <dd>{project.category}</dd>
@@ -53,7 +53,7 @@ function ProjectMeta({ project, copy }) {
   )
 }
 
-export default function ProjectFloor({
+export default function ProjectSection({
   project,
   copy,
   layout = 'visual-right',
@@ -69,48 +69,38 @@ export default function ProjectFloor({
 
   return (
     <section
-      className={`floor project-floor project-floor--${layout} ${
-        workInProgress ? 'project-floor--wip' : ''
+      className={`page-section project-section project-section--${layout} ${
+        workInProgress ? 'project-section--wip' : ''
       }`}
       id={project.id}
-      data-floor-id={project.id}
       style={{ '--project-accent': project.accent }}
       aria-labelledby={`${project.id}-title`}
     >
-      <div className="floor-grid" aria-hidden="true" />
-      <span
-        className="project-floor-backdrop"
-        data-floor-after-media
-        aria-hidden="true"
-      />
-      <span className="project-floor-word" aria-hidden="true">
-        {project.decorative}
-      </span>
 
-      <div className="project-floor-inner section-shell">
-        <div className="project-floor-copy">
-          <p className="eyebrow" data-floor-animate>
+      <div className="project-section-inner section-shell">
+        <div className="project-section-copy">
+          <p className="eyebrow" data-reveal>
             <span />
             {workInProgress ? copy.workInProgress : project.category}
           </p>
-          <h2 id={`${project.id}-title`} tabIndex="-1" data-floor-animate>
+          <h2 id={`${project.id}-title`} tabIndex="-1" data-reveal>
             {project.shortTitle ?? project.title}
           </h2>
-          <p className="project-floor-description" data-floor-animate>
+          <p className="project-section-description" data-reveal>
             {project.description}
           </p>
           <TechnologyList
             technologies={project.technologies}
             label={copy.technologiesLabel}
           />
-          <div data-floor-animate>
+          <div data-reveal>
             <ProjectAction project={project} copy={copy} />
           </div>
         </div>
 
-        <div className="project-floor-visual" data-floor-media>
+        <div className="project-section-visual" data-reveal-media>
           <div
-            className="project-floor-main"
+            className="project-section-main"
             style={{ '--media-ratio': project.images[0].aspectRatio }}
           >
             <MediaFrame
@@ -119,15 +109,10 @@ export default function ProjectFloor({
               fit="contain"
             />
           </div>
-          <span
-            className="project-floor-glow"
-            data-floor-after-media
-            aria-hidden="true"
-          />
 
           {secondaryImages.map((image, index) => (
             <div
-              className={`project-floor-detail project-floor-detail--${
+              className={`project-section-detail project-section-detail--${
                 index + 1
               }`}
               key={image.src}

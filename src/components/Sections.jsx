@@ -1,68 +1,121 @@
 import { useEffect, useRef, useState } from 'react'
 import MediaFrame from './MediaFrame'
 import { ArrowUpRight } from './Icons'
-import { ProjectAction, TechnologyList } from './ProjectFloor'
+import { ProjectAction, TechnologyList } from './ProjectSection'
 import { resolvePublicAsset } from '../data/assets'
+import './Echoes.css'
 
 function SectionHeading({ eyebrow, title, id, introduction }) {
   return (
-    <header className="floor-heading">
-      <p className="eyebrow" data-floor-animate>
+    <header className="section-heading">
+      <p className="eyebrow" data-reveal>
         <span />
         {eyebrow}
       </p>
-      <h2 id={id} tabIndex="-1" data-floor-animate>
+      <h2 id={id} tabIndex="-1" data-reveal>
         {title}
       </h2>
-      {introduction && <p data-floor-animate>{introduction}</p>}
+      {introduction && <p data-reveal>{introduction}</p>}
     </header>
   )
 }
 
 export function EchoesSection({ feature }) {
+  const previewRef = useRef(null)
+  const closeOnBackdrop = (event) => {
+    if (event.target !== event.currentTarget) return
+    const bounds = event.currentTarget.getBoundingClientRect()
+    if (event.clientX < bounds.left || event.clientX > bounds.right ||
+        event.clientY < bounds.top || event.clientY > bounds.bottom) {
+      previewRef.current.close()
+    }
+  }
+
   return (
     <section
-      className="floor echoes-floor"
+      className="page-section echoes-section"
       id="echoes"
-      data-floor-id="echoes"
       aria-labelledby="echoes-title"
     >
-      <div className="floor-grid" aria-hidden="true" />
-      <a
-        className="echoes-world section-shell"
-        href={feature.primaryHref}
-        target="_blank"
-        rel="noreferrer"
-        aria-label={feature.links[0]?.label ?? feature.title}
-        data-floor-media
-      >
-        <MediaFrame
-          image={feature.primaryImage}
-          accent="#e82bb7"
-          fit="cover"
-        />
-        <span className="echoes-world-overlay" aria-hidden="true" />
-        <span className="echoes-world-status" data-floor-animate>
-          {feature.status}
-        </span>
-
-        <div className="echoes-world-copy">
-          <p className="eyebrow" data-floor-animate>
-            <span />
+      <div className="echoes-layout section-shell">
+        <header className="echoes-intro">
+          <p className="eyebrow" data-reveal>
             {feature.format}
           </p>
-          <h2 id="echoes-title" tabIndex="-1" data-floor-animate>
+          <h2 id="echoes-title" tabIndex="-1" data-reveal>
             {feature.title}
           </h2>
-          <p data-floor-animate>{feature.summary}</p>
-          <strong data-floor-animate>{feature.transmedia}</strong>
-        </div>
+          <p className="echoes-tagline" data-reveal>{feature.presentation.tagline}</p>
+          <p className="echoes-summary" data-reveal>{feature.summary}</p>
+          <div className="echoes-entry" data-reveal>
+            <a className="echoes-entry-link" href={feature.primaryHref} target="_blank" rel="noopener noreferrer"
+              aria-describedby="echoes-link-note">
+              {feature.linksTitle}
+              <ArrowUpRight />
+            </a>
+            <p id="echoes-link-note">{feature.presentation.newTab}</p>
+          </div>
+        </header>
 
-        <span className="echoes-world-action" data-floor-animate>
-          {feature.links[0]?.label}
-          <ArrowUpRight />
-        </span>
-      </a>
+        <figure className="echoes-atlas" data-reveal-media>
+          <div className="echoes-atlas-heading">
+            <span>{feature.presentation.atlas}</span>
+            <span>{feature.status}</span>
+          </div>
+          <div className="echoes-map">
+            <a className="echoes-map-link" href={feature.primaryHref} target="_blank" rel="noopener noreferrer"
+              aria-label={`${feature.presentation.exploreMap}. ${feature.presentation.newTab}`}>
+              <img src={resolvePublicAsset(feature.primaryImage.src)} alt={feature.primaryImage.alt}
+                width="861" height="645" loading="lazy" decoding="async" />
+            </a>
+            <button className="echoes-expand" type="button" onClick={() => previewRef.current.showModal()}
+              aria-haspopup="dialog" aria-controls="echoes-preview">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                <path d="M9 4H4v5m11-5h5v5M4 15v5h5m11-5v5h-5" />
+              </svg>
+              {feature.presentation.expand}
+            </button>
+          </div>
+          <figcaption className="echoes-atlas-caption">
+            <span>{feature.presentation.preview}</span>
+            <a href={feature.primaryHref} target="_blank" rel="noopener noreferrer"
+              aria-describedby="echoes-link-note">
+              {feature.presentation.exploreMap}<ArrowUpRight />
+            </a>
+          </figcaption>
+        </figure>
+
+        <div className="echoes-transmedia" data-reveal>
+          <div>
+            <h3>{feature.presentation.transmediaTitle}</h3>
+            <p>{feature.transmedia}</p>
+          </div>
+          <ul aria-label={feature.presentation.transmediaTitle}>
+            {feature.presentation.mediums.map((medium) => <li key={medium}>{medium}</li>)}
+          </ul>
+        </div>
+      </div>
+
+      <dialog ref={previewRef} className="echoes-dialog" id="echoes-preview"
+        aria-labelledby="echoes-preview-title" onClick={closeOnBackdrop}>
+        <div className="echoes-dialog-heading">
+          <h3 id="echoes-preview-title">{feature.presentation.atlas}</h3>
+          <button type="button" onClick={() => previewRef.current.close()} aria-label={feature.presentation.close}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+              <path d="m6 6 12 12M6 18 18 6" />
+            </svg>
+          </button>
+        </div>
+        <img className="echoes-dialog-map" src={resolvePublicAsset(feature.primaryImage.src)} alt={feature.primaryImage.alt}
+          width="861" height="645" loading="lazy" decoding="async" />
+        <div className="echoes-atlas-caption">
+          <span>{feature.presentation.preview}</span>
+          <a href={feature.primaryHref} target="_blank" rel="noopener noreferrer"
+            aria-label={`${feature.presentation.exploreMap}. ${feature.presentation.newTab}`}>
+            {feature.presentation.exploreMap}<ArrowUpRight />
+          </a>
+        </div>
+      </dialog>
     </section>
   )
 }
@@ -72,14 +125,12 @@ export function StudioSection({ copy, feature }) {
 
   return (
     <section
-      className="floor studio-floor"
+      className="page-section studio-section"
       id="studio"
-      data-floor-id="studio"
       aria-labelledby="studio-title"
     >
-      <div className="floor-grid" aria-hidden="true" />
       <div className="studio-overview section-shell">
-        <div className="studio-overview-mark" data-floor-media>
+        <div className="studio-overview-mark" data-reveal-media>
           {logoSource ? (
             <img src={logoSource} alt={feature.logo.alt} loading="lazy" />
           ) : (
@@ -88,19 +139,19 @@ export function StudioSection({ copy, feature }) {
         </div>
 
         <div className="studio-overview-copy">
-          <p className="eyebrow" data-floor-animate>
+          <p className="eyebrow" data-reveal>
             <span />
             {copy.eyebrow}
           </p>
-          <h2 id="studio-title" tabIndex="-1" data-floor-animate>
+          <h2 id="studio-title" tabIndex="-1" data-reveal>
             {copy.title}
           </h2>
-          <p data-floor-animate>{copy.description}</p>
+          <p data-reveal>{copy.description}</p>
           <a
-            className="level-button"
+            className="section-button"
             href="#the-lucid"
             aria-label={`${copy.discoverProject}: ${feature.title}`}
-            data-floor-animate
+            data-reveal
           >
             <span>{copy.discoverProject}</span>
             <i aria-hidden="true">↓</i>
@@ -114,27 +165,22 @@ export function StudioSection({ copy, feature }) {
 export function LucidSection({ copy, feature, project }) {
   return (
     <section
-      className="floor lucid-floor"
+      className="page-section lucid-section"
       id="the-lucid"
-      data-floor-id="the-lucid"
       aria-labelledby="the-lucid-title"
       style={{ '--project-accent': project.accent }}
     >
-      <div className="floor-grid" aria-hidden="true" />
-      <span className="lucid-floor-word" aria-hidden="true">
-        Lucid
-      </span>
 
-      <div className="lucid-floor-inner section-shell">
-        <div className="lucid-floor-copy">
-          <p className="eyebrow" data-floor-animate>
+      <div className="lucid-section-inner section-shell">
+        <div className="lucid-section-copy">
+          <p className="eyebrow" data-reveal>
             <span />
             {copy.featuredProject}
           </p>
-          <h2 id="the-lucid-title" tabIndex="-1" data-floor-animate>
+          <h2 id="the-lucid-title" tabIndex="-1" data-reveal>
             {feature.title}
           </h2>
-          <p className="lucid-floor-description" data-floor-animate>
+          <p className="lucid-section-description" data-reveal>
             {feature.summary}
           </p>
           <TechnologyList
@@ -142,7 +188,7 @@ export function LucidSection({ copy, feature, project }) {
             label={copy.technologiesLabel}
           />
 
-          <dl className="lucid-floor-meta" data-floor-animate>
+          <dl className="lucid-section-meta" data-reveal>
             <div>
               <dt>{copy.studioLabel}</dt>
               <dd>{copy.title}</dd>
@@ -158,15 +204,14 @@ export function LucidSection({ copy, feature, project }) {
           </dl>
         </div>
 
-        <div className="lucid-floor-visual" data-floor-media>
-          <span className="lucid-floor-halo" aria-hidden="true" />
+        <div className="lucid-section-visual" data-reveal-media>
           <MediaFrame
             image={feature.primaryImage}
-            className="lucid-floor-art"
+            className="lucid-section-art"
             accent={project.accent}
             fit="contain"
           />
-          <span className="lucid-floor-status">{feature.status}</span>
+          <span className="lucid-section-status">{feature.status}</span>
         </div>
       </div>
     </section>
@@ -178,25 +223,23 @@ export function ShortFilmSection({ copy }) {
 
   return (
     <section
-      className="floor short-film-floor"
+      className="page-section short-film-section"
       id="short-film"
-      data-floor-id="short-film"
       aria-labelledby="short-film-title"
     >
-      <div className="short-film-floor-light" aria-hidden="true" />
-      <div className="short-film-floor-frame section-shell" data-floor-media>
-        <div className="short-film-floor-copy">
-          <p className="eyebrow" data-floor-animate>
+      <div className="short-film-section-frame section-shell" data-reveal-media>
+        <div className="short-film-section-copy">
+          <p className="eyebrow" data-reveal>
             <span />
             {copy.eyebrow}
           </p>
-          <h2 id="short-film-title" tabIndex="-1" data-floor-animate>
+          <h2 id="short-film-title" tabIndex="-1" data-reveal>
             {copy.title}
           </h2>
-          <strong data-floor-animate>{copy.status}</strong>
-          <p data-floor-animate>{copy.description}</p>
+          <strong data-reveal>{copy.status}</strong>
+          <p data-reveal>{copy.description}</p>
         </div>
-        <div className="short-film-floor-screen">
+        <div className="short-film-section-screen">
           <img
             src={temporaryImage}
             alt=""
@@ -212,12 +255,11 @@ export function ShortFilmSection({ copy }) {
 export function ExperienceSection({ copy, items }) {
   return (
     <section
-      className="flow-section experience-floor"
+      className="flow-section experience-section"
       id="experience"
       aria-labelledby="experience-title"
     >
-      <div className="floor-grid" aria-hidden="true" />
-      <div className="experience-floor-inner section-shell">
+      <div className="experience-section-inner section-shell">
         <SectionHeading
           eyebrow={copy.eyebrow}
           title={copy.title}
@@ -226,14 +268,13 @@ export function ExperienceSection({ copy, items }) {
         />
 
         <div className="experience-path">
-          <span className="experience-path-line" aria-hidden="true" />
           {items.map((item, index) => (
             <article
               className={`experience-card ${
                 index < 2 ? 'experience-card--featured' : ''
               }`}
               key={item.role}
-              data-floor-animate
+              data-reveal
             >
               <div className="experience-card-number" aria-hidden="true">
                 {String(index + 1).padStart(2, '0')}
@@ -274,13 +315,13 @@ function CollectionCard({ project, copy }) {
   )
 }
 
-export function CollectionFloor({ groups = [], copy }) {
+export function ProjectCollection({ groups = [], copy }) {
   const carouselRef = useRef(null)
   const carouselIndexRef = useRef(0)
   const carouselSyncTimerRef = useRef(null)
   const validGroups = groups.filter(Boolean)
   const projects = validGroups.flatMap((group) => group.projects)
-  const floorId = validGroups.at(-1)?.id ?? 'other-projects'
+  const sectionId = validGroups.at(-1)?.id ?? 'other-projects'
   const title = validGroups.at(-1)?.title ?? copy.title
   const description = validGroups
     .map((group) => group.description)
@@ -360,20 +401,19 @@ export function CollectionFloor({ groups = [], copy }) {
 
   return (
     <section
-      className="flow-section collection-floor collection-floor--carousel"
-      id={floorId}
-      aria-labelledby={`${floorId}-title`}
+      className="flow-section collection-section collection-section--carousel"
+      id={sectionId}
+      aria-labelledby={`${sectionId}-title`}
     >
-      <div className="floor-grid" aria-hidden="true" />
-      <div className="collection-floor-inner section-shell">
+      <div className="collection-section-inner section-shell">
         <SectionHeading
           eyebrow={copy.eyebrow}
           title={title}
-          id={`${floorId}-title`}
+          id={`${sectionId}-title`}
           introduction={description}
         />
 
-        <div className="collection-carousel-shell" data-floor-media>
+        <div className="collection-carousel-shell" data-reveal-media>
           <div className="collection-carousel-controls">
             <button
               type="button"
@@ -402,7 +442,7 @@ export function CollectionFloor({ groups = [], copy }) {
             id="project-carousel-viewport"
             ref={carouselRef}
             role="region"
-            aria-labelledby={`${floorId}-title`}
+            aria-labelledby={`${sectionId}-title`}
             onScroll={syncCarouselIndex}
           >
             <ul className="collection-carousel-track">
@@ -446,12 +486,11 @@ export function SkillsSection({ copy, webTools, gameTools }) {
 
   return (
     <section
-      className="flow-section skills-floor"
+      className="flow-section skills-section"
       id="skills"
       aria-labelledby="skills-title"
     >
-      <div className="floor-grid" aria-hidden="true" />
-      <div className="skills-floor-inner section-shell">
+      <div className="skills-section-inner section-shell">
         <SectionHeading
           eyebrow={copy.eyebrow}
           title={copy.title}
@@ -459,7 +498,7 @@ export function SkillsSection({ copy, webTools, gameTools }) {
           introduction={copy.introduction}
         />
 
-        <div className="skills-console" data-floor-media>
+        <div className="skills-console" data-reveal-media>
           <div
             className="tool-tabs"
             role="tablist"
@@ -518,12 +557,11 @@ export function SkillsSection({ copy, webTools, gameTools }) {
 export function EducationSection({ copy, items }) {
   return (
     <section
-      className="flow-section education-floor"
+      className="flow-section education-section"
       id="education"
       aria-labelledby="education-title"
     >
-      <div className="floor-grid" aria-hidden="true" />
-      <div className="education-floor-inner section-shell">
+      <div className="education-section-inner section-shell">
         <SectionHeading
           eyebrow={copy.eyebrow}
           title={copy.title}
@@ -532,9 +570,8 @@ export function EducationSection({ copy, items }) {
         />
 
         <div className="education-path">
-          <span className="education-path-line" aria-hidden="true" />
           {items.map((item, index) => (
-            <article className="education-card" key={item.degree} data-floor-animate>
+            <article className="education-card" key={item.degree} data-reveal>
               <span>{item.period}</span>
               <strong aria-hidden="true">0{index + 1}</strong>
               <h3>{item.degree}</h3>
@@ -551,12 +588,11 @@ export function EducationSection({ copy, items }) {
 export function CoursesSection({ copy, items }) {
   return (
     <section
-      className="flow-section courses-floor"
+      className="flow-section courses-section"
       id="relevant-courses"
       aria-labelledby="relevant-courses-title"
     >
-      <div className="floor-grid" aria-hidden="true" />
-      <div className="courses-floor-inner section-shell">
+      <div className="courses-section-inner section-shell">
         <SectionHeading
           eyebrow={copy.eyebrow}
           title={copy.title}
@@ -566,7 +602,7 @@ export function CoursesSection({ copy, items }) {
 
         <ul className="courses-grid">
           {items.map((item) => (
-            <li key={item.code} data-floor-animate>
+            <li key={item.code} data-reveal>
               <article className="course-card">
                 <div className="course-card-heading">
                   <span>{item.code}</span>
@@ -586,24 +622,23 @@ export function CoursesSection({ copy, items }) {
 export function ContactSection({ copy, footerCopy }) {
   return (
     <section
-      className="flow-section contact-floor"
+      className="flow-section contact-section"
       id="contact"
       aria-labelledby="contact-title"
     >
-      <div className="floor-grid contact-floor-grid" aria-hidden="true" />
-      <div className="contact-floor-inner section-shell">
-        <div className="contact-floor-copy">
-          <p className="eyebrow" data-floor-animate>
+      <div className="contact-section-inner section-shell">
+        <div className="contact-section-copy">
+          <p className="eyebrow" data-reveal>
             <span />
             {copy.eyebrow}
           </p>
-          <h2 id="contact-title" tabIndex="-1" data-floor-animate>
+          <h2 id="contact-title" tabIndex="-1" data-reveal>
             {copy.title}
             <em>{copy.subtitle}</em>
           </h2>
         </div>
 
-        <div className="contact-links" data-floor-media>
+        <div className="contact-links" data-reveal-media>
           <a href="mailto:andrei.bituleanu@umontreal.ca">
             <span>{copy.email}</span>
             <small>andrei.bituleanu@umontreal.ca</small>

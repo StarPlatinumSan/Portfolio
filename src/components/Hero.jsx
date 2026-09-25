@@ -10,10 +10,7 @@ const profileImage = {
 
 export default function Hero({ copy }) {
 	return (
-		<section className="floor hero-section" id="top" data-floor-id="top" aria-labelledby="hero-title">
-			<div className="hero-grid" aria-hidden="true" />
-			<div className="hero-orbit hero-orbit--one" aria-hidden="true" />
-			<div className="hero-orbit hero-orbit--two" aria-hidden="true" />
+		<section className="page-section hero-section" id="top" aria-labelledby="hero-title">
 
 			<div className="hero-copy">
 				<p className="eyebrow" data-hero-kicker>
@@ -32,7 +29,7 @@ export default function Hero({ copy }) {
 					{copy.hero.description}
 				</p>
 				<div className="hero-actions" data-hero-fade>
-					<a className="button button--primary" href="#echoes">
+					<a className="button button--primary" href="#choose">
 						{copy.hero.primaryAction}
 						<ArrowDown className="button-icon" />
 					</a>
@@ -56,10 +53,10 @@ export default function Hero({ copy }) {
 				</div>
 			</div>
 
-			<div className="hero-scroll" aria-hidden="true" data-hero-scroll>
-				<span>Scroll</span>
-				<i />
-			</div>
+			<a className="hero-scroll" href="#choose" data-hero-scroll>
+				<span>{copy.projectSection.scrollCue}</span>
+				<ArrowDown />
+			</a>
 		</section>
 	);
 }

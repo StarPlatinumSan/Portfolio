@@ -1,56 +1,27 @@
-const primaryFloorIds = ["studio", "visual-story-writing", "experience", "education", "contact"];
+import { getJourneyForSection } from '../data/journeys'
 
-const projectFloorIds = new Set(["visual-story-writing", "je-suis-quark", "maville", "short-film", "prop-hunt", "other-projects"]);
-
-export default function Header({ copy, floors, activeFloorId, language, onLanguageChange }) {
-	const primaryLabels = {
-		studio: copy.navigation.studio,
-		"visual-story-writing": copy.navigation.work,
-		experience: copy.navigation.experience,
-		education: copy.navigation.education,
-		contact: copy.navigation.contact,
-	};
-	const primaryFloors = primaryFloorIds.map((id) => floors.find((floor) => floor.id === id)).filter(Boolean);
-
-	const isPrimaryActive = (floorId) => {
-		if (floorId === "visual-story-writing") {
-			return projectFloorIds.has(activeFloorId);
-		}
-
-		if (floorId === "studio") {
-			return activeFloorId === "studio" || activeFloorId === "the-lucid";
-		}
-
-		if (floorId === "education") {
-			return activeFloorId === "education" || activeFloorId === "relevant-courses";
-		}
-
-		return activeFloorId === floorId;
-	};
-
-	return (
-		<header className="site-header" data-header-reveal>
-			<a className="brand" href="#top" aria-label={`Andrei Bituleanu, ${floors[0]?.label}`}>
-				<span className="brand-name">
-					Andrei Bituleanu
-					<small>{copy.hero.eyebrow}</small>
-				</span>
-			</a>
-
-			<nav className="desktop-nav" aria-label={copy.navigation.primaryLabel}>
-				{primaryFloors.map((floor) => (
-					<a key={floor.id} href={`#${floor.id}`} aria-current={isPrimaryActive(floor.id) ? "location" : undefined}>
-						{primaryLabels[floor.id]}
-					</a>
-				))}
-			</nav>
-
-			<div className="header-actions">
-				<button className="language-toggle" type="button" aria-label={`${copy.languageName}. ${copy.navigation.switchLanguage}`} onClick={onLanguageChange}>
-					<span>{language === "en" ? "EN" : "FR"}</span>
-					<span aria-hidden="true">/{language === "en" ? "FR" : "EN"}</span>
-				</button>
-			</div>
-		</header>
-	);
+export default function Header({ copy, journeyCopy, activeSection, language, onLanguageChange }) {
+  const activePath = getJourneyForSection(activeSection)
+  const links = [
+    { id: 'choose', label: journeyCopy.back, active: activeSection === 'choose' },
+    { id: 'studio', label: copy.navigation.studio, active: activePath === 'studio' },
+    { id: 'creative', label: language === 'fr' ? 'Mon parcours' : 'My journey', active: activePath === 'creative' },
+    { id: 'contact', label: copy.navigation.contact, active: activeSection === 'contact' },
+  ]
+  return (
+    <header className="site-header" data-header-reveal>
+      <a className="brand" href="#top" aria-label={`Andrei Bituleanu, ${copy.navigation.home}`}>
+        <span className="brand-name">Andrei Bituleanu<small>{copy.hero.eyebrow}</small></span>
+      </a>
+      <nav className="desktop-nav" aria-label={copy.navigation.primaryLabel}>
+        {links.map((link) => <a key={link.id} href={`#${link.id}`} aria-current={link.active ? 'location' : undefined}>{link.label}</a>)}
+      </nav>
+      <div className="header-actions">
+        <a className="mobile-journey-link" href="#choose">{journeyCopy.back}</a>
+        <button className="language-toggle" type="button" aria-label={`${copy.languageName}. ${copy.navigation.switchLanguage}`} onClick={onLanguageChange}>
+          <span>{language === 'en' ? 'EN' : 'FR'}</span><span aria-hidden="true">/{language === 'en' ? 'FR' : 'EN'}</span>
+        </button>
+      </div>
+    </header>
+  )
 }
