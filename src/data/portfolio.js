@@ -14,6 +14,8 @@ const imageAspectRatios = {
 	"/mtl.png": "300 / 168",
 	"/ArtificialSelection.png": "1870 / 917",
 	"/Duality.png": "1860 / 915",
+	"/jesusfullart.png": "1234 / 846",
+	"/paulfullart.png": "1242 / 856",
 };
 
 const imageFitModes = {
@@ -111,6 +113,14 @@ const imageAltText = {
 		en: "Duality project interface",
 		fr: "Interface du projet Duality",
 	},
+	"/jesusfullart.png": {
+		en: "Full character artwork of Jesus in Duality",
+		fr: "Illustration complète du personnage Jesus dans Duality",
+	},
+	"/paulfullart.png": {
+		en: "Full character artwork of Paul in Duality",
+		fr: "Illustration complète du personnage Paul dans Duality",
+	},
 };
 
 const projectImages = (sources, alt) => {
@@ -147,7 +157,7 @@ const projects = [
 			fr: "Direction créative et systèmes narratifs",
 		},
 		description: {
-			en: "A branching live-action narrative experience where player decisions fracture the story and possible endings.",
+			en: "A branching live-action narrative experience where player decisions fracture the story through variables and possible endings.",
 			fr: "Une expérience narrative en prise de vues réelles où les décisions du joueur fracturent l'histoire et ses fins possibles.",
 		},
 		technologies: ["Unity", "FMV", "Narrative Design", "Branching Systems"],
@@ -229,7 +239,7 @@ const projects = [
 		},
 		description: {
 			en: "An independent experimental project of an idle clicker with moral choices and a narrative story and progress around an IA that started a simulation of a digital human civilization with impactful choices.",
-			fr: "Un projet expérimental indépendant de type idle clicker, fondé sur des choix moraux et une progression narrative autour d’une IA ayant lancé la simulation d’une civilisation humaine numérique, où chaque décision a des conséquences.",
+			fr: "Un projet expérimental indépendant de type idle clicker, fondé sur des choix moraux et une progression narrative autour d’une IA ayant lancé la simulation d’une civilisation humaine numérique, où chaque décision impacte le long terme de l'histoire et les possibles fins différentes.",
 		},
 		disclosure: {
 			label: {
@@ -283,7 +293,7 @@ const projects = [
 		technologies: ["Game Design", "Narrative Design", "Technical Prototyping"],
 		href: "https://duality-tan.vercel.app",
 		accent: "#e82bb7",
-		images: projectImages("/Duality.png", "Duality"),
+		images: projectImages(["/Duality.png", "/jesusfullart.png", "/paulfullart.png"], "Duality"),
 	},
 ];
 
@@ -683,7 +693,7 @@ export const siteCopy = {
 		studio: {
 			eyebrow: "Studio indépendant",
 			title: "Fracture Interactive",
-			description: "Mon studio de jeux narratifs débute avec The Lucid, son premier projet : une expérience FMV sous Unity façonnée par l'atmosphère, les récits à embranchements et les choix du joueur.",
+			description: "Mon studio de jeux narratifs débute avec The Lucid, son premier projet : une expérience FMV sous Unity, les récits à embranchements, les variables changeant l'histoire et les choix du joueur.",
 			featuredProject: "Premier projet du studio",
 			productionStatus: "En développement",
 			formatLabel: "Format",

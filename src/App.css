@@ -77,18 +77,30 @@
 }
 
 @keyframes ambient-drift-one {
-	from { transform: translate3d(-0.6rem, -0.4rem, 0) rotate(-1deg); }
-	to { transform: translate3d(1.4rem, 1rem, 0) rotate(1.8deg); }
+	from {
+		transform: translate3d(-0.6rem, -0.4rem, 0) rotate(-1deg);
+	}
+	to {
+		transform: translate3d(1.4rem, 1rem, 0) rotate(1.8deg);
+	}
 }
 
 @keyframes ambient-drift-two {
-	from { transform: translate3d(0.8rem, -0.7rem, 0) rotate(0.8deg); }
-	to { transform: translate3d(-1.2rem, 1.3rem, 0) rotate(-1.5deg); }
+	from {
+		transform: translate3d(0.8rem, -0.7rem, 0) rotate(0.8deg);
+	}
+	to {
+		transform: translate3d(-1.2rem, 1.3rem, 0) rotate(-1.5deg);
+	}
 }
 
 @keyframes ambient-drift-three {
-	from { transform: translate3d(-1rem, 0, 0) scale(0.98); }
-	to { transform: translate3d(1.2rem, 0.7rem, 0) scale(1.02); }
+	from {
+		transform: translate3d(-1rem, 0, 0) scale(0.98);
+	}
+	to {
+		transform: translate3d(1.2rem, 0.7rem, 0) scale(1.02);
+	}
 }
 
 .skip-link {
@@ -124,8 +136,7 @@
 .continuous-content {
 	position: relative;
 	isolation: isolate;
-	background:
-		var(--navy-deep);
+	background: var(--navy-deep);
 }
 
 .flow-section {
@@ -858,7 +869,6 @@
 	gap: 0.3rem;
 	margin-top: 0.05rem;
 	padding-bottom: 0.18rem;
-	border-bottom: 1px solid color-mix(in srgb, var(--project-accent) 54%, transparent);
 	color: var(--ink);
 	font-family: var(--display);
 	font-size: 0.65rem;
@@ -949,7 +959,7 @@
 }
 
 .project-section-detail--1 {
-	bottom: 1%;
+	bottom: -10%;
 	left: 0;
 	transform: rotate(-3.4deg);
 }
@@ -972,12 +982,14 @@
 	width: min(46rem, 52%);
 	margin-left: auto;
 	padding-top: 0.75rem;
-	border-top: 1px solid var(--line-bright);
+	display: none;
+	/* 	border-top: 1px solid var(--line-bright); */
 }
 
 .project-section--visual-left .project-section-meta {
 	margin-right: auto;
 	margin-left: 0;
+	display: none;
 }
 
 .project-section-meta div {
