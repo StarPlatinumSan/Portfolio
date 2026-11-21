@@ -16,7 +16,7 @@ export function ProjectAction({ project, copy }) {
       href={project.href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`${copy.viewProject} — ${project.title}. ${copy.opensInNewTab}`}
+      aria-label={`${copy.viewProject}: ${project.title}. ${copy.opensInNewTab}`}
     >
       <span>{copy.viewProject}</span>
       <ArrowUpRight />
@@ -92,6 +92,24 @@ export default function ProjectSection({
             technologies={project.technologies}
             label={copy.technologiesLabel}
           />
+          {project.disclosure && (
+            <aside className="project-disclosure" data-reveal>
+              <strong>{project.disclosure.label}</strong>
+              <p>{project.disclosure.text}</p>
+              {project.disclosure.link && (
+                <a
+                  className="project-disclosure-link"
+                  href={project.disclosure.link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${project.disclosure.link.label}. ${copy.opensInNewTab}`}
+                >
+                  <span>{project.disclosure.link.label}</span>
+                  <ArrowUpRight />
+                </a>
+              )}
+            </aside>
+          )}
           <div data-reveal>
             <ProjectAction project={project} copy={copy} />
           </div>

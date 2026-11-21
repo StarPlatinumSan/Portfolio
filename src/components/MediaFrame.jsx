@@ -48,7 +48,6 @@ export default function MediaFrame({
         </picture>
       ) : (
         <div className="media-placeholder" aria-hidden="true">
-          <span className="media-placeholder-index">{image.label}</span>
           <span className="media-placeholder-mark">AB</span>
           <span className="media-placeholder-path">{image.src}</span>
         </div>

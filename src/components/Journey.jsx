@@ -1,68 +1,13 @@
-import { ArrowDown, ArrowUpRight } from './Icons'
-import { getJourneyForSection, journeySections } from '../data/journeys'
+import { ArrowUpRight } from './Icons'
 
-export function JourneyTransitions({ copy }) {
+export function JourneyTransitions() {
   return (
-    <>
-      <div className="scene-transition" aria-hidden="true">
-        <span className="scene-transition-rule" />
-        <span className="scene-transition-marker" />
-      </div>
-      <div className="branch-transition" aria-hidden="true">
-        <div className="branch-transition-copy">
-          <span>{copy.transition.eyebrow}</span>
-          <strong>{copy.transition.title}</strong>
-        </div>
-        <div className="branch-tree">
-          <span className="branch-tree-origin" />
-          <span className="branch-tree-trunk" />
-          <span className="branch-tree-rail" />
-          <span className="branch-tree-arm branch-tree-arm--creative" />
-          <span className="branch-tree-arm branch-tree-arm--studio" />
-          <span className="branch-tree-node branch-tree-node--creative" />
-          <span className="branch-tree-node branch-tree-node--studio" />
-          <span className="branch-tree-label branch-tree-label--creative">{copy.transition.creative}</span>
-          <span className="branch-tree-label branch-tree-label--studio">{copy.transition.studio}</span>
-        </div>
-      </div>
-    </>
+    <div className="scene-transition" aria-hidden="true">
+      <span className="scene-transition-rule" />
+      <span className="scene-transition-marker" />
+    </div>
   )
 }
-
-export function JourneyProgress({ activeSection, copy }) {
-  const path = getJourneyForSection(activeSection)
-  if (!path) return null
-
-  const sections = journeySections[path]
-  const currentIndex = Math.max(0, sections.indexOf(activeSection))
-  const progress = sections.length > 1 ? currentIndex / (sections.length - 1) : 1
-  const labels = copy.progress.labels[path]
-
-  return (
-    <nav
-      className={`journey-progress journey-progress--${path}`}
-      aria-label={copy.progress.ariaLabel}
-      style={{ '--journey-progress': progress }}
-    >
-      <div className="journey-progress-meta">
-        <span>{copy.progress[path]}</span>
-        <strong>{labels[activeSection]}</strong>
-        <span>{String(currentIndex + 1).padStart(2, '0')} / {String(sections.length).padStart(2, '0')}</span>
-      </div>
-      <div className="journey-progress-track" aria-hidden="true">
-        <span className="journey-progress-fill" />
-        {sections.map((id, index) => (
-          <span
-            className={index <= currentIndex ? 'is-reached' : undefined}
-            key={id}
-            style={{ '--node-position': sections.length > 1 ? index / (sections.length - 1) : 0 }}
-          />
-        ))}
-      </div>
-    </nav>
-  )
-}
-
 export function JourneyChoice({ copy, paths }) {
   return (
     <section className="journey-choice" id="choose" aria-labelledby="choice-title" data-scroll-align="viewport">
@@ -78,11 +23,10 @@ export function JourneyChoice({ copy, paths }) {
         <p data-reveal>{copy.introduction}</p>
       </header>
       <div className="choice-panels">
-        {['creative', 'studio'].map((id, index) => (
+        {['creative', 'studio'].map((id) => (
           <a className={`choice-panel choice-panel--${id}`} href={`#${id}`} key={id}
             aria-labelledby={`choice-${id}-title`} aria-describedby={`choice-${id}-details`}>
             <div className="choice-panel-top">
-              <span className="choice-number">0{index + 1}</span>
               <span>{paths.includes(id) ? copy.opened : copy[id].kicker}</span>
               <ArrowUpRight />
             </div>
@@ -95,7 +39,7 @@ export function JourneyChoice({ copy, paths }) {
             </div>
             <div className="choice-panel-bottom">
               <p id={`choice-${id}-details`}>{copy[id].details}</p>
-              <span className="choice-action">{copy[id].action}<ArrowDown /></span>
+              <span className="choice-action">{copy[id].action}</span>
             </div>
           </a>
         ))}
@@ -105,7 +49,6 @@ export function JourneyChoice({ copy, paths }) {
     </section>
   )
 }
-
 export function CreativeIntroduction({ copy }) {
   return (
     <section className="creative-introduction section-shell" id="creative" aria-labelledby="creative-title">
@@ -113,8 +56,8 @@ export function CreativeIntroduction({ copy }) {
         <p className="eyebrow" data-reveal>{copy.eyebrow}</p>
         <h2 id="creative-title" tabIndex="-1" data-reveal>{copy.title}<em>{copy.accent}</em></h2>
         <ul className="creative-disciplines">
-          {copy.disciplines.map((discipline, index) => (
-            <li key={discipline} data-reveal><span>0{index + 1}</span>{discipline}</li>
+          {copy.disciplines.map((discipline) => (
+            <li key={discipline} data-reveal>{discipline}</li>
           ))}
         </ul>
       </div>
@@ -122,26 +65,6 @@ export function CreativeIntroduction({ copy }) {
         <p>{copy.description}</p>
         <p>{copy.detail}</p>
       </div>
-    </section>
-  )
-}
-
-export function JourneyBridge({ from, copy, paths }) {
-  const destination = from === 'studio' ? 'creative' : 'studio'
-  const next = copy[destination]
-  return (
-    <section className={`journey-bridge journey-bridge--${destination} section-shell`} aria-labelledby={`${from}-bridge-title`}>
-      <div className="journey-bridge-copy">
-        <p className="eyebrow" data-reveal>{copy.bridge.eyebrow}</p>
-        <h2 id={`${from}-bridge-title`} data-reveal>{copy.bridge.title}</h2>
-        <p data-reveal>{from === 'studio' ? copy.bridge.toCreative : copy.bridge.toStudio}</p>
-        <a href="#contact" className="text-link" data-reveal>{copy.bridge.contact}<ArrowUpRight className="text-link-icon" /></a>
-      </div>
-      <a className="journey-next" href={`#${destination}`} data-reveal-media>
-        <span className="journey-next-label">{next.kicker}</span>
-        <strong>{next.title}<em>{next.accent}</em></strong>
-        <span className="choice-action">{paths.includes(destination) ? copy.bridge.revisit : next.action}<ArrowUpRight /></span>
-      </a>
     </section>
   )
 }

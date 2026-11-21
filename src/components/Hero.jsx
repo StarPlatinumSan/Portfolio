@@ -1,11 +1,11 @@
 import MediaFrame from "./MediaFrame";
-import { ArrowDown, ArrowUpRight } from "./Icons";
+import { ArrowUpRight } from "./Icons";
 
 const profileImage = {
 	src: "/Andrei.jpg",
 	alt: "Portrait of Andrei Bituleanu",
 	position: "center",
-	label: "Portrait / 01",
+	label: "Portrait",
 };
 
 export default function Hero({ copy }) {
@@ -30,7 +30,6 @@ export default function Hero({ copy }) {
 				<div className="hero-actions" data-hero-fade>
 					<a className="button button--primary" href="#choose">
 						{copy.hero.primaryAction}
-						<ArrowDown className="button-icon" />
 					</a>
 					<a className="text-link" href="#contact">
 						{copy.hero.secondaryAction}
@@ -54,7 +53,6 @@ export default function Hero({ copy }) {
 
 			<a className="hero-scroll" href="#choose" data-hero-scroll>
 				<span>{copy.projectSection.scrollCue}</span>
-				<ArrowDown />
 			</a>
 		</section>
 	);

@@ -1,5 +1,5 @@
 export const journeySections = {
-	studio: ["studio", "the-lucid", "short-film", "echoes"],
+	studio: ["studio", "the-lucid", "short-film", "echoes", "artificial-selection", "duality"],
 	creative: ["creative", "experience", "education", "visual-story-writing", "je-suis-quark", "maville", "other-projects", "skills", "relevant-courses"],
 };
 
@@ -48,8 +48,8 @@ export const journeyCopy = {
 			kicker: "Les projets phares",
 			title: "Projets",
 			accent: "Majeurs.",
-			description: "Les projets de Fracture Interactive",
-			details: "The Lucid - La carte d’Echoes - Court-métrage",
+			description: "Mes projets majeurs, entre univers de studio et expérimentations indépendantes.",
+			details: "The Lucid - La carte d’Echoes - Court-métrage - Artificial Selection - Duality",
 			action: "Explorer les univers",
 		},
 		creative: {
@@ -68,14 +68,6 @@ export const journeyCopy = {
 				"Je combine mon année d'expérience en design et développement web avec ma passion depuis l'enfance pour la narration et le game design. J'ai toujours eu une imagination infinie et une passion à créer des histoires qui nous font ressentir, réfléchir, ouvrir des nouvelles perspectives et inspirer l'humanité.",
 			detail: "Voici les projets, les expériences et les apprentissages qui façonnent ma pratique.",
 			disciplines: ["Game & narrative design", "Développement fullstack", "Expériences interactives"],
-		},
-		bridge: {
-			eyebrow: "La suite vous appartient",
-			title: "Un autre point de vue ?",
-			toCreative: "Vous avez découvert mes univers. Rencontrez maintenant le développeur qui leur donne vie.",
-			toStudio: "Vous avez découvert ma façon de construire. Entrez maintenant dans mon univers.",
-			revisit: "Revenir à ce parcours",
-			contact: "Ou parlons de votre projet",
 		},
 	},
 	en: {
@@ -120,8 +112,8 @@ export const journeyCopy = {
 			kicker: "The flagship projects",
 			title: "Major",
 			accent: "Projects.",
-			description: "Fracture Interactive projects",
-			details: "The Lucid - The Echoes map - Short film",
+			description: "My major projects, spanning studio worlds and independent experiments.",
+			details: "The Lucid - The Echoes map - Short film - Artificial Selection - Duality",
 			action: "Explore the worlds",
 		},
 		creative: {
@@ -140,14 +132,6 @@ export const journeyCopy = {
 				"I combine my year of experience in web design and development with my lifelong passion for storytelling and game design. I have always had a boundless imagination and a passion for creating stories that make us feel, think, open up new perspectives, and inspire humanity.",
 			detail: "These are the projects, experiences, and lessons that shape my practice.",
 			disciplines: ["Game & narrative design", "Fullstack development", "Interactive experiences"],
-		},
-		bridge: {
-			eyebrow: "What comes next is up to you",
-			title: "Another perspective?",
-			toCreative: "You have discovered my worlds. Now meet the developer who brings them to life.",
-			toStudio: "You have discovered how I build. Now step into my universe.",
-			revisit: "Return to this path",
-			contact: "Or let’s talk about your project",
 		},
 	},
 };

@@ -104,7 +104,6 @@ export function StudioSection({ copy, feature }) {
             data-reveal
           >
             <span>{copy.discoverProject}</span>
-            <i aria-hidden="true">↓</i>
           </a>
         </div>
       </div>
@@ -225,9 +224,6 @@ export function ExperienceSection({ copy, items }) {
               key={item.role}
               data-reveal
             >
-              <div className="experience-card-number" aria-hidden="true">
-                {String(index + 1).padStart(2, '0')}
-              </div>
               <p>{item.place}</p>
               <h3>{item.role}</h3>
               <p>{item.summary}</p>
@@ -370,9 +366,7 @@ export function ProjectCollection({ groups = [], copy }) {
               aria-controls="project-carousel-viewport"
               onClick={() => moveCarousel(-1)}
             >
-              <span className="collection-carousel-arrow" aria-hidden="true">
-                &lt;
-              </span>
+              <span className="collection-carousel-label">{copy.previousProject}</span>
             </button>
             <button
               type="button"
@@ -380,9 +374,7 @@ export function ProjectCollection({ groups = [], copy }) {
               aria-controls="project-carousel-viewport"
               onClick={() => moveCarousel(1)}
             >
-              <span className="collection-carousel-arrow" aria-hidden="true">
-                &gt;
-              </span>
+              <span className="collection-carousel-label">{copy.nextProject}</span>
             </button>
           </div>
 
@@ -455,12 +447,6 @@ export function SkillsSection({ copy, webTools, gameTools }) {
             aria-label={copy.title}
             onKeyDown={handleTabKeyDown}
           >
-            <span
-              className={`tool-tabs-indicator ${
-                activeTools === 'web' ? 'is-web' : ''
-              }`}
-              aria-hidden="true"
-            />
             {disciplines.map((discipline) => (
               <button
                 id={`${discipline.id}-tools-tab`}
@@ -519,10 +505,9 @@ export function EducationSection({ copy, items }) {
         />
 
         <div className="education-path">
-          {items.map((item, index) => (
+          {items.map((item) => (
             <article className="education-card" key={item.degree} data-reveal>
               <span>{item.period}</span>
-              <strong aria-hidden="true">0{index + 1}</strong>
               <h3>{item.degree}</h3>
               <p>{item.institution}</p>
               <small>{item.note}</small>

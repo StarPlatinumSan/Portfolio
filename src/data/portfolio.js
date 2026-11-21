@@ -12,6 +12,8 @@ const imageAspectRatios = {
 	"/map.png": "1355 / 910",
 	"/map2.png": "889 / 858",
 	"/mtl.png": "300 / 168",
+	"/ArtificialSelection.png": "1870 / 917",
+	"/Duality.png": "1860 / 915",
 };
 
 const imageFitModes = {
@@ -101,11 +103,19 @@ const imageAltText = {
 		en: "Interactive D3.js chess-ranking boxplot",
 		fr: "Diagramme en boîte interactif D3.js des classements d'échecs",
 	},
+	"/ArtificialSelection.png": {
+		en: "Artificial Selection project interface",
+		fr: "Interface du projet Artificial Selection",
+	},
+	"/Duality.png": {
+		en: "Duality project interface",
+		fr: "Interface du projet Duality",
+	},
 };
 
 const projectImages = (sources, alt) => {
 	const imageSources = Array.isArray(sources) ? sources : [sources];
-	const labels = ["Main", "Detail 01", "Detail 02"];
+	const labels = ["Main", "Detail", "Detail"];
 
 	return labels.map((label, index) => {
 		const src = imageSources[index] ?? imageSources[index % imageSources.length];
@@ -203,6 +213,77 @@ const projects = [
 		href: "https://github.com/StarPlatinumSan/MaVille",
 		accent: "#45bff2",
 		images: projectImages(["/MaVille.png", "/map.png", "/map2.png"], "MaVille"),
+	},
+	{
+		id: "artificial-selection",
+		title: "Artificial Selection",
+		year: { en: "Independent", fr: "Indépendant" },
+		yearLabel: { en: "Context", fr: "Contexte" },
+		category: {
+			en: "Experimental game project",
+			fr: "Projet de jeu expérimental",
+		},
+		role: {
+			en: "Game design, writing & technical direction",
+			fr: "Game design, écriture et direction technique",
+		},
+		description: {
+			en: "An independent experimental project whose systems, narrative, features and technical direction are designed and written by me.",
+			fr: "Un projet expérimental indépendant dont les systèmes, la narration, les fonctionnalités et la direction technique sont conçus et rédigés par moi.",
+		},
+		disclosure: {
+			label: {
+				en: "Experimental AI-use disclosure for this project",
+				fr: "Transparence sur l’usage expérimental de l’IA pour ce projet",
+			},
+			text: {
+				en: "I use AI experimentally only to accelerate the technical development of certain infrastructure; every use is documented in the project credits. All creative work, including game design, narrative, features, scripts and direction, is conceived and written by me. This independent project is not associated with Fracture Interactive, whose zero-AI policy covers 100% of its products’ creative aspects and relies on artists for disciplines outside my expertise, including illustration and music.",
+				fr: "J’utilise l’IA de façon expérimentale uniquement pour accélérer le développement technique de certaines infrastructures; chaque usage est indiqué dans les crédits du projet. Tout le travail créatif, notamment le game design, la narration, les fonctionnalités, les scripts et la direction, est conçu et rédigé par moi. Ce projet indépendant n’est pas associé à Fracture Interactive, dont la politique zéro IA couvre 100 % des aspects créatifs de ses produits et fait appel à des artistes pour les disciplines hors de mon expertise, notamment le dessin et la musique.",
+			},
+		},
+		technologies: ["Game Design", "Narrative Design", "Technical Prototyping"],
+		href: "https://artificial-selection.vercel.app",
+		accent: "#63d8fa",
+		images: projectImages("/ArtificialSelection.png", "Artificial Selection"),
+	},
+	{
+		id: "duality",
+		title: "Duality",
+		year: { en: "Independent", fr: "Indépendant" },
+		yearLabel: { en: "Context", fr: "Contexte" },
+		category: {
+			en: "Experimental game project",
+			fr: "Projet de jeu expérimental",
+		},
+		role: {
+			en: "Game design, writing & technical direction",
+			fr: "Game design, écriture et direction technique",
+		},
+		description: {
+			en: "An independent experimental project built around original game design, narrative, features and scripts created by me.",
+			fr: "Un projet expérimental indépendant construit autour d’un game design, d’une narration, de fonctionnalités et de scripts originaux créés par moi.",
+		},
+		disclosure: {
+			label: {
+				en: "Experimental AI-use disclosure for this project",
+				fr: "Transparence sur l’usage expérimental de l’IA pour ce projet",
+			},
+			text: {
+				en: "For Duality, I use AI experimentally to accelerate the technical development of certain infrastructure, as well as for filters and the regeneration of real images. The frontend and UI/UX are imagined and designed by me. AI is used through a hybrid approach to accelerate UI development with editable React plugins. Duality has no commercial purpose and never will. Every use is documented in the project credits. All creative work, including game design, narrative, features, scripts and direction, is conceived and written by me. This independent project is not associated with Fracture Interactive, whose zero-AI policy covers 100% of its products’ creative aspects and relies on artists for disciplines outside my expertise, including illustration and music.",
+				fr: "Pour Duality, j’utilise l’IA de façon expérimentale afin d’accélérer le développement technique de certaines infrastructures, ainsi que pour des filtres et la régénération d’images réelles. Le frontend et l’UI/UX sont imaginés et conçus par moi. L’IA est exploitée selon une approche hybride afin d’accélérer le développement de l’interface grâce à des plugins React modifiables. Duality n’a aucun but lucratif et n’en aura jamais. Chaque usage est indiqué dans les crédits du projet. Tout le travail créatif, notamment le game design, la narration, les fonctionnalités, les scripts et la direction, est conçu et rédigé par moi. Ce projet indépendant n’est pas associé à Fracture Interactive, dont la politique zéro IA couvre 100 % des aspects créatifs de ses produits et fait appel à des artistes pour les disciplines hors de mon expertise, notamment le dessin et la musique.",
+			},
+			link: {
+				label: {
+					en: "View the credits on Duality",
+					fr: "Consulter les crédits sur Duality",
+				},
+				href: "https://duality-tan.vercel.app",
+			},
+		},
+		technologies: ["Game Design", "Narrative Design", "Technical Prototyping"],
+		href: "https://duality-tan.vercel.app",
+		accent: "#e82bb7",
+		images: projectImages("/Duality.png", "Duality"),
 	},
 ];
 
@@ -422,10 +503,10 @@ export const studioFeature = {
 	imageFit: "contain",
 	title: "The Lucid",
 	format: { en: "FMV narrative game", fr: "Jeu narratif FMV" },
-	status: { en: "Q4 2026 on Steam", fr: "Q4 2026 sur Steam" },
+	status: { en: "Q1 2027 on Steam", fr: "Q1 2027 sur Steam" },
 	summary: {
-		en: "Fracture Interactive's flagship project: a branching Unity FMV film where choices fracture the story, scenes, and endings. Planned for release on Steam in Q4 2026.",
-		fr: "Le projet phare de Fracture Interactive : un film FMV Unity à embranchements où les choix fracturent l'histoire, les scènes et les fins. Date de sortie prévue sur Steam en Q4 2026.",
+		en: "Fracture Interactive's flagship project: a branching Unity FMV film where choices fracture the story, scenes, and endings. Planned for release on Steam in Q1 2027.",
+		fr: "Le projet phare de Fracture Interactive : un film FMV Unity à embranchements où les choix fracturent l'histoire, les scènes et les fins. Date de sortie prévue sur Steam en Q1 2027.",
 	},
 	links: [
 		{
@@ -808,6 +889,18 @@ export const getProjects = (language) =>
 		category: localize(project.category, language),
 		role: localize(project.role, language),
 		description: localize(project.description, language),
+		disclosure: project.disclosure
+			? {
+					label: localize(project.disclosure.label, language),
+					text: localize(project.disclosure.text, language),
+					link: project.disclosure.link
+						? {
+								...project.disclosure.link,
+								label: localize(project.disclosure.link.label, language),
+							}
+						: undefined,
+				}
+			: undefined,
 		yearLabel: project.yearLabel ? localize(project.yearLabel, language) : undefined,
 		images: project.images.map((image) => ({
 			...image,

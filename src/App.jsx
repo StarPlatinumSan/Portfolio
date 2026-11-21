@@ -3,7 +3,7 @@ import Header from './components/Header'
 import Hero from './components/Hero'
 import ProjectSection from './components/ProjectSection'
 import {
-  CreativeIntroduction, JourneyBridge, JourneyChoice, JourneyProgress, JourneyTransitions,
+  CreativeIntroduction, JourneyChoice, JourneyTransitions,
 } from './components/Journey'
 import {
   ProjectCollection, ContactSection, CoursesSection, EchoesSection,
@@ -39,7 +39,14 @@ function App() {
   return (
     <div className="portfolio" ref={appRef} onClick={onNavigate}>
       <a className="skip-link" href="#main-content">{copy.navigation.skipToContent}</a>
-      <JourneyTransitions copy={journey} />
+      <JourneyTransitions />
+      <div className="ambient-geometry" aria-hidden="true">
+        <span className="ambient-shape ambient-shape--one" />
+        <span className="ambient-shape ambient-shape--two" />
+        <span className="ambient-shape ambient-shape--three" />
+        <span className="ambient-shape ambient-shape--four" />
+        <span className="ambient-shape ambient-shape--five" />
+      </div>
       <Header copy={copy} journeyCopy={journey} activeSection={activeSection} language={language}
         onLanguageChange={() => setLanguage((current) => current === 'en' ? 'fr' : 'en')} />
       <main id="main-content" tabIndex="-1">
@@ -53,6 +60,15 @@ function App() {
                 <LucidSection copy={studioCopy} feature={studioFeature} project={projectById['the-lucid']} />
                 <ShortFilmSection copy={copy.shortFilm} />
                 <EchoesSection feature={getEchoesFeature(language)} />
+                <ProjectSection
+                  project={projectById['artificial-selection']}
+                  copy={copy.projectSection}
+                />
+                <ProjectSection
+                  project={projectById.duality}
+                  copy={copy.projectSection}
+                  layout="visual-left"
+                />
               </>
             ) : (
               <>
@@ -71,12 +87,10 @@ function App() {
                 </div>
               </>
             )}
-            <JourneyBridge from={id} copy={journey} paths={paths} />
           </div>
         ))}
         <ContactSection copy={copy.contact} footerCopy={copy.footer} />
       </main>
-      <JourneyProgress activeSection={activeSection} copy={journey} />
     </div>
   )
 }
