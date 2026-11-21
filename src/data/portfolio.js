@@ -228,8 +228,8 @@ const projects = [
 			fr: "Game design, écriture et direction technique",
 		},
 		description: {
-			en: "An independent experimental project whose systems, narrative, features and technical direction are designed and written by me.",
-			fr: "Un projet expérimental indépendant dont les systèmes, la narration, les fonctionnalités et la direction technique sont conçus et rédigés par moi.",
+			en: "An independent experimental project of an idle clicker with moral choices and a narrative story and progress around an IA that started a simulation of a digital human civilization with impactful choices.",
+			fr: "Un projet expérimental indépendant de type idle clicker, fondé sur des choix moraux et une progression narrative autour d’une IA ayant lancé la simulation d’une civilisation humaine numérique, où chaque décision a des conséquences.",
 		},
 		disclosure: {
 			label: {
@@ -260,8 +260,8 @@ const projects = [
 			fr: "Game design, écriture et direction technique",
 		},
 		description: {
-			en: "An independent experimental project built around original game design, narrative, features and scripts created by me.",
-			fr: "Un projet expérimental indépendant construit autour d’un game design, d’une narration, de fonctionnalités et de scripts originaux créés par moi.",
+			en: "An independent experimental project concatenating an entire unique card game system and design with an auth, database and a server hosting players.",
+			fr: "Un projet expérimental indépendant qui réunit un système et un design de jeu de cartes entièrement uniques avec un système d’authentification, une base de données et un serveur hébergeant les joueurs.",
 		},
 		disclosure: {
 			label: {
