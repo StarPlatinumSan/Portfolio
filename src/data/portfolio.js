@@ -554,8 +554,8 @@ export const siteCopy = {
 		},
 		hero: {
 			eyebrow: "Creative developer",
-			lead: "I create worlds",
-			accent: "that are interactive and narrative",
+			lead: "Hey!",
+			accent: "I am Andrew :)",
 			description:
 				"I am Andrei Bituleanu, a narrative game designer and a developer of web, audiovisual, digital, interactive, and narrative experiences. I combine these skills with UI/UX through my experience in design and frontend web development, and I continue to broaden them so I can share my passion for moving people and making them think through my stories.",
 			primaryAction: "Explore the projects",
@@ -628,8 +628,8 @@ export const siteCopy = {
 		},
 		contact: {
 			eyebrow: "Contact",
-			title: "Join my Universe.",
-			subtitle: "Let's tell its story.",
+			title: "",
+			subtitle: "Contact me!",
 			email: "Email me",
 			emailAddress: "andrei.bituleanu@umontreal.ca",
 			github: "GitHub",
@@ -662,8 +662,8 @@ export const siteCopy = {
 		},
 		hero: {
 			eyebrow: "Développeur créatif",
-			lead: "Je crée des mondes",
-			accent: "interactifs et narratifs",
+			lead: "Bonjour!",
+			accent: "C'est Andrei :)",
 			description:
 				"Je suis Andrei Bituleanu, un game designer narratif, développeur web et d'expériences audiovisuelles, numériques, interactives et narratives. Je combine ces compétences avec le UI/UX de par mon expérience en design et frontend web dev et continue de les élargir afin de pouvoir partager ma passion de faire vibrer et réfléchir l'humanité à travers mes histoires.",
 			primaryAction: "Explorer les projets",
@@ -736,8 +736,8 @@ export const siteCopy = {
 		},
 		contact: {
 			eyebrow: "Contact",
-			title: "Rejoins mon Univers.",
-			subtitle: "Racontons son histoire.",
+			title: "",
+			subtitle: "Contacte-moi!",
 			email: "Me contacter",
 			emailAddress: "andrei.bituleanu@umontreal.ca",
 			github: "GitHub",
